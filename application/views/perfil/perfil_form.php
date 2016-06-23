@@ -132,23 +132,6 @@
 
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
-
-									<label for="usua_fecha_expiracion" class="control-label">Fecha de expiración</label>
-
-									<div class="controls">
-
-								    <div class="input-append date datepicker" data-date="<?= (isset($data_usua))?date('d/m/Y', strtotime($data_usua->usua_fecha_expiracion)):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
-
-								      <input class="span2" size="16" type="text" value="<?= (isset($data_usua))?date('d/m/Y', strtotime($data_usua->usua_fecha_expiracion)):date('d/m/Y'); ?>" id="usua_fecha_expiracion" name="usua_fecha_expiracion" disabled>
-
-								      <span class="add-on"><i class="icon-th"></i></span>
-
-								    </div>
-
-									</div> <!-- /controls -->
-
-								</div> <!-- /control-group -->
 
 							</fieldset>
 
