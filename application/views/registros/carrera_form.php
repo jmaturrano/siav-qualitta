@@ -37,7 +37,7 @@
 								<div class="control-group">
 									<label for="carr_descripcion" class="control-label">Carrera</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_carr))?$data_carr->carr_descripcion:set_value('carr_descripcion'); ?>" id="carr_descripcion" name="carr_descripcion" class="span8" maxlength="100">
+										<input type="text" value="<?= (isset($data_carr))?$data_carr->carr_descripcion:set_value('carr_descripcion'); ?>" id="carr_descripcion" name="carr_descripcion" class="span8" maxlength="200">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 							</fieldset>
@@ -103,7 +103,7 @@
 				                </tbody>
 				            </table>
 							<?php
-							}
+							}//end if
 							?>
 
 						</div>

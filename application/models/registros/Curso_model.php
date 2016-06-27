@@ -29,10 +29,25 @@ class Curso_Model extends CI_Model {
         return $this->db->count_all_results(self::$table_menu);
     }
 
-    public function getCursoByID($curs_id){
-        $where = array('curs_id' => $curs_id);
+    public function getCursoByMODUID($modu_id){
+        $where = array(
+                'curs.modu_id' => $modu_id,
+                'curs.curs_estado' => DB_ACTIVO
+                );
         $this->db->where($where);
-        $query = $this->db->get(self::$table_menu);
+        $this->db->join('modulos_carrera modu', 'modu.modu_id = curs.modu_id', 'inner');
+        $query = $this->db->get(self::$table_menu.' curs');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
+    public function getCursoByID($curs_id){
+        $where = array('curs.curs_id' => $curs_id);
+        $this->db->where($where);
+        $this->db->join('modulos_carrera modu', 'modu.modu_id = curs.modu_id', 'inner');
+        $query = $this->db->get(self::$table_menu.' curs');
         if($query->num_rows() > 0){
             return $query->row();
         }

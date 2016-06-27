@@ -13,6 +13,7 @@ class Modulosxcarrera extends CI_Controller {
         $this->load->model('registros/modulosxcarrera_model');
         $this->load->model('registros/carrera_model');
         $this->load->model('registros/nivelaprendizaje_model');
+        $this->load->model('registros/curso_model');
     }
 
     public function initData(){
@@ -42,9 +43,10 @@ class Modulosxcarrera extends CI_Controller {
 
         $this->load->library('layout');
         $data['tipo_vista']     = 'ver';
-        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
+        $data['data_curs']      = $this->curso_model->getCursoByMODUID($modu_id);
 
         $data['btn_editar']     = 'registros/modulosxcarrera/editar/'.$carr_id_enc.'/'.$modu_id_enc;
         $data['btn_regresar']   = 'registros/carrera/ver/'.$carr_id_enc;
@@ -68,9 +70,10 @@ class Modulosxcarrera extends CI_Controller {
 
         $this->load->library('layout');
         $data['tipo_vista']     = 'editar';
-        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
+        $data['data_curs']      = $this->curso_model->getCursoByMODUID($modu_id);
         
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc;
@@ -138,6 +141,7 @@ class Modulosxcarrera extends CI_Controller {
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID(($modu_id === '')?0:$modu_id);
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
         $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
+        $data['data_curs']      = $this->curso_model->getCursoByMODUID(($modu_id === '')?0:$modu_id);
 
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/carrera/ver/'.$carr_id_enc;

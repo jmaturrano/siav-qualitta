@@ -24,18 +24,18 @@
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
-							$ruta = 'registros/curso/guardar/'.((isset($data_curs))?str_encrypt($data_curs->curs_id, KEY_ENCRYPT):'');
+							$ruta = 'registros/curso/guardar/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($data_modu->modu_id, KEY_ENCRYPT).'/'.((isset($data_curs))?str_encrypt($data_curs->curs_id, KEY_ENCRYPT):'');
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
 								<div class="control-group">
-									<label for="curs_codigo" class="control-label">Código</label>
+									<label for="curs_codigo" class="control-label">Código curso</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="5">
+										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="10">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 								<div class="control-group">
-									<label for="curs_descripcion" class="control-label">Descripción</label>
+									<label for="curs_descripcion" class="control-label">Curso</label>
 									<div class="controls">
 										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
 									</div> <!-- /controls -->

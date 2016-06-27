@@ -11,6 +11,8 @@ class Curso extends CI_Controller {
         parent :: __construct();
         $this->initData();
         $this->load->model('registros/curso_model');
+        $this->load->model('registros/modulosxcarrera_model');
+        $this->load->model('registros/carrera_model');
     }
 
     public function initData(){
@@ -21,103 +23,95 @@ class Curso extends CI_Controller {
     }
 
     public function index($offset = 0) {
-        $data['OFICINAS']           = self::$OFICINAS;
-        $data['ROLES']              = self::$ROLES;
-        $data['PRIVILEGIOS']        = self::$PRIVILEGIOS;
-        $data['PERMISOS']           = self::$PERMISOS;
-        $this->load->library('layout');
-        $data['header_title']       = self::$header_title;
-        $data['header_icon']        = self::$header_icon;
-        $this->load->library('pagination');
-        $propio['ruta_base']        = 'registros/curso/index';
-        $propio['filas_totales']    = $this->curso_model->contar_estructuras_todos();
-        $filasPorPagina = paginacion_configurar($propio, $this);
-        $data['data_curs']          = $this->curso_model->getcursoAll('', $filasPorPagina, floor($offset / $filasPorPagina)*$filasPorPagina);
-        $data['btn_nuevo']          = 'registros/curso/nuevo';
-        $data['offset'] = $offset;
-        $this->layout->view('registros/curso_index', $data);
-        $this->load->view('notificacion');
+        redirect('registros/carrera');
     }
 
-    public function buscar(){
-        $data['OFICINAS']       = self::$OFICINAS;
-        $data['ROLES']          = self::$ROLES;
-        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
-        $data['PERMISOS']       = self::$PERMISOS;
-        $this->load->library('layout');
-        $this->load->library('pagination');
-        $data['header_title']   = self::$header_title;
-        $data['header_icon']    = self::$header_icon;
-        $data['btn_nuevo']      = 'registros/curso/nuevo';
-        $this->form_validation->set_rules('q', 'Buscar', 'trim');
-        if ($this->form_validation->run() === FALSE) {
-            redirect('registros/curso');
-        }
-        else
-        {
-            $datapost = $this->security->xss_clean($this->input->post());
-            ($datapost['q'] === '') ? redirect('registros/curso') : '';
-            $data['data_curs']  = $this->curso_model->getCursoAll($datapost['q']);
-            $data['q']          = $datapost['q'];
-            $this->layout->view('registros/curso_index', $data);
-            $this->load->view('notificacion');
-        }
-    }
-
-    public function ver($curs_id_enc = ''){
-        $data['OFICINAS']       = self::$OFICINAS;
-        $data['ROLES']          = self::$ROLES;
-        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
-        $data['PERMISOS']       = self::$PERMISOS;
-        ($curs_id_enc === '') ? redirect('registros/curso') : '';
+    public function ver($carr_id_enc = '', $modu_id_enc = '', $curs_id_enc = ''){
+        ($carr_id_enc === '') ? redirect('registros/carrera') : '';
+        ($modu_id_enc === '') ? redirect('registros/carrera/ver/'.$carr_id_enc) : '';
+        ($curs_id_enc === '') ? redirect('registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc) : '';
+        $carr_id = str_decrypt($carr_id_enc, KEY_ENCRYPT);
+        $modu_id = str_decrypt($modu_id_enc, KEY_ENCRYPT);
         $curs_id = str_decrypt($curs_id_enc, KEY_ENCRYPT);
-        $this->load->library('layout');
+
+        $data['OFICINAS']       = self::$OFICINAS;
+        $data['ROLES']          = self::$ROLES;
+        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
+        $data['PERMISOS']       = self::$PERMISOS;
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
+
+        $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
+        $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
+
+        $this->load->library('layout');
         $data['tipo_vista']     = 'ver';
-        $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
-        $data['btn_editar']     = 'registros/curso/editar/'.$curs_id_enc;
-        $data['btn_regresar']   = 'registros/curso';
+        $data['btn_editar']     = 'registros/curso/editar/'.$carr_id_enc.'/'.$modu_id_enc.'/'.$curs_id_enc;
+        $data['btn_regresar']   = 'registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc;
         $this->layout->view('registros/curso_form', $data);
         $this->load->view('notificacion');
     }
 
-    public function editar($curs_id_enc = ''){
-        $data['OFICINAS']       = self::$OFICINAS;
-        $data['ROLES']          = self::$ROLES;
-        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
-        $data['PERMISOS']       = self::$PERMISOS;
-        ($curs_id_enc === '') ? redirect('registros/curso') : '';
+    public function editar($carr_id_enc = '', $modu_id_enc = '', $curs_id_enc = ''){
+        ($carr_id_enc === '') ? redirect('registros/carrera') : '';
+        ($modu_id_enc === '') ? redirect('registros/carrera/ver/'.$carr_id_enc) : '';
+        ($curs_id_enc === '') ? redirect('registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc) : '';
+        $carr_id = str_decrypt($carr_id_enc, KEY_ENCRYPT);
+        $modu_id = str_decrypt($modu_id_enc, KEY_ENCRYPT);
         $curs_id = str_decrypt($curs_id_enc, KEY_ENCRYPT);
-        $this->load->library('layout');
-        $data['header_title']   = self::$header_title;
-        $data['header_icon']    = self::$header_icon;
-        $data['tipo_vista']     = 'editar';
-        $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
-        $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/curso';
-        $this->layout->view('registros/curso_form', $data);
-        $this->load->view('notificacion');
-    }
 
-    public function nuevo(){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
-        $this->load->library('layout');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
+
+        $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
+        $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
+
+        $this->load->library('layout');
+        $data['tipo_vista']     = 'editar';
+        $data['btn_guardar']    = true;
+        $data['btn_cancelar']   = 'registros/curso/ver/'.$carr_id_enc.'/'.$modu_id_enc.'/'.$curs_id_enc;
+        $this->layout->view('registros/curso_form', $data);
+        $this->load->view('notificacion');
+    }
+
+    public function nuevo($carr_id_enc = '', $modu_id_enc = ''){
+        ($carr_id_enc === '') ? redirect('registros/carrera') : '';
+        ($modu_id_enc === '') ? redirect('registros/carrera/ver/'.$carr_id_enc) : '';
+        $carr_id = str_decrypt($carr_id_enc, KEY_ENCRYPT);
+        $modu_id = str_decrypt($modu_id_enc, KEY_ENCRYPT);
+
+        $data['OFICINAS']       = self::$OFICINAS;
+        $data['ROLES']          = self::$ROLES;
+        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
+        $data['PERMISOS']       = self::$PERMISOS;
+        $data['header_title']   = self::$header_title;
+        $data['header_icon']    = self::$header_icon;
+
+        $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
+
+        $this->load->library('layout');
         $data['tipo_vista']     = 'nuevo';
         $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/curso';
+        $data['btn_cancelar']   = 'registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc;
         $this->layout->view('registros/curso_form', $data);
         $this->load->view('notificacion');
     }
 
-    public function eliminar($curs_id_enc = ''){
-        ($curs_id_enc === '') ? redirect('registros/curso') : '';
+    public function eliminar($carr_id_enc = '', $modu_id_enc = '', $curs_id_enc = ''){
+        ($carr_id_enc === '') ? redirect('registros/carrera') : '';
+        ($modu_id_enc === '') ? redirect('registros/carrera/ver/'.$carr_id_enc) : '';
+        ($curs_id_enc === '') ? redirect('registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc) : '';
+        $carr_id = str_decrypt($carr_id_enc, KEY_ENCRYPT);
+        $modu_id = str_decrypt($modu_id_enc, KEY_ENCRYPT);
         $curs_id = str_decrypt($curs_id_enc, KEY_ENCRYPT);
+
         $data_delete            = $this->curso_model->deleteCursoByID($curs_id);
         if($data_delete){
             $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
@@ -126,24 +120,34 @@ class Curso extends CI_Controller {
             $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
             $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
         }
-        redirect('registros/curso');
+        redirect('registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc);
     }
 
-    public function guardar($curs_id_enc = ''){
+    public function guardar($carr_id_enc = '', $modu_id_enc = '', $curs_id_enc = ''){
+        ($carr_id_enc === '') ? redirect('registros/carrera') : '';
+        ($modu_id_enc === '') ? redirect('registros/carrera/ver/'.$carr_id_enc) : '';
+        
+        $carr_id = str_decrypt($carr_id_enc, KEY_ENCRYPT);
+        $modu_id = str_decrypt($modu_id_enc, KEY_ENCRYPT);
+        $curs_id = ($curs_id_enc === '') ? '' : str_decrypt($curs_id_enc, KEY_ENCRYPT);
+
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
-        $curs_id = ($curs_id_enc === '') ? '' : str_decrypt($curs_id_enc, KEY_ENCRYPT);
-        $this->form_validation->set_rules('curs_codigo', 'Código', 'required|trim');
-        $this->form_validation->set_rules('curs_descripcion', 'Nombre curso', 'required|trim');
-        $this->form_validation->set_rules('modu_id', 'Módulo', 'required');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
-        $data['tipo_vista']     = ($curs_id === '')?'nuevo':'editar';
+
+        $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
+        $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_curs']      = $this->curso_model->getCursoByID(($curs_id === '')?0:$curs_id);
+
+        $this->form_validation->set_rules('curs_codigo', 'Código', 'required|trim');
+        $this->form_validation->set_rules('curs_descripcion', 'Nombre curso', 'required|trim');
+
+        $data['tipo_vista']     = ($curs_id === '')?'nuevo':'editar';
         $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/curso';
+        $data['btn_cancelar']   = 'registros/modulosxcarrera/ver/'.$carr_id_enc.'/'.$modu_id_enc;
         $this->load->library('layout');
         if ($this->form_validation->run() === FALSE) {
             $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
@@ -156,13 +160,14 @@ class Curso extends CI_Controller {
             $data_curs = array(
                 'curs_codigo'               => $datapost['curs_codigo'],
                 'curs_descripcion'          => $datapost['curs_descripcion'],
-                'modu_id'                   => $datapost['modu_id']
+                'modu_id'                   => $modu_id
             );
-            $data_response = ($curs_id === '') ? $this->curso_model->insertcurso($data_curs) : $this->curso_model->updatecurso($data_curs, $curs_id);
+            $data_response = ($curs_id === '') ? $this->curso_model->insertCurso($data_curs) : $this->curso_model->updateCurso($data_curs, $curs_id);
             if($data_response){
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
                 $this->session->set_flashdata('mensaje', (($curs_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));
-                redirect('registros/curso');
+                $curs_id = $data_response;
+                redirect('registros/curso/ver/'.$carr_id_enc.'/'.$modu_id_enc.'/'.str_encrypt($curs_id, KEY_ENCRYPT));
             }else{
                 $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
                 $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);

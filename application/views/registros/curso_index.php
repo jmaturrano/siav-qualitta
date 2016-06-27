@@ -65,7 +65,15 @@
 										</tr>
 				               		<?php
 				                		}//end foreach
-				                	}//end if
+				                	}else{
+				                	?>
+				                	<tr>
+				                		<td class="texto-centrado">
+				                			<span>No se encontraron registros</span>
+				                		</td>
+				                	</tr>
+				                	<?php
+				                	}//end else
 				                	?>
 				                </tbody>
 				            </table>

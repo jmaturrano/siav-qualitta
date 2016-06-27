@@ -69,6 +69,70 @@
 					       	<?php
 					        echo form_close();
 					        ?>
+
+
+
+							<hr>
+							<br>
+							<?php
+							if(isset($data_modu)){
+							?>
+							<div class="form-subheader">
+								<h3>Cursos</h3>
+								<a class="btn btn-default btn-right btn-small btn_nuevo" href="<?= base_url('registros/curso/nuevo/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.(str_encrypt($data_modu->modu_id, KEY_ENCRYPT))); ?>">
+									<span class="btn-icon-only <?= ICON_NEW; ?>"></span> Agregar Curso
+								</a>
+							</div>
+							<table class="table table-striped table-bordered">
+				                <thead>
+				                  <tr>
+				                    <th class="cabecera-tabla"> Nro. </th>
+				                    <th class="cabecera-tabla"> Código </th>
+				                    <th class="cabecera-tabla"> Curso </th>
+				                    <th class="cabecera-tabla"> Fecha registro </th>
+				                    <th class="cabecera-tabla td-actions"> </th>
+				                  </tr>
+				                </thead>
+				                <tbody>
+				                	<?php
+				                	if(isset($data_curs)){
+				                		foreach ($data_curs as $item => $curso) {
+				               		?>
+										<tr>
+											<td class="texto-centrado"><?= str_pad(($item+1), 5, '0', STR_PAD_LEFT); ?></td>
+											<td class="texto-centrado"><?= $curso->curs_codigo; ?></td>
+											<td class=""><?= $curso->curs_descripcion; ?></td>
+											<td class="texto-centrado"><?= fecha_latino($curso->curs_fecha_registro); ?></td>
+											<td class="texto-centrado td-actions">
+						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/curso/ver/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($data_modu->modu_id, KEY_ENCRYPT).'/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
+						                    	</a>
+						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/curso/editar/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($data_modu->modu_id, KEY_ENCRYPT).'/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
+						                    	</a>
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/curso/eliminar/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($data_modu->modu_id, KEY_ENCRYPT).'/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
+						                    	</a>
+											</td>
+										</tr>
+				               		<?php
+				                		}//end foreach
+				                	}else{
+		                			?>
+		                				<tr>
+		                					<td class="texto-centrado" colspan="5">
+		                						<span>No se encontraron registros</span>
+		                					</td>
+		                				</tr>
+		                			<?php
+				                	}
+				                	?>
+				                </tbody>
+				            </table>
+							<?php
+							}//end if
+							?>
+
 						</div>
 					</div> <!-- /widget-content -->
 				</div> <!-- /widget -->
