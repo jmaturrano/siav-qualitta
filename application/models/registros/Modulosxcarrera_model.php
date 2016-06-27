@@ -29,10 +29,29 @@ class Modulosxcarrera_Model extends CI_Model {
         return $this->db->count_all_results(self::$table_menu);
     }
 
-    public function getModulosxcarreraByID($modu_id){
-        $where = array('modu_id' => $modu_id);
+    public function getModulosxcarreraByCARRID($carr_id){
+        $where = array(
+                    'modu.carr_id' => $carr_id,
+                    'modu.modu_estado' => DB_ACTIVO
+                    );
         $this->db->where($where);
-        $query = $this->db->get(self::$table_menu);
+        $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id');
+        $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
+        $query = $this->db->get(self::$table_menu.' modu');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
+    public function getModulosxcarreraByID($modu_id){
+        $where = array(
+                    'modu.modu_id' => $modu_id
+                    );
+        $this->db->where($where);
+        $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id');
+        $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
+        $query = $this->db->get(self::$table_menu.' modu');
         if($query->num_rows() > 0){
             return $query->row();
         }

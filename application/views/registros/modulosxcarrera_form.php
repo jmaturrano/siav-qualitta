@@ -19,25 +19,50 @@
 						<div id="formcontrols" class="">
 							<?php
 							$attributes = array(
-							  'id'      	=> 'form_curso',
-							  'name'    	=> 'form_curso',
+							  'id'      	=> 'form_modulosxcarrera',
+							  'name'    	=> 'form_modulosxcarrera',
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
-							$ruta = 'registros/curso/guardar/'.((isset($data_curs))?str_encrypt($data_curs->curs_id, KEY_ENCRYPT):'');
+							$ruta = 'registros/modulosxcarrera/guardar/'.((isset($data_carr))?str_encrypt($data_carr->carr_id, KEY_ENCRYPT):'').'/'.((isset($data_modu))?str_encrypt($data_modu->modu_id, KEY_ENCRYPT):'');
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
 								<div class="control-group">
-									<label for="curs_codigo" class="control-label">Código</label>
+									<label for="carr_descripcion" class="control-label">Carrera</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="5">
+										<input type="text" value="<?= (isset($data_carr))?'('.$data_carr->carr_codigo.') '.$data_carr->carr_descripcion:set_value('carr_descripcion'); ?>" id="carr_descripcion" name="carr_descripcion" class="span8" maxlength="100" disabled>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="niap_id" class="control-label">Nivel de aprendizaje</label>
+									<div class="controls">
+					                    <select class="selectpicker span8" name="niap_id" id="niap_id" data-container="body">
+					                    <option value="">Seleccione</option>
+					                    <?php
+					                    if(isset($data_niap)){
+					                    	foreach ($data_niap as $item => $nivelaprendizaje) {
+					                   	?>
+											<option value="<?= $nivelaprendizaje->niap_id; ?>" <?= (isset($data_modu) && $data_modu->niap_id === $nivelaprendizaje->niap_id)?'selected': set_select('niap_id', $nivelaprendizaje->niap_id); ?>><?= $nivelaprendizaje->niap_codigo.' - '.$nivelaprendizaje->niap_descripcion; ?></option>
+					                   	<?php
+					                    	}
+					                    }
+					                    ?>
+					                    </select>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="modu_codigo" class="control-label">Código módulo</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_modu))?$data_modu->modu_codigo:set_value('modu_codigo'); ?>" id="modu_codigo" name="modu_codigo" class="span8" maxlength="10">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 								<div class="control-group">
-									<label for="curs_descripcion" class="control-label">Descripción</label>
+									<label for="modu_descripcion" class="control-label">Descripción</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
+										<input type="text" value="<?= (isset($data_modu))?$data_modu->modu_descripcion:set_value('modu_descripcion'); ?>" id="modu_descripcion" name="modu_descripcion" class="span8" maxlength="100">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 							</fieldset>
@@ -54,4 +79,4 @@
 </div> <!-- /main -->
 
 
-<script src="<?php echo base_url('public/assets/js/Curso.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/Modulosxcarrera.js') ?>"></script>

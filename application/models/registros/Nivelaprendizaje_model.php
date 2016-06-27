@@ -10,7 +10,7 @@ class Nivelaprendizaje_Model extends CI_Model {
     public function getNivelaprendizajeAll($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
         $where = array('niap_estado'=>DB_ACTIVO);
-        $this->db->order_by('niap_descripcion', 'asc');
+        $this->db->order_by('niap_codigo', 'asc');
         $this->db->where($where);
         if($q !== ''){
             $this->db->group_start();

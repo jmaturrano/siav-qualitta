@@ -48,7 +48,7 @@
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1)+$offset, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class="texto-centrado"><?= str_pad($carrera->carr_codigo, 5, '0', STR_PAD_LEFT); ?></td>
+											<td class="texto-centrado"><?= $carrera->carr_codigo; ?></td>
 											<td class=""><?= $carrera->carr_descripcion; ?></td>
 											<td class="texto-centrado"><?= date('d/m/Y', strtotime($carrera->carr_fecha_registro)); ?></td>
 											<td class="texto-centrado td-actions">
