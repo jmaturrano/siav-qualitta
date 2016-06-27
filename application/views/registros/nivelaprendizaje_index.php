@@ -20,7 +20,7 @@
 							  'id'      	=> 'form_listar',
 							  'name'    	=> 'form_listar'
 							  );
-							$ruta = 'registros/curso/buscar';
+							$ruta = 'registros/nivelaprendizaje/buscar';
 							echo form_open($ruta, $attributes);
 							?>
 				            <input type="text" placeholder="Buscar" class="search-query" name="q" id="txt_buscar" value="<?= (isset($q))?$q:''; ?>">
@@ -43,29 +43,35 @@
 				                	<?php
 				                	if(!isset($offset))
 				                		$offset=0;
-				                	if(isset($data_curs)){
-				                		foreach ($data_curs as $item => $curso) {
+				                	if(isset($data_niap)){
+				                		foreach ($data_niap as $item => $nivelaprendizaje) {
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1)+$offset, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class="texto-centrado"><?= str_pad($curso->curs_codigo, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class=""><?= $curso->curs_descripcion; ?></td>
-											<td class="texto-centrado"><?= date('d/m/Y', strtotime($curso->curs_fecha_registro)); ?></td>
+											<td class="texto-centrado"><?= str_pad($nivelaprendizaje->niap_codigo, 5, '0', STR_PAD_LEFT); ?></td>
+											<td class=""><?= $nivelaprendizaje->niap_descripcion; ?></td>
+											<td class="texto-centrado"><?= date('d/m/Y', strtotime($nivelaprendizaje->niap_fecha_registro)); ?></td>
 											<td class="texto-centrado td-actions">
-						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/curso/ver/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/nivelaprendizaje/ver/'.str_encrypt($nivelaprendizaje->niap_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
 						                    	</a>
-						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/curso/editar/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/nivelaprendizaje/editar/'.str_encrypt($nivelaprendizaje->niap_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
-						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/curso/eliminar/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/nivelaprendizaje/eliminar/'.str_encrypt($nivelaprendizaje->niap_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
 						                    	</a>
 											</td>
 										</tr>
 				               		<?php
 				                		}//end foreach
-				                	}//end if
+				                	}else{
+				                	?>
+				                		<tr>
+				                			<td class="texto-centrado" colspan="5">No se encontraron registros</td>
+				                		</tr>
+				                	<?php
+				                	}//end else
 				                	?>
 				                </tbody>
 				            </table>
@@ -81,4 +87,4 @@
 	</div> <!-- /main-inner -->
 </div> <!-- /main -->
 
-<script src="<?php echo base_url('public/assets/js/Curso.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/Nivelaprendizaje.js') ?>"></script>

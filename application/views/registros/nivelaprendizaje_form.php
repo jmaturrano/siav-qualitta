@@ -10,7 +10,7 @@
 	                    <ul class="breadcrumb custom-breadcrumb">
 	                        <li><a href="<?php echo base_url('panel/principal') ?>"><i class="<?php echo ICONO_HOME ?>"></i>&nbsp; Inicio</a></li>
 	                        <li>&nbsp; /</li>
-	                        <li><a href="<?php echo base_url('registros/curso') ?>"><i class="<?= $header_icon; ?>"></i>&nbsp; <?= $header_title; ?></a></li>
+	                        <li><a href="<?php echo base_url('registros/nivelaprendizaje') ?>"><i class="<?= $header_icon; ?>"></i>&nbsp; <?= $header_title; ?></a></li>
 	                        <li>&nbsp; /</li>
 	                        <li class="active"><i class="<?= ICON_FORM; ?>"></i>&nbsp; Formulario</li>
 	                    </ul>
@@ -19,25 +19,25 @@
 						<div id="formcontrols" class="">
 							<?php
 							$attributes = array(
-							  'id'      	=> 'form_curso',
-							  'name'    	=> 'form_curso',
+							  'id'      	=> 'form_nivelaprendizaje',
+							  'name'    	=> 'form_nivelaprendizaje',
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
-							$ruta = 'registros/curso/guardar/'.((isset($data_curs))?str_encrypt($data_curs->curs_id, KEY_ENCRYPT):'');
+							$ruta = 'registros/nivelaprendizaje/guardar/'.((isset($data_niap))?str_encrypt($data_niap->niap_id, KEY_ENCRYPT):'');
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
 								<div class="control-group">
-									<label for="curs_codigo" class="control-label">Código</label>
+									<label for="niap_codigo" class="control-label">Código</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="5">
+										<input type="text" value="<?= (isset($data_niap))?$data_niap->niap_codigo:set_value('niap_codigo'); ?>" id="niap_codigo" name="niap_codigo" class="span8" maxlength="5">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 								<div class="control-group">
-									<label for="curs_descripcion" class="control-label">Descripción</label>
+									<label for="niap_descripcion" class="control-label">Descripción</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
+										<input type="text" value="<?= (isset($data_niap))?$data_niap->niap_descripcion:set_value('niap_descripcion'); ?>" id="niap_descripcion" name="niap_descripcion" class="span8" maxlength="50">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 							</fieldset>
@@ -54,4 +54,4 @@
 </div> <!-- /main -->
 
 
-<script src="<?php echo base_url('public/assets/js/Curso.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/Nivelaprendizaje.js') ?>"></script>
