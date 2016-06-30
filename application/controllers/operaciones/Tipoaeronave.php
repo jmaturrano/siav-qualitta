@@ -14,6 +14,12 @@ class Tipoaeronave extends CI_Controller {
         $this->load->model('operaciones/tipoaeronave_model');
     }
 
+     /**
+    * Funcion privilegios
+    * Maneja los privilegios del sistema
+    * @return void
+    */
+
     public function initData(){
         self::$OFICINAS     = revisar_oficinas($this);
         self::$ROLES        = revisar_roles($this, 0);
@@ -21,6 +27,11 @@ class Tipoaeronave extends CI_Controller {
         self::$PERMISOS     = revisar_permisos(self::$PRIVILEGIOS, 'operaciones/tipoaeronave');
     }
 
+    /**
+    * Funcion Inicio 
+    * Maneja la estructura principal
+    * @return void
+    */
     public function index($offset = 0) {
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -38,6 +49,12 @@ class Tipoaeronave extends CI_Controller {
         $this->layout->view('operaciones/tipoaeronave_index', $data);
         $this->load->view('notificacion');
     }
+
+    /**
+    * Funcion buscar
+    * Maneja la busqueda de datos
+    * @return void
+    */
 
     public function buscar(){
         $data['OFICINAS']       = self::$OFICINAS;
@@ -64,6 +81,13 @@ class Tipoaeronave extends CI_Controller {
         }
     }
 
+    /**
+    * Funcion ver
+    * Maneja opcion de mostrar el dato ingresado
+    * otip_id_enc id tipo aeronave encriptado
+    * @return void
+    */
+
     public function ver($otip_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -82,6 +106,13 @@ class Tipoaeronave extends CI_Controller {
         $this->layout->view('operaciones/tipoaeronave_form', $data);
         $this->load->view('notificacion');
     }
+
+    /**
+    * Funcion editar
+    * Maneja opcion de editar los datos ingresados
+    * otip_id_enc id tipo aeronave encriptado
+    * @return void
+    */
 
     public function editar($otip_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
@@ -102,6 +133,12 @@ class Tipoaeronave extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+    /**
+    * Funcion Nuevo
+    * Maneja opcion nuevo para ingresar nuevos datos
+    * @return void
+    */
+
     public function nuevo(){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -117,6 +154,13 @@ class Tipoaeronave extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+    /**
+    * Funcion eliminar
+    * Maneja opcion de elimnar los datos ingresados
+    * otip_id_enc id tipo aeronave encriptado
+    * @return void
+    */
+
     public function eliminar($otip_id_enc = ''){
         ($otip_id_enc === '') ? redirect('operaciones/tipoaeronave') : '';
         $otip_id = str_decrypt($otip_id_enc, KEY_ENCRYPT);
@@ -130,6 +174,13 @@ class Tipoaeronave extends CI_Controller {
         }
         redirect('operaciones/tipoaeronave');
     }
+
+    /**
+    * Funcion guardar
+    * Maneja opcion de guardar los datos ingresados
+    * moae_id_enc id tipo aeronave encriptado
+    * @return void
+    */
 
     public function guardar($tiae_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;

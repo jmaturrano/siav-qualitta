@@ -90,7 +90,7 @@ class Modeloaeronave extends CI_Controller {
     /**
     * Funcion ver
     * Maneja opcion de mostrar el dato ingresado
-    * otip_id_enc recibe los parametros a mostrar
+    * otip_id_enc id modelo aeronave encriptado
     * @return void
     */
 
@@ -116,7 +116,7 @@ class Modeloaeronave extends CI_Controller {
      /**
     * Funcion editar
     * Maneja opcion de editar los datos ingresados
-    * otip_id_enc recibe los datos a modificar
+    * otip_id_enc id modelo aeronave encriptado
     * @return void
     */
 
@@ -163,7 +163,7 @@ class Modeloaeronave extends CI_Controller {
     /**
     * Funcion eliminar
     * Maneja opcion de elimnar los datos ingresados
-    * otip_id_enc recibe los datos a eliminar
+    * otip_id_enc id modelo aeronave encriptado
     * @return void
     */
 
@@ -194,7 +194,7 @@ class Modeloaeronave extends CI_Controller {
     /**
     * Funcion guardar
     * Maneja opcion de guardar los datos ingresados
-    * moae_id_enc recibe los datos a guardar
+    * moae_id_enc id modelo aeronave encriptado
     * @return void
     */
 
