@@ -1,5 +1,11 @@
 <?php
 
+/**
+* MK System Soft  
+*
+* Modelo de lista de precios
+*
+*/
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Listaprecio_Model extends CI_Model {
     private static $table_menu  = 'lista_precios';

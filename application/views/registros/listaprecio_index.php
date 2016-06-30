@@ -41,8 +41,8 @@
 				                </thead>
 				                <tbody>
 				                	<?php
-				                	if(isset($data_cele)){
-				                		foreach ($data_cele as $item => $listaprecio) {
+				                	if(isset($data_lipe)){
+				                		foreach ($data_lipe as $item => $listaprecio) {
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1), 5, '0', STR_PAD_LEFT); ?></td>

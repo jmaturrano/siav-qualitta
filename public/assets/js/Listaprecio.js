@@ -4,6 +4,7 @@ $(document).ready(function(){
 		if(tipo_vista === 'VER'){
 			$('#form_listaprecio').find('input').attr('disabled', 'disabled');
 			$('#form_listaprecio').find('select').attr('disabled', 'disabled');
+			$('#form_listaprecio').find('input[type=checkbox]').checkboxX('refresh');
 		}
 	}
 

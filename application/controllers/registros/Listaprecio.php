@@ -1,6 +1,11 @@
 <?php
+/**
+* MK System Soft  
+*
+* Controlador de lista de precios
+*
+*/
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Listaprecio extends CI_Controller {
     private static $header_title  = 'Listas de precios';
     private static $header_icon  = ICON_SETTINGS;
