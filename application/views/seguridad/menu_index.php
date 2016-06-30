@@ -52,13 +52,13 @@
 											<td class=""><?= ($menu->menu_nivel==='1')?'<span class="color_tema">'.$menu->menu_descripcion.'</span>':$menu->menu_descripcion; ?></td>
 											<td class="texto-centrado"><?= describe_menu_nivel($menu->menu_nivel); ?></td>
 											<td class="texto-centrado td-actions">
-						                    	<a class="btn btn-small btn-info btn-consulta" href="<?= base_url('seguridad/menu/ver/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
+						                    	<a class="btn btn-small btn-info btn_consulta" href="<?= base_url('seguridad/menu/ver/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
 						                    	</a>
-						                    	<a class="btn btn-small btn-invert btn-editar" href="<?= base_url('seguridad/menu/editar/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
+						                    	<a class="btn btn-small btn-invert btn_editar" href="<?= base_url('seguridad/menu/editar/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
-						                    	<a class="btn btn-small btn-danger" href="javascript:;" data-url="<?= base_url('seguridad/menu/eliminar/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
+						                    	<a class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('seguridad/menu/eliminar/'.str_encrypt($menu->menu_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
 						                    	</a>
 											</td>
