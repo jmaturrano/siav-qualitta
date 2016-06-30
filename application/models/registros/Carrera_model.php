@@ -12,10 +12,11 @@ class Carrera_Model extends CI_Model {
     public function getCarreraAll($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
         $where = array('carr_estado'=>DB_ACTIVO);
-        $this->db->order_by('carr_descripcion', 'asc');
+        $this->db->order_by('carr_codigo', 'asc');
         $this->db->where($where);
         if($q !== ''){
             $this->db->group_start();
+            $this->db->like('carr_codigo',$q);
             $this->db->like('carr_descripcion',$q);
             $this->db->group_end();
         }

@@ -174,6 +174,12 @@ class Modulosxcarrera extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+    public function getModulosxcarrera_ajax($carr_id = ''){
+        ($carr_id === '') ? exit() : '';
+        $data_modu      = $this->modulosxcarrera_model->getModulosxcarreraByCARRID($carr_id);
+        echo json_encode($data_modu);
+    }
+
 
 }
 

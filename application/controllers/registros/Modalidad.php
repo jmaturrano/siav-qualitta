@@ -19,6 +19,8 @@ class Modalidad extends CI_Controller {
         parent :: __construct();
         $this->initData();
         $this->load->model('registros/modalidad_model');
+        $this->load->model('registros/carrera_model');
+        $this->load->model('registros/listaprecio_model');
     }
 
      /**
@@ -117,6 +119,8 @@ class Modalidad extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'ver';
         $data['data_moda']      = $this->modalidad_model->getModalidadByID($moda_id);
+        $data['data_carr']      = $this->carrera_model->getCarreraAll();
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
         $data['btn_editar']     = 'registros/modalidad/editar/'.$moda_id_enc;
         $data['btn_regresar']   = 'registros/modalidad';
         $this->layout->view('registros/modalidad_form', $data);

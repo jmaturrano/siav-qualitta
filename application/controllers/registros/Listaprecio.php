@@ -223,7 +223,7 @@ class Listaprecio extends CI_Controller {
             $validacion_unique = '|is_unique[lista_precios.lipe_descripcion]';
         }//end if
         $this->form_validation->set_rules('lipe_descripcion', 'Descripción','required|trim'.$validacion_unique);
-        $this->form_validation->set_rules('lipe_indvigente', 'Precio vigente','required|trim');
+        $this->form_validation->set_rules('lipe_indvigente', 'Lista principal','required|trim');
 
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;

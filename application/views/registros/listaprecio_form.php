@@ -35,7 +35,7 @@
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 								<div class="control-group">
-									<label for="lipe_indvigente" class="control-label">Lista vigente</label>
+									<label for="lipe_indvigente" class="control-label">Lista principal</label>
 									<div class="controls">
 										<div>
 											<?php $checked = isset($data_lipe) ? ( $data_lipe->lipe_indvigente === 'S' ? '1' : '0') : '0'; ?>

@@ -56,10 +56,6 @@
         <link href="<?= base_url('public/assets/plugins/bootstrap-checkbox-x/css/checkbox-x.min.css') ?>" rel="stylesheet" />
         <script src="<?= base_url('public/assets/plugins/bootstrap-checkbox-x/js/checkbox-x.min.js') ?>" ></script>
 
-        <!--<script src="<?= base_url('public/assets/plugins/validation_bs0.6.2/formValidation.min.css') ?>" ></script>
-        <script src="<?= base_url('public/assets/plugins/validation_bs0.6.2/formValidation.js') ?>" ></script>
-        <script src="<?= base_url('public/assets/plugins/validation_bs0.6.2/bootstrap.js') ?>" ></script>-->
-
         <!-- Toastr -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/assets/plugins/toastr/toastr.css') ?>">
         <script src="<?php echo base_url('public/assets/plugins/toastr/toastr.js') ?>"></script>
@@ -72,7 +68,10 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('public/assets/plugins/tags-input/bootstrap-tagsinput.css') ?>" media="screen">
         <script src="<?php echo base_url('public/assets/plugins/tags-input/bootstrap-tagsinput.min.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/tags-input/bootstrap-tagsinput-angular.js') ?>"></script>
-
+        <!-- Bootstrap time picker -->
+        <script src="<?= base_url('public/assets/plugins/date-time-picker/js/moment.js'); ?>"></script>
+        <script src="<?= base_url('public/assets/plugins/date-time-picker/js/bootstrap-datetimepicker.js'); ?>"></script>
+        <link rel="stylesheet" href="<?= base_url('public/assets/plugins/date-time-picker/css/bootstrap-datetimepicker.css'); ?>">
         <!-- ================== END PLUGINS ================== -->
 
 

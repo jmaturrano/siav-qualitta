@@ -141,6 +141,9 @@ defined('ICON_THUMBS_UP')		OR define('ICON_THUMBS_UP', 'icon-thumbs-up');
 defined('ICON_ADD')				OR define('ICON_ADD', 'glyphicon glyphicon-plus-sign');
 defined('ICON_PHONE')			OR define('ICON_PHONE', 'glyphicon glyphicon-earphone');
 defined('ICON_USER')			OR define('ICON_USER', 'glyphicon glyphicon-user');
+defined('ICON_MONEY')			OR define('ICON_MONEY', 'glyphicon glyphicon-usd');
+defined('ICON_DOWN')			OR define('ICON_DOWN', 'glyphicon glyphicon-arrow-down');
+defined('ICON_UP')				OR define('ICON_UP', 'glyphicon glyphicon-arrow-up');
 
 /*CONSTANTES DE ESTADO*/
 defined('DB_ACTIVO')			OR define('DB_ACTIVO', 'AC');

@@ -38,6 +38,158 @@
 					       	<?php
 					        echo form_close();
 					        ?>
+
+							<hr>
+							<br>
+							<?php
+							if(isset($data_moda)){
+							?>
+							<div class="form-subheader">
+								<h3>Cursos por Modalidad</h3>
+							</div>
+							<?php
+							$attributes = array(
+							  'id'      	=> 'form_modalidadxcurso',
+							  'name'    	=> 'form_modalidadxcurso',
+							  'class'		=> 'form-horizontal',
+							  'tipo_vista' 	=> $tipo_vista
+							  );
+							$ruta = 'registros/modalidadxcurso/guardar/'.((isset($data_moda))?str_encrypt($data_moda->moda_id, KEY_ENCRYPT):'');
+							echo form_open($ruta, $attributes);
+							?>
+							<fieldset>
+                                <div class="control-group">
+                                    <label for="carr_id" class="control-label" style="">Carrera</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8 selectpicker-carrera" name="carr_id" id="carr_id" data-live-search="true" data-subruta="<?= base_url('registros/modulosxcarrera/getModulosxcarrera_ajax/{SELECTED}'); ?>" data-container="body">
+                                            <option value="">Seleccione</option>
+                                        <?php
+                                        if(isset($data_carr)){
+                                            foreach ($data_carr as $item => $carrera) {
+                                        ?>
+                                            <option value="<?= $carrera->carr_id; ?>" <?= (isset($data_mxca) && $data_mxca->carr_id === $carrera->carr_id)?'selected':set_select('carr_id', $carrera->carr_id); ?>><?= $carrera->carr_codigo.' - '.substr($carrera->carr_descripcion, 0, LIMITSELECT); ?></option>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label for="modu_id" class="control-label" style="">Módulo</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8 selectpicker-carrera" name="modu_id" id="modu_id" data-live-search="true" 
+                                        data-subruta="<?= base_url('registros/curso/getCursosxmodulo_ajax/{SELECTED}'); ?>"  
+                                        data-container="body">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label for="curs_id" class="control-label" style="">Curso</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8 selectpicker-carrera" name="curs_id" id="curs_id" data-live-search="true" data-subruta="" data-container="body">
+                                            <option value="">Todos</option>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label for="lipe_id" class="control-label" style="">Lista Precio</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8 selectpicker-carrera" name="lipe_id" id="lipe_id" data-live-search="true" data-subruta="" data-container="body">
+                                            <option value="">Seleccione</option>
+	                                        <?php
+	                                        if(isset($data_lipe)){
+	                                            foreach ($data_lipe as $item => $lipe) {
+	                                        ?>
+	                                            <option value="<?= $lipe->lipe_id; ?>"><?= $lipe->lipe_descripcion.($lipe->lipe_indvigente === 'S' ? ' - Principal' : ''); ?></option>
+	                                        <?php
+	                                            }
+	                                        }
+	                                        ?>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label class="control-label" style=""></label>
+                                    <div class="controls">
+										<button class="btn btn-default btn-small btn_consulta" type="button" data-subruta="<?= base_url('registros/modalidadxcurso/getModalidadxcurso_ajax/'.$data_moda->moda_id.'/{MODUID}/{LIPEID}'); ?>" id="btn_buscarcurso">
+											<span class="<?= ICON_SEARCH; ?>"></span> Buscar cursos
+										</button>
+										<button class="btn btn-default btn-small btn_nuevo" type="button" id="btn_agregarcurso">
+											<span class="<?= ICON_ADD; ?>"></span> Agregar curso (s)
+										</button>
+										<input type="hidden" name="agregar_curso_todo" id="agregar_curso_todo" value="0">
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+							</fieldset>
+					       	<?php
+					        echo form_close();
+					        ?>
+
+							<table class="table table-striped table-bordered" id="table_modxcurso">
+				                <thead>
+				                  <tr>
+				                    <th class="cabecera-tabla"> Código </th>
+				                    <th class="cabecera-tabla"> Curso </th>
+				                    <th class="cabecera-tabla"> Horas </th>
+				                    <th class="cabecera-tabla"> Precio </th>
+				                    <th class="cabecera-tabla td-actions"> </th>
+				                  </tr>
+				                </thead>
+				                <tbody>
+				                	<?php
+				                	if(isset($data_mxca)){
+				                		foreach ($data_mxca as $item => $mxca) {
+				               		?>
+										<tr>
+											<td class="texto-centrado"><?= $mxca->curs_codigo; ?></td>
+											<td class=""><?= substr($mxca->curs_descripcion, 0, LIMITSELECT); ?></td>
+											<td class="texto-centrado">
+								              <div class="input-group date timepicker">
+								                <input name="mxca_horas[]" type="text" class="form-control" placeholder="00:00">
+								                <span class='input-group-addon'><span class='glyphicon glyphicon-time'></span></span>
+								              </div>
+											</td>
+											<td class="texto-centrado">
+												<div class="controls">
+													<input type="text" name="mxca_precio[]" class="span1" >
+												</div> <!-- /controls -->
+											</td>
+											<td class="texto-centrado td-actions">
+						                    	<a title="Actualizar registro" class="btn btn-small btn-invert btn_editar" 
+						                    		href="<?= base_url('registros/modalidadxcarrera/guardar/'.str_encrypt($mxca->mxca_id, KEY_ENCRYPT)); ?>">
+						                    		<span class="<?= ICON_SAVED; ?>"></span>
+						                    	</a>
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" 
+						                    		data-url="<?= base_url('registros/modalidadxcarrera/eliminar/'.str_encrypt($mxca->mxca_id, KEY_ENCRYPT)); ?>">
+						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
+						                    	</a>
+											</td>
+										</tr>
+				               		<?php
+				                		}//end foreach
+				                	}else{
+				                	?>
+				                	<tr>
+				                		<td colspan="5" class="texto-centrado">
+				                			<span>No se encontraron registros...</span>
+				                		</td>
+				                	</tr>
+				                	<?php
+				                	}
+				                	?>
+				                </tbody>
+				            </table>
+							<?php
+							}
+							?>
+
 						</div>
 					</div> <!-- /widget-content -->
 				</div> <!-- /widget -->

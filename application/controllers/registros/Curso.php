@@ -178,6 +178,13 @@ class Curso extends CI_Controller {
     }
 
 
+    public function getCursosxmodulo_ajax($modu_id = ''){
+        ($modu_id === '') ? exit() : '';
+        $data_curs      = $this->curso_model->getCursoByMODUID($modu_id);
+        echo json_encode($data_curs);
+    }
+
+
 }
 
 

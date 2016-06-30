@@ -231,6 +231,62 @@ $(document).ready(function(){
 	});
 	/* FIN - UBIGEO */
 
+
+	/* CARRERAS CURSOS */
+	$(document).on('change', '#carr_id.selectpicker-carrera', function(e){
+		var item_subruta 				= $(this).attr('data-subruta');
+		var carr_id 					= $(this).val();
+
+    	$('#modu_id').html('<option value="">Seleccione</option>');
+    	$('#curs_id').html('<option value="">Todos</option>');
+		if(carr_id != ''){
+	        $.getJSON(item_subruta.replace('{SELECTED}', carr_id),function(data){
+	        	if(data){
+					for (var i = 0; i <= data.length - 1; i++) {
+						var modu_id 			= data[i].modu_id;
+						var modu_codigo 		= data[i].modu_codigo;
+						var modu_descripcion 	= data[i].modu_descripcion;
+						$('#modu_id').append('<option value="'+modu_id+'">'+modu_codigo+' - '+modu_descripcion+'</option>');
+					}//end for
+	        	}
+				$('.selectpicker-carrera').selectpicker('refresh');
+	        })
+	        .fail(function(){
+	            bootbox.alert("<span class=\"glyphicon glyphicon-remove\"></span> No se han podido cargar los módulos...");
+	        });
+		}else{
+			$('.selectpicker-carrera').selectpicker('refresh');
+		}
+	});
+	$(document).on('change', '#modu_id.selectpicker-carrera', function(e){
+		var item_subruta 				= $(this).attr('data-subruta');
+		var modu_id 					= $(this).val();
+
+    	$('#curs_id').html('<option value="">Todos</option>');
+		if(modu_id != ''){
+	        $.getJSON(item_subruta.replace('{SELECTED}', modu_id),function(data){
+	        	if(data){
+					for (var i = 0; i <= data.length - 1; i++) {
+						var curs_id 			= data[i].curs_id;
+						var curs_codigo 		= data[i].curs_codigo;
+						var curs_descripcion 	= data[i].curs_descripcion;
+						$('#curs_id').append('<option value="'+curs_id+'">'+curs_codigo+' - '+curs_descripcion+'</option>');
+					}//end for
+	        	}
+				$('.selectpicker-carrera').selectpicker('refresh');
+	        })
+	        .fail(function(){
+	            bootbox.alert("<span class=\"glyphicon glyphicon-remove\"></span> No se han podido cargar los cursos...");
+	        });
+		}else{
+			$('.selectpicker-carrera').selectpicker('refresh');
+		}
+	});
+	/* FIN - CARRERAS CURSOS */
+
+
+
+
 	/* OFICINA POR USUARIO */
 	$(document).on('change', '#otip_central', function(e){
 		var data_function 				= $(this).attr('data-function');
