@@ -36,9 +36,11 @@
 								</div> <!-- /control-group -->
 								<div class="control-group">
 									<label for="lipe_indvigente" class="control-label">Lista vigente</label>
-									<div class="checkbox">
-										<?php $checked = isset($data_lipe) ? ( $data_lipe->lipe_indvigente === 'S' : '1' : '0') : '0'; ?>
-										<input type="checkbox" name="lipe_indvigente" data-toggle="checkbox-x" data-three-state="false" class="" value="<?= $checked; ?>" <?= ($checked === '1')?'checked':''; ?> id="lipe_indvigente">
+									<div class="controls">
+										<div>
+											<?php $checked = isset($data_lipe) ? ( $data_lipe->lipe_indvigente === 'S' ? '1' : '0') : '0'; ?>
+											<input type="checkbox" name="lipe_indvigente" data-toggle="checkbox-x" data-three-state="false" class="" value="<?= $checked; ?>" <?= ($checked === '1')?'checked':''; ?> id="lipe_indvigente">
+										</div>
 									</div>
 								</div> <!-- /control-group -->
 							</fieldset>

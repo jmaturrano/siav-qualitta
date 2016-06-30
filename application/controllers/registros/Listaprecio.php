@@ -15,6 +15,14 @@ class Listaprecio extends CI_Controller {
         $this->load->model('registros/listaprecio_model');
     }
 
+     /**
+      * Función inicial  
+      *
+      * Carga los datos del sistema y sesión
+      *
+      *
+      * @return void
+      */
      public function initData(){
         self::$OFICINAS     = revisar_oficinas($this);
         self::$ROLES        = revisar_roles($this, 0);
@@ -22,6 +30,15 @@ class Listaprecio extends CI_Controller {
         self::$PERMISOS     = revisar_permisos(self::$PRIVILEGIOS, 'registros/listaprecio'); 
     }
 
+     /**
+      * Vista principal  
+      *
+      * Carga la lista de precios creadas
+      *
+      * @param int $ofsset parametro de seleccion de paginacion
+      *
+      * @return void
+      */
     public function index($offset = 0) {
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -42,6 +59,14 @@ class Listaprecio extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+    /**
+      * Vista resultado de búsqueda  
+      *
+      * Carga la lista de Precios
+      *
+      *
+      * @return void
+      */
     public function buscar(){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -67,6 +92,16 @@ class Listaprecio extends CI_Controller {
         }
     }
 
+
+    /**
+      * Vista de resultado  
+      *
+      * Muestra los datos de la lista
+      *      
+      * @param string $lipe_id_enc id encriptado de lista de precio
+      *
+      * @return void
+      */
     public function ver($lipe_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -85,6 +120,16 @@ class Listaprecio extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+
+    /**
+      * Vista de edición  
+      *
+      * Muestra los datos de la lista
+      *      
+      * @param string $lipe_id_enc id encriptado de lista de precio
+      *
+      * @return void
+      */
     public function editar($lipe_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -104,6 +149,13 @@ class Listaprecio extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+    /**
+      * Vista de registro  
+      *
+      * Muestra el formulario de registro    
+      *
+      * @return void
+      */
     public function nuevo(){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -119,6 +171,16 @@ class Listaprecio extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+     /**
+      * Método de eliminación
+      *
+      * Actualiza el estado del registro a inactivo
+      *     
+      * @param string $lipe_id_enc id encriptado de la lista
+      *
+      *   
+      * @return void
+      */
     public function eliminar($lipe_id_enc = ''){       
         ($lipe_id_enc === '') ? redirect('registros/listaprecio') : '';
         $lipe_id = str_decrypt($lipe_id_enc, KEY_ENCRYPT);
@@ -133,6 +195,16 @@ class Listaprecio extends CI_Controller {
         redirect('registros/listaprecio');
     }
 
+
+    /**
+      * Registro de Lista de precio
+      *
+      * Procesa el registro o actualización de una lista
+      *
+      * @param string $lipe_id_enc id encriptado de la lista
+      *
+      * @return void
+      */
     public function guardar($lipe_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
@@ -163,9 +235,13 @@ class Listaprecio extends CI_Controller {
         else
         {
             $datapost = $this->security->xss_clean($this->input->post());
+            if($datapost['lipe_indvigente'] === '1'){
+                //SETEA TODOS A NO VIGENTES
+                $this->listaprecio_model->updateListaprecioAll(array('lipe_indvigente' => 'N'));
+            }
             $data_lipe = array(
-                'lipe_descripcion'           => $datapost['lipe_descripcion'],
-                'lipe_indvigente'         => ($datapost['lipe_indvigente'] == '0') ? 'N' : 'S';
+                'lipe_descripcion'        => $datapost['lipe_descripcion'],
+                'lipe_indvigente'         => ($datapost['lipe_indvigente'] == '0') ? 'N' : 'S'
                             );
             $data_response = ($lipe_id === '') ? $this->listaprecio_model->insertListaprecio($data_lipe) : $this->listaprecio_model->updateListaprecio($data_lipe, $lipe_id);
             if($data_response){
