@@ -48,17 +48,40 @@ class Modalidadxcurso extends CI_Controller {
       * @return void
       */
     public function eliminar($moda_id_enc = ''){
-        ($moda_id_enc === '') ? redirect('registros/modalidad') : '';
-        $moda_id = str_decrypt($moda_id_enc, KEY_ENCRYPT);
-        $data_delete            = $this->modalidad_model->deleteModalidadByID($moda_id);
-        if($data_delete){
-            $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
-            $this->session->set_flashdata('mensaje', RMESSAGE_DELETE);
-        }else{
-            $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
-            $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
-        }
-        redirect('registros/modalidad');
+      ($moda_id_enc === '') ? redirect('registros/modalidad') : '';
+      $moda_id = str_decrypt($moda_id_enc, KEY_ENCRYPT);
+
+      $this->form_validation->set_rules('chk_registro[]', 'Curso', 'required');
+      $this->form_validation->set_rules('mxca_id[]', 'Curso', 'required');
+      $this->form_validation->set_rules('mxca_horas[]', 'Horas', 'trim');
+      $this->form_validation->set_rules('mxca_precio[]', 'Precio', 'trim');
+      $this->form_validation->set_rules('mxca_observacion[]', 'Observaciones', 'trim');
+
+      $this->load->library('layout');
+      if ($this->form_validation->run() === FALSE) {
+          $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
+          $this->session->set_flashdata('mensaje', primer_error_validation());
+      }
+      else
+      {
+          $datapost = $this->security->xss_clean($this->input->post());
+          $data_mxca = array();
+
+          foreach ($datapost['chk_registro'] as $item => $chk_registro) {
+            if($chk_registro === '1'){
+              $data_mxca[] = $datapost['mxca_id'][$item];
+            }
+          }//end foreach
+          $data_response = $this->modalidadxcurso_model->deleteModalidadxcursoGROUP($data_mxca);
+          if($data_response){
+              $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
+              $this->session->set_flashdata('mensaje', RMESSAGE_DELETE);
+          }else{
+              $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
+              $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
+          }
+      }
+      redirect('registros/modalidad/ver/'.$moda_id_enc);
     }
 
     /**
@@ -106,7 +129,7 @@ class Modalidadxcurso extends CI_Controller {
                   $data_verifica = $this->modalidadxcurso_model->getModalidadxcursoByCURSIDMODAIDLIPEID($moda_id, $curso->curs_id, $datapost['lipe_id']);
                   if(!isset($data_verifica)){
                     $data_mxca[] = array(
-                        'mxca_horas'    => strtotime('00:00:00'),
+                        'mxca_horas'    => '00:00:00',
                         'mxca_precio'   => 0,
                         'moda_id'       => $moda_id,
                         'curs_id'       => $curso->curs_id,
@@ -142,6 +165,63 @@ class Modalidadxcurso extends CI_Controller {
         $this->load->view('notificacion');
     }
 
+
+
+  public function actualizar($moda_id_enc = ''){
+      $data['OFICINAS']       = self::$OFICINAS;
+      $data['ROLES']          = self::$ROLES;
+      $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
+      $data['PERMISOS']       = self::$PERMISOS;
+      $data['header_title']   = self::$header_title;
+      $data['header_icon']    = self::$header_icon;
+      ($moda_id_enc === '') ? redirect('registros/modalidad') : '';
+      $moda_id = str_decrypt($moda_id_enc, KEY_ENCRYPT);
+
+      $this->form_validation->set_rules('chk_registro[]', 'Curso', 'required');
+      $this->form_validation->set_rules('mxca_id[]', 'Curso', 'required');
+      $this->form_validation->set_rules('mxca_horas[]', 'Horas', 'trim');
+      $this->form_validation->set_rules('mxca_precio[]', 'Precio', 'trim');
+      $this->form_validation->set_rules('mxca_observacion[]', 'Observaciones', 'trim');
+
+      $this->load->library('layout');
+      if ($this->form_validation->run() === FALSE) {
+          $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
+          $this->session->set_flashdata('mensaje', primer_error_validation());
+      }
+      else
+      {
+          $datapost = $this->security->xss_clean($this->input->post());
+          $data_mxca = array();
+
+          foreach ($datapost['chk_registro'] as $item => $chk_registro) {
+            if($chk_registro === '1'){
+              $str_time = str_replace('AM', '', $datapost['mxca_horas'][$item]);
+              $str_time = str_replace('PM', '', $str_time);
+              $str_time = str_replace(' ', '', $str_time);
+
+              $data_mxca[] = array(
+                  'mxca_id'           => $datapost['mxca_id'][$item],
+                  'mxca_horas'        => trim($str_time),
+                  'mxca_precio'       => $datapost['mxca_precio'][$item],
+                  'moda_id'           => $moda_id,
+                  'curs_id'           => $datapost['curs_id'][$item],
+                  'lipe_id'           => $datapost['lipe_id'][$item],
+                  'mxca_observacion'  => $datapost['mxca_observacion'][$item]
+                );
+            }
+          }//end foreach
+          $data_response = $this->modalidadxcurso_model->updateModalidadxcursoGROUP($data_mxca);
+          if($data_response){
+              $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
+              $this->session->set_flashdata('mensaje', RMESSAGE_UPDATE);
+          }else{
+              $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
+              $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
+          }
+      }
+      redirect('registros/modalidad/ver/'.$moda_id_enc);
+      $this->load->view('notificacion');
+  }
 
   function getModalidadxcurso_ajax($moda_id = '', $modu_id = '', $lipe_id = ''){
         ($moda_id === '') ? exit() : '';

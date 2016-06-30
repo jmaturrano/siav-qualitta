@@ -71,15 +71,14 @@ class Modalidadxcurso_Model extends CI_Model {
       *
       * Actualiza el registro a estado inactivo
       *
-      * @param int $moda_id id principal del registro
+      * @param array $data_mxca con los ID de los registros
       *
       * @return void
       */
-    public function deleteModalidadByID($moda_id){
-        $where      = array('moda_id' => $moda_id);
-        $data_modal = array('moda_estado' => DB_INACTIVO);
+    public function deleteModalidadxcursoGROUP($data_mxca){
+        $data_mxcax = array('mxca_estado' => DB_INACTIVO);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_modal);
+        $query      = $this->db->where_in('mxca_id', $data_mxca)->update(self::$table_menu, $data_mxcax);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -113,25 +112,28 @@ class Modalidadxcurso_Model extends CI_Model {
     }
 
     /**
-      * Fx de Actualización de registro
+      * Fx de Actualización de registro por grupo
       *
       * Actualiza un registro activo
       *
-      * @param array $data_modal contiene los datos a ingresar
-      * @param int $moda_id id principal del registro
+      * @param array $data_mxca contiene los datos a ingresar y el id del registro
       *
       * @return void
       */
-    public function updateModalidad($data_modal, $moda_id){
-        $where      = array('moda_id' => $moda_id);
-        $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_modal);
-        if ($this->db->trans_status() === FALSE){
-            $this->db->trans_rollback();
-            return false;
-        }
-        $this->db->trans_commit();
-        return true;
+    public function updateModalidadxcursoGROUP($data_mxca){
+      $query      = $this->db->trans_begin();
+      if(count($data_mxca) > 0){
+        foreach ($data_mxca as $data) {
+          $where      = array('mxca_id' => $data['mxca_id']);
+          $query      = $this->db->where($where)->update(self::$table_menu, $data);
+        }//end foreach
+      }//end if
+      if ($this->db->trans_status() === FALSE){
+          $this->db->trans_rollback();
+          return false;
+      }
+      $this->db->trans_commit();
+      return true;
     }
 
 }

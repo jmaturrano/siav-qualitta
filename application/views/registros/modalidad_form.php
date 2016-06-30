@@ -49,8 +49,8 @@
 							</div>
 							<?php
 							$attributes = array(
-							  'id'      	=> 'form_modalidadxcurso',
-							  'name'    	=> 'form_modalidadxcurso',
+							  'id'      	=> 'form_modalidadxcurso_buscar',
+							  'name'    	=> 'form_modalidadxcurso_buscar',
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
@@ -104,10 +104,11 @@
 	                                        <?php
 	                                        if(isset($data_lipe)){
 	                                            foreach ($data_lipe as $item => $lipe) {
+	                                            	$checked = ($lipe->lipe_indvigente === 'S' ? 'selected' : '');
 	                                        ?>
-	                                            <option value="<?= $lipe->lipe_id; ?>"><?= $lipe->lipe_descripcion.($lipe->lipe_indvigente === 'S' ? ' - Principal' : ''); ?></option>
+	                                            <option <?= $checked; ?> value="<?= $lipe->lipe_id; ?>"><?= $lipe->lipe_descripcion.($checked==='selected'?' - Principal' : ''); ?></option>
 	                                        <?php
-	                                            }
+	                                            }//end foreach
 	                                        }
 	                                        ?>
                                         </select>
@@ -117,13 +118,19 @@
                                 <div class="control-group">
                                     <label class="control-label" style=""></label>
                                     <div class="controls">
-										<button class="btn btn-default btn-small btn_consulta" type="button" data-subruta="<?= base_url('registros/modalidadxcurso/getModalidadxcurso_ajax/'.$data_moda->moda_id.'/{MODUID}/{LIPEID}'); ?>" id="btn_buscarcurso">
+										<button class="btn btn-warning btn-small btn_consulta" type="button" data-subruta="<?= base_url('registros/modalidadxcurso/getModalidadxcurso_ajax/'.$data_moda->moda_id.'/{MODUID}/{LIPEID}'); ?>" id="btn_buscarcurso">
 											<span class="<?= ICON_SEARCH; ?>"></span> Buscar cursos
 										</button>
 										<button class="btn btn-default btn-small btn_nuevo" type="button" id="btn_agregarcurso">
 											<span class="<?= ICON_ADD; ?>"></span> Agregar curso (s)
 										</button>
 										<input type="hidden" name="agregar_curso_todo" id="agregar_curso_todo" value="0">
+										<button class="btn btn-primary btn-small btn_edit" type="button" id="btn_guardarcurso">
+											<span class="<?= ICON_SAVED; ?>"></span> Guardar cambios
+										</button>
+										<button class="btn btn-danger btn-small btn_delete" type="button" id="btn_eliminarcurso" data-url="<?= base_url('registros/modalidadxcurso/eliminar/'.((isset($data_moda))?str_encrypt($data_moda->moda_id, KEY_ENCRYPT):'')); ?>">
+											<span class="<?= ICON_DELETE; ?>"></span> Eliminar seleccionados
+										</button>
                                     </div> <!-- /controls -->
                                 </div> <!-- /control-group -->
 
@@ -132,14 +139,26 @@
 					        echo form_close();
 					        ?>
 
+							<?php
+							$attributes = array(
+							  'id'      	=> 'form_modalidadxcurso_guardar',
+							  'name'    	=> 'form_modalidadxcurso_guardar',
+							  'class'		=> 'form-horizontal',
+							  'tipo_vista' 	=> $tipo_vista
+							  );
+							$ruta = 'registros/modalidadxcurso/actualizar/'.((isset($data_moda))?str_encrypt($data_moda->moda_id, KEY_ENCRYPT):'');
+							echo form_open($ruta, $attributes);
+							?>
+
 							<table class="table table-striped table-bordered" id="table_modxcurso">
 				                <thead>
 				                  <tr>
+				                  	<th class="cabecera-tabla"> </th>
 				                    <th class="cabecera-tabla"> Código </th>
 				                    <th class="cabecera-tabla"> Curso </th>
 				                    <th class="cabecera-tabla"> Horas </th>
 				                    <th class="cabecera-tabla"> Precio </th>
-				                    <th class="cabecera-tabla td-actions"> </th>
+				                    <th class="cabecera-tabla"> Observaciones </th>
 				                  </tr>
 				                </thead>
 				                <tbody>
@@ -177,7 +196,7 @@
 				                	}else{
 				                	?>
 				                	<tr>
-				                		<td colspan="5" class="texto-centrado">
+				                		<td colspan="6" class="texto-centrado">
 				                			<span>No se encontraron registros...</span>
 				                		</td>
 				                	</tr>
@@ -186,6 +205,11 @@
 				                	?>
 				                </tbody>
 				            </table>
+
+					       	<?php
+					        echo form_close();
+					        ?>
+
 							<?php
 							}
 							?>

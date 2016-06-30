@@ -40,7 +40,7 @@ $(document).ready(function(){
 				    className: "btn-danger",
 				    callback: function(){
 				    	$('#agregar_curso_todo').val(indicador);
-				    	$('#form_modalidadxcurso').submit();
+				    	$('#form_modalidadxcurso_buscar').submit();
 				    }
 	            }
             }
@@ -66,67 +66,128 @@ $(document).ready(function(){
 			bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> Selecione una lista de precios...");
 			return false;
 		}
-/*
-										<tr>
-											<td class="texto-centrado"><?= $mxca->curs_codigo; ?></td>
-											<td class=""><?= substr($mxca->curs_descripcion, 0, LIMITSELECT); ?></td>
-											<td class="texto-centrado">
-								              <div class="input-group date timepicker">
-								                <input name="mxca_horas[]" type="text" class="form-control" placeholder="00:00">
-								                <span class='input-group-addon'><span class='glyphicon glyphicon-time'></span></span>
-								              </div>
-											</td>
-											<td class="texto-centrado">
-												<div class="controls">
-													<input type="text" name="mxca_precio[]" class="span1" >
-												</div> <!-- /controls -->
-											</td>
-											<td class="texto-centrado td-actions">
-						                    	<a title="Actualizar registro" class="btn btn-small btn-invert btn_editar" 
-						                    		href="<?= base_url('registros/modalidadxcarrera/guardar/'.str_encrypt($mxca->mxca_id, KEY_ENCRYPT)); ?>">
-						                    		<span class="<?= ICON_SAVED; ?>"></span>
-						                    	</a>
-						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" 
-						                    		data-url="<?= base_url('registros/modalidadxcarrera/eliminar/'.str_encrypt($mxca->mxca_id, KEY_ENCRYPT)); ?>">
-						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
-						                    	</a>
-											</td>
-										</tr>
-*/
         $.getJSON(item_subruta.replace('{MODUID}', modu_id).replace('{LIPEID}', lipe_id),function(data){
-			var mxca_id, mxca_horas, mxca_precio, mxca_observacion, curs_codigo, curs_descripcion, html;
+			var mxca_id, mxca_horas, mxca_precio, mxca_observacion, curs_id, lipe_id, curs_codigo, curs_descripcion, html;
         	if(data){
 				for (var i = 0; i <= data.length - 1; i++) {
 					mxca_id 			= data[i].mxca_id;
 					mxca_horas 			= data[i].mxca_horas;
 					mxca_precio 		= data[i].mxca_precio;
 					mxca_observacion 	= data[i].mxca_observacion;
+					curs_id 			= data[i].curs_id;
+					lipe_id 			= data[i].lipe_id;
 					curs_codigo 		= data[i].curs_codigo;
 					curs_descripcion 	= data[i].curs_descripcion;
 
 					html 				+= '<tr>';
+					html 				+= '<td class="texto-centrado">';
+					html 				+= '<input type="checkbox" name="chk_registro[]" data-toggle="checkbox-x" data-three-state="false" value="0" class="chk_registro">';
+					html 				+= '<input type="hidden" name="mxca_id[]" value="'+mxca_id+'">';
+					html 				+= '<input type="hidden" name="curs_id[]" value="'+curs_id+'">';
+					html 				+= '<input type="hidden" name="lipe_id[]" value="'+lipe_id+'">';
+					html 				+= '</td>';
 					html 				+= '<td class="texto-centrado">'+curs_codigo+'</td>';
 					html 				+= '<td class="">'+curs_descripcion+'</td>';
 					html 				+= '<td class="texto-centrado">';
 					html 				+= '<div class="input-group date timepicker">';
-					html 				+= '<input name="mxca_horas[]" type="text" class="form-control" placeholder="00:00">';
+					html 				+= '<input name="mxca_horas[]" type="text" class="span1" placeholder="00:00" value="'+mxca_horas+'">';
 					html 				+= '<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>';
 					html 				+= '</div>';
 					html 				+= '</td>';
-					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_precio[]" class="span1" value="'+mxca_precio+'"></td>';
+					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_precio[]" class="span1" value="'+parseFloat(mxca_precio).toFixed(2)+'"></td>';
 					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_observacion[]" class="span3" value="'+mxca_observacion+'"></td>';
-					html 				+= '<td class="texto-centrado">';
-					html 				+= '';
-					html 				+= '</td>';
 					html 				+= '</tr>';
 					
 				}//end for
         	}
 			$('#table_modxcurso').find('tbody').empty().html(html);
+			$('.timepicker').datetimepicker({format: 'LT'});
+			$('input[type=checkbox]').checkboxX('refresh');
         })
         .fail(function(){
-            bootbox.alert("<span class=\"glyphicon glyphicon-remove\"></span> No se han podido cargar los módulos...");
+            bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> No se han podido cargar los módulos...");
         });
 		e.preventDefault();
 	});
+
+	$(document).on('click', '#btn_guardarcurso', function(e){
+
+        bootbox.dialog({
+            title: '<h3 class="dialog-agregar"><span class=\"glyphicon glyphicon-exclamation-sign\"></span> Guardar cambios</h3>',
+            message: "¿Está seguro de guardar los cambios realizados?",
+            onEscape: function(){
+            	bootbox.hideAll();
+            },
+            animate: false,
+            className: 'bootbox-custom',
+            buttons: {
+	            cancel: {
+				    label: 'Cancelar',
+				    className: "btn-default",
+				    callback: function(){
+				    	bootbox.hideAll();
+				    }
+	            },
+	            confirm: {
+				    label: 'Ok',
+				    className: "btn-danger",
+				    callback: function(){
+				    	/* GUARDAR */
+						if($('#table_modxcurso').find('tbody').find('.chk_registro').length === 0){
+							bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> No tiene datos en la tabla...");
+							return false;
+						}
+						$('input[type=checkbox]').prop('checked', true);
+						$('#form_modalidadxcurso_guardar').submit();
+						/* FIN - GUARDAR */
+				    }
+	            }
+            }
+        });
+
+		e.preventDefault();
+	});
+
+	
+	$(document).on('click', '#btn_eliminarcurso', function(e){
+		var action_url= $(this).attr('data-url');
+
+        bootbox.dialog({
+            title: '<h3 class="dialog-delete"><span class=\"btn-icon-only icon-trash\"></span> Eliminar un elemento</h3>',
+            message: "¿Está seguro de eliminar los elementos seleccionados?",
+            onEscape: function(){
+            	bootbox.hideAll();
+            },
+            animate: false,
+            className: 'bootbox-custom',
+            buttons: {
+	            cancel: {
+				    label: 'Cancelar',
+				    className: "btn-default",
+				    callback: function(){
+				    	bootbox.hideAll();
+				    }
+	            },
+	            confirm: {
+				    label: 'Ok',
+				    className: "btn-danger",
+				    callback: function(){
+				    	/* GUARDAR */
+						if($('#table_modxcurso').find('tbody').find('.chk_registro').length === 0){
+							bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> No tiene datos en la tabla...");
+							return false;
+						}
+						$('input[type=checkbox]').prop('checked', true);
+						$('#form_modalidadxcurso_guardar').attr('action', action_url);
+						$('#form_modalidadxcurso_guardar').submit();
+						/* FIN - GUARDAR */
+				    }
+	            }
+            }
+        });
+		e.preventDefault();
+	});
+
+
+	//$('.selectpicker-ubig').selectpicker('refresh');
 });

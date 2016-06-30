@@ -175,6 +175,16 @@ $(document).ready(function(){
 	/* FIN - CHECKBOX */
 
 
+
+	/* TIMEPICKER */
+	$('.timepicker').datetimepicker({
+		format: 'LT'
+	});
+	/* FIN - TIMEPICKER */
+
+
+
+
 	/* UBIGEO */
 	$(document).on('change', '#depa_id.selectpicker-ubig', function(e){
 		var item_subruta 				= $(this).attr('data-subruta');
