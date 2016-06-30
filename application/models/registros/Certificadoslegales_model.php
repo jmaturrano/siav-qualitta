@@ -14,7 +14,7 @@ class Certificadoslegales_Model extends CI_Model {
     }
 
     /**
-      * Fx de operador Telefono
+      * Fx de certificados legales
       *
       * Trae la lista de todos los registros activos en general o por búsqueda específica
       *
