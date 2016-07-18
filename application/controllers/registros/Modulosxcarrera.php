@@ -135,7 +135,7 @@ class Modulosxcarrera extends CI_Controller {
 
         $this->form_validation->set_rules('modu_codigo', 'Código módulo', 'required|trim');
         $this->form_validation->set_rules('modu_descripcion', 'Nombre Modulosxcarrera', 'required|trim');
-        $this->form_validation->set_rules('niap_id', 'Nivel de aprendizaje', 'required');
+        //$this->form_validation->set_rules('niap_id', 'Nivel de aprendizaje', 'required');
 
         $data['tipo_vista']     = ($modu_id === '')?'nuevo':'editar';
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID(($modu_id === '')?0:$modu_id);
@@ -157,8 +157,7 @@ class Modulosxcarrera extends CI_Controller {
             $data_modu = array(
                 'modu_codigo'               => $datapost['modu_codigo'],
                 'modu_descripcion'          => $datapost['modu_descripcion'],
-                'carr_id'                   => $carr_id,
-                'niap_id'                   => $datapost['niap_id']
+                'carr_id'                   => $carr_id
             );
             $data_response = ($modu_id === '') ? $this->modulosxcarrera_model->insertModulosxcarrera($data_modu) : $this->modulosxcarrera_model->updateModulosxcarrera($data_modu, $carr_id);
             if($data_response){

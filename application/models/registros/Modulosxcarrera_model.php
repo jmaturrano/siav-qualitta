@@ -36,7 +36,7 @@ class Modulosxcarrera_Model extends CI_Model {
                     );
         $this->db->where($where);
         $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id');
-        $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
+        //$this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
         $query = $this->db->get(self::$table_menu.' modu');
         if($query->num_rows() > 0){
             return $query->result();
@@ -50,7 +50,7 @@ class Modulosxcarrera_Model extends CI_Model {
                     );
         $this->db->where($where);
         $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id');
-        $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
+        //$this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');
         $query = $this->db->get(self::$table_menu.' modu');
         if($query->num_rows() > 0){
             return $query->row();

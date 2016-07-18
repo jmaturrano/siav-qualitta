@@ -7,8 +7,8 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Matricula extends CI_Controller {
-    private static $header_title  = 'Matricula';
+class Conceptosmatricula extends CI_Controller {
+    private static $header_title  = 'Conceptos Matrícula';
     private static $header_icon  = ICON_SETTINGS;
     private static $OFICINAS = array();
     private static $ROLES = array();
@@ -18,8 +18,8 @@ class Matricula extends CI_Controller {
     public function __construct() {
         parent :: __construct();
         $this->initData();
-        $this->load->model('registros/matricula_model');
-        $this->load->model('registros/carrera_model');
+        $this->load->model('registros/conceptosmatricula_model');
+        $this->load->model('registros/listaprecio_model');
     }
 
      /**
@@ -34,7 +34,7 @@ class Matricula extends CI_Controller {
         self::$OFICINAS     = revisar_oficinas($this);
         self::$ROLES        = revisar_roles($this, 0);
         self::$PRIVILEGIOS  = revisar_privilegios($this, 0);
-        self::$PERMISOS     = revisar_permisos(self::$PRIVILEGIOS, 'registros/matricula'); 
+        self::$PERMISOS     = revisar_permisos(self::$PRIVILEGIOS, 'registros/conceptosmatricula'); 
     }
 
      /**
@@ -55,12 +55,12 @@ class Matricula extends CI_Controller {
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
         $this->load->library('pagination');
-        $propio['ruta_base'] = 'registros/matricula/index';
-        $propio['filas_totales'] = $this->matricula_model->contar_estructuras_todos();
+        $propio['ruta_base'] = 'registros/conceptosmatricula/index';
+        $propio['filas_totales'] = $this->conceptosmatricula_model->contar_estructuras_todos();
         $filasPorPagina = paginacion_configurar($propio, $this);
-        $data['data_matr']      = $this->matricula_model->getMatriculaAll('', $filasPorPagina, floor($offset / $filasPorPagina)*$filasPorPagina);
-        $data['btn_nuevo']      = 'registros/matricula/nuevo';
-        $this->layout->view('registros/matricula_index', $data);
+        $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaAll('', $filasPorPagina, floor($offset / $filasPorPagina)*$filasPorPagina);
+        $data['btn_nuevo']      = 'registros/conceptosmatricula/nuevo';
+        $this->layout->view('registros/conceptosmatricula_index', $data);
         $this->load->view('notificacion');
     }
 
@@ -81,18 +81,18 @@ class Matricula extends CI_Controller {
         $this->load->library('pagination');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
-        $data['btn_nuevo']      = 'registros/matricula/nuevo';
+        $data['btn_nuevo']      = 'registros/conceptosmatricula/nuevo';
         $this->form_validation->set_rules('q', 'Buscar', 'trim');
         if ($this->form_validation->run() === FALSE) {
-            redirect('registros/matricula');
+            redirect('registros/conceptosmatricula');
         }
         else
         {
             $datapost = $this->security->xss_clean($this->input->post());
-            ($datapost['q'] === '') ? redirect('registros/matricula') : '';
-            $data['data_matr']  = $this->matricula_model->getMatriculaAll($datapost['q']);
+            ($datapost['q'] === '') ? redirect('registros/conceptosmatricula') : '';
+            $data['data_cmat']  = $this->conceptosmatricula_model->getConceptosMatriculaAll($datapost['q']);
             $data['q']          = $datapost['q'];
-            $this->layout->view('registros/matricula_index', $data);
+            $this->layout->view('registros/conceptosmatricula_index', $data);
             $this->load->view('notificacion');
         }
     }
@@ -102,27 +102,26 @@ class Matricula extends CI_Controller {
       *
       * Muestra los datos del registro
       *      
-      * @param string $matr_id_enc id encriptado del registro
+      * @param string $cmat_id_enc id encriptado del registro
       *
       * @return void
       */
-    public function ver($matr_id_enc = ''){
+    public function ver($cmat_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
-        ($matr_id_enc === '') ? redirect('registros/matricula') : '';
-        $matr_id = str_decrypt($matr_id_enc, KEY_ENCRYPT);
+        ($cmat_id_enc === '') ? redirect('registros/conceptosmatricula') : '';
+        $cmat_id = str_decrypt($cmat_id_enc, KEY_ENCRYPT);
         $this->load->library('layout');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'ver';
-        $data['data_moda']      = $this->matricula_model->getMatriculaByID($matr_id);
-        $data['data_carr']      = $this->carrera_model->getCarreraAll();
+        $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
-        $data['btn_editar']     = 'registros/matricula/editar/'.$matr_id_enc;
-        $data['btn_regresar']   = 'registros/matricula';
-        $this->layout->view('registros/matricula_form', $data);
+        $data['btn_editar']     = 'registros/conceptosmatricula/editar/'.$cmat_id_enc;
+        $data['btn_regresar']   = 'registros/conceptosmatricula';
+        $this->layout->view('registros/conceptosmatricula_form', $data);
         $this->load->view('notificacion');
     }
 
@@ -131,25 +130,26 @@ class Matricula extends CI_Controller {
       *
       * Muestra los datos del registro
       *      
-      * @param string $matr_id_enc id encriptado del registro
+      * @param string $cmat_id_enc id encriptado del registro
       *
       * @return void
       */
-    public function editar($matr_id_enc = ''){
+    public function editar($cmat_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
-        ($matr_id_enc === '') ? redirect('registros/matricula') : '';
-        $matr_id = str_decrypt($matr_id_enc, KEY_ENCRYPT);
+        ($cmat_id_enc === '') ? redirect('registros/conceptosmatricula') : '';
+        $cmat_id = str_decrypt($cmat_id_enc, KEY_ENCRYPT);
         $this->load->library('layout');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'editar';
-        $data['data_moda']      = $this->matricula_model->getMatriculaByID($matr_id);
+        $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
         $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/matricula';
-        $this->layout->view('registros/matricula_form', $data);
+        $data['btn_cancelar']   = 'registros/conceptosmatricula';
+        $this->layout->view('registros/conceptosmatricula_form', $data);
         $this->load->view('notificacion');
     }
 
@@ -170,8 +170,9 @@ class Matricula extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'nuevo';
         $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/matricula';
-        $this->layout->view('registros/matricula_form', $data);
+        $data['btn_cancelar']   = 'registros/conceptosmatricula';
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $this->layout->view('registros/conceptosmatricula_form', $data);
         $this->load->view('notificacion');
     }
 
@@ -180,15 +181,15 @@ class Matricula extends CI_Controller {
       *
       * Actualiza el estado del registro a inactivo
       *     
-      * @param string $matr_id_enc id encriptado del registro
+      * @param string $cmat_id_enc id encriptado del registro
       *
       *   
       * @return void
       */
-    public function eliminar($matr_id_enc = ''){
-        ($matr_id_enc === '') ? redirect('registros/matricula') : '';
-        $matr_id = str_decrypt($matr_id_enc, KEY_ENCRYPT);
-        $data_delete            = $this->matricula_model->deletematriculaByID($matr_id);
+    public function eliminar($cmat_id_enc = ''){
+        ($cmat_id_enc === '') ? redirect('registros/conceptosmatricula') : '';
+        $cmat_id = str_decrypt($cmat_id_enc, KEY_ENCRYPT);
+        $data_delete            = $this->conceptosmatricula_model->deleteConceptosMatriculaByID($cmat_id);
         if($data_delete){
             $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
             $this->session->set_flashdata('mensaje', RMESSAGE_DELETE);
@@ -196,7 +197,7 @@ class Matricula extends CI_Controller {
             $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
             $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
         }
-        redirect('registros/matricula');
+        redirect('registros/conceptosmatricula');
     }
 
     /**
@@ -204,44 +205,52 @@ class Matricula extends CI_Controller {
       *
       * Procesa el registro o actualización de una lista
       *
-      * @param string $matr_id_enc id encriptado de la lista
+      * @param string $cmat_id_enc id encriptado de la lista
       *
       * @return void
       */
-    public function guardar($matr_id_enc = ''){
+    public function guardar($cmat_id_enc = ''){
         $data['OFICINAS']       = self::$OFICINAS;
         $data['ROLES']          = self::$ROLES;
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
-        $matr_id = ($matr_id_enc === '') ? '' : str_decrypt($matr_id_enc, KEY_ENCRYPT);
-        $this->form_validation->set_rules('moda_descripcion', 'Descripción', 'required');
+
+        $cmat_id = ($cmat_id_enc === '') ? '' : str_decrypt($cmat_id_enc, KEY_ENCRYPT);
+        $this->form_validation->set_rules('lipe_id', 'Lista de precios', 'required');
+        $this->form_validation->set_rules('cmat_descripcion', 'Descripción', 'required|trim');
+        $this->form_validation->set_rules('cmat_costo', 'Costo', 'required|trim|numeric');
+        $this->form_validation->set_rules('cmat_obligatorio', 'Obligatorio', 'required|trim');
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
-        $data['tipo_vista']     = ($matr_id === '')?'nuevo':'editar';
-        $data['data_moda']      = $this->matricula_model->getMatriculaByID($matr_id);
+        $data['tipo_vista']     = ($cmat_id === '')?'nuevo':'editar';
+        $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
         $data['btn_guardar']    = true;
-        $data['btn_cancelar']   = 'registros/matricula';
+        $data['btn_cancelar']   = 'registros/conceptosmatricula';
         $this->load->library('layout');
         if ($this->form_validation->run() === FALSE) {
             $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
             $this->session->set_flashdata('mensaje', primer_error_validation());
-            $this->layout->view('registros/matricula_form', $data);
+            $this->layout->view('registros/conceptosmatricula_form', $data);
         }
         else
         {
             $datapost = $this->security->xss_clean($this->input->post());
-            $data_matr = array(
-                'moda_descripcion'           => $datapost['moda_descripcion']
+            $data_cmat = array(
+                'lipe_id'           => $datapost['lipe_id'],
+                'cmat_descripcion'  => $datapost['cmat_descripcion'],
+                'cmat_costo'        => $datapost['cmat_costo'],
+                'cmat_obligatorio'  => ($datapost['cmat_obligatorio'] === '0' ? 'N' : 'S')
             );
-            $data_response = ($matr_id === '') ? $this->matricula_model->insertmatricula($data_matr) : $this->matricula_model->updatematricula($data_matr, $matr_id);
+            $data_response = ($cmat_id === '') ? $this->conceptosmatricula_model->insertConceptosMatricula($data_cmat) : $this->conceptosmatricula_model->updateConceptosMatricula($data_cmat, $cmat_id);
             if($data_response){
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
-                $this->session->set_flashdata('mensaje', (($matr_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));
-                redirect('registros/matricula');
+                $this->session->set_flashdata('mensaje', (($cmat_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));
+                redirect('registros/conceptosmatricula');
             }else{
                 $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
                 $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
-                $this->layout->view('sregistros/matricula_form', $data);
+                $this->layout->view('registros/conceptosmatricula_form', $data);
             }
         }
         $this->load->view('notificacion');

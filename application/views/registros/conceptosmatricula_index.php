@@ -20,7 +20,7 @@
 							  'id'      	=> 'form_listar',
 							  'name'    	=> 'form_listar'
 							  );
-							$ruta = 'registros/matricula/buscar';
+							$ruta = 'registros/conceptosmatricula/buscar';
 							echo form_open($ruta, $attributes);
 							?>
 				            <input type="text" placeholder="Buscar" class="search-query" name="q" id="txt_buscar" value="<?= (isset($q))?$q:''; ?>">
@@ -33,9 +33,9 @@
 				                <thead>
 				                  <tr>
 				                    <th class="cabecera-tabla"> Nro. </th>
-				                    <th class="cabecera-tabla"> Código </th>
 				                    <th class="cabecera-tabla"> Descripción </th>
-				                    <th class="cabecera-tabla"> Fecha de registro </th>
+				                    <th class="cabecera-tabla"> Costo </th>
+				                    <th class="cabecera-tabla"> Obligatorio </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
 				                </thead>
@@ -43,28 +43,36 @@
 				                	<?php
 				                	if(!isset($offset))
 				                		$offset=0;
-				                	if(isset($data_matr)){
-				                		foreach ($data_matr as $item => $matricula) {
+				                	if(isset($data_cmat)){
+				                		foreach ($data_cmat as $item => $conceptomat) {
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1)+$offset, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class="texto-centrado"><?= str_pad($matricula->moda_id, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class=""><?= $matricula->moda_descripcion; ?></td>
-											<td class="texto-centrado"><?= date('d/m/Y', strtotime($matricula->moda_fecha_registro)); ?></td>
+											<td class=""><?= $conceptomat->cmat_descripcion; ?></td>
+											<td class="texto-derecha"><?= number_format($conceptomat->cmat_costo, 2); ?></td>
+											<td class="texto-centrado"><?= interpretar_booleanchar($conceptomat->cmat_obligatorio); ?></td>
 											<td class="texto-centrado td-actions">
-						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/matricula/ver/'.str_encrypt($matricula->moda_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/conceptosmatricula/ver/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
 						                    	</a>
-						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/matricula/editar/'.str_encrypt($matricula->moda_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/conceptosmatricula/editar/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
-						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/matricula/eliminar/'.str_encrypt($matricula->moda_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/conceptosmatricula/eliminar/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
 						                    	</a>
 											</td>
 										</tr>
 				               		<?php
 				                		}
+				                	}else{
+				                	?>
+				                		<tr>
+				                			<td class="texto-centrado" colspan="5">
+				                				<span>No se encontraron registros...</span>
+				                			</td>
+				                		</tr>
+				                	<?php
 				                	}
 				                	?>
 				                </tbody>
@@ -81,4 +89,4 @@
 	</div> <!-- /main-inner -->
 </div> <!-- /main -->
 
-<script src="<?php echo base_url('public/assets/js/Matricula.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/Conceptomatricula.js') ?>"></script>

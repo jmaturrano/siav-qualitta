@@ -423,4 +423,21 @@ if(!function_exists('reemplazar_palabras_reservadas')){
     }
 }
 
+if(!function_exists('booleanchar')){
+    function interpretar_booleanchar($booleanchar){
+        $truefalse_var = '';
+        switch ($booleanchar) {
+            case 'S':
+                $truefalse_var = 'Sí';
+                break;
+            case 'N':
+                $truefalse_var = 'No';
+                break;
+            default:
+                $truefalse_var = '';
+                break;
+        }//end switch
+        return $truefalse_var;
+    }
+}
 

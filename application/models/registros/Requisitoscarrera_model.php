@@ -7,8 +7,8 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Matricula_Model extends CI_Model {
-    private static $table_menu  = 'matricula';
+class Requisitoscarrera_Model extends CI_Model {
+    private static $table_menu  = 'requisitos_carrera';
     public function __construct() {
         parent :: __construct();
         $this->load->database();
@@ -25,15 +25,15 @@ class Matricula_Model extends CI_Model {
       *
       * @return void
       */
-    public function getMatriculaAll($q = '', $limit = 1000, $offset = 0){
+    public function getRequisitoscarreraAll($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
-        $where = array('matr_estado'=>DB_ACTIVO);
+        $where = array('rcar_estado'=>DB_ACTIVO);
         if($q !== ''){
             $this->db->group_start();
-            $this->db->like('matr_descripcion',$q);
+            $this->db->like('rcar_descripcion',$q);
             $this->db->group_end();
         }
-        $query = $this->db->order_by('matr_descripcion', 'asc')->where($where)->get(self::$table_menu);
+        $query = $this->db->order_by('rcar_descripcion', 'asc')->where($where)->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->result();
         }
@@ -49,7 +49,7 @@ class Matricula_Model extends CI_Model {
       * @return void
       */
     public function contar_estructuras_todos() {
-        $this->db->where('matr_estado', DB_ACTIVO);
+        $this->db->where('rcar_estado', DB_ACTIVO);
         return $this->db->count_all_results(self::$table_menu);
     }
 
@@ -58,12 +58,12 @@ class Matricula_Model extends CI_Model {
       *
       * Devuelve los datos de un registro específico
       *
-      * @param int $matr_id id principal del registro
+      * @param int $rcar_id id principal del registro
       *
       * @return void
       */
-    public function getMatriculaByID($matr_id){
-        $where = array('matr_id' => $matr_id);
+    public function getRequisitoscarreraByID($rcar_id){
+        $where = array('rcar_id' => $rcar_id);
         $query = $this->db->where($where)->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->row();
@@ -76,15 +76,15 @@ class Matricula_Model extends CI_Model {
       *
       * Actualiza el registro a estado inactivo
       *
-      * @param int $matr_id id principal del registro
+      * @param int $rcar_id id principal del registro
       *
       * @return void
       */
-    public function deleteMatriculaByID($matr_id){
-        $where      = array('matr_id' => $matr_id);
-        $data_matr = array('matr_estado' => DB_INACTIVO);
+    public function deleteRequisitoscarreraByID($rcar_id){
+        $where      = array('rcar_id' => $rcar_id);
+        $data_rcar = array('rcar_estado' => DB_INACTIVO);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_matr);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_rcar);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -98,13 +98,13 @@ class Matricula_Model extends CI_Model {
       *
       * Inserta un registro nuevo
       *
-      * @param array $data_matr contiene los datos a ingresar
+      * @param array $data_rcar contiene los datos a ingresar
       *
       * @return void
       */
-    public function insertMatricula($data_matr){
+    public function insertRequisitoscarrera($data_rcar){
         $query      = $this->db->trans_begin();
-        $query      = $this->db->insert(self::$table_menu, $data_matr);
+        $query      = $this->db->insert(self::$table_menu, $data_rcar);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -118,15 +118,15 @@ class Matricula_Model extends CI_Model {
       *
       * Actualiza un registro activo
       *
-      * @param array $data_matr contiene los datos a ingresar
-      * @param int $matr_id id principal del registro
+      * @param array $data_rcar contiene los datos a ingresar
+      * @param int $rcar_id id principal del registro
       *
       * @return void
       */
-    public function updateMatricula($data_matr, $matr_id){
-        $where      = array('matr_id' => $matr_id);
+    public function updateRequisitoscarrera($data_rcar, $rcar_id){
+        $where      = array('rcar_id' => $rcar_id);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_matr);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_rcar);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;

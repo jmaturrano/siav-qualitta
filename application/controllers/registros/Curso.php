@@ -13,6 +13,7 @@ class Curso extends CI_Controller {
         $this->load->model('registros/curso_model');
         $this->load->model('registros/modulosxcarrera_model');
         $this->load->model('registros/carrera_model');
+        $this->load->model('registros/nivelaprendizaje_model');
     }
 
     public function initData(){
@@ -44,6 +45,7 @@ class Curso extends CI_Controller {
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
+        $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
 
         $this->load->library('layout');
         $data['tipo_vista']     = 'ver';
@@ -71,6 +73,7 @@ class Curso extends CI_Controller {
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_curs']      = $this->curso_model->getCursoByID($curs_id);
+        $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
 
         $this->load->library('layout');
         $data['tipo_vista']     = 'editar';
@@ -95,6 +98,7 @@ class Curso extends CI_Controller {
 
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
+        $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
 
         $this->load->library('layout');
         $data['tipo_vista']     = 'nuevo';
@@ -141,9 +145,11 @@ class Curso extends CI_Controller {
         $data['data_carr']      = $this->carrera_model->getCarreraByID($carr_id);
         $data['data_modu']      = $this->modulosxcarrera_model->getModulosxcarreraByID($modu_id);
         $data['data_curs']      = $this->curso_model->getCursoByID(($curs_id === '')?0:$curs_id);
+        $data['data_niap']      = $this->nivelaprendizaje_model->getNivelaprendizajeAll();
 
         $this->form_validation->set_rules('curs_codigo', 'Código', 'required|trim');
         $this->form_validation->set_rules('curs_descripcion', 'Nombre curso', 'required|trim');
+        $this->form_validation->set_rules('niap_id', 'Nivel de aprendizaje', 'required');
 
         $data['tipo_vista']     = ($curs_id === '')?'nuevo':'editar';
         $data['btn_guardar']    = true;
@@ -160,7 +166,8 @@ class Curso extends CI_Controller {
             $data_curs = array(
                 'curs_codigo'               => $datapost['curs_codigo'],
                 'curs_descripcion'          => $datapost['curs_descripcion'],
-                'modu_id'                   => $modu_id
+                'modu_id'                   => $modu_id,
+                'niap_id'                   => $datapost['niap_id']
             );
             $data_response = ($curs_id === '') ? $this->curso_model->insertCurso($data_curs) : $this->curso_model->updateCurso($data_curs, $curs_id);
             if($data_response){

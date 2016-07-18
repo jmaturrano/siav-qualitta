@@ -40,6 +40,23 @@
 										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
+								<div class="control-group">
+									<label for="niap_id" class="control-label">Nivel de aprendizaje</label>
+									<div class="controls">
+					                    <select class="selectpicker span8" name="niap_id" id="niap_id" data-container="body">
+					                    <option value="">Seleccione</option>
+					                    <?php
+					                    if(isset($data_niap)){
+					                    	foreach ($data_niap as $item => $nivelaprendizaje) {
+					                   	?>
+											<option value="<?= $nivelaprendizaje->niap_id; ?>" <?= (isset($data_curs) && $data_curs->niap_id === $nivelaprendizaje->niap_id)?'selected': set_select('niap_id', $nivelaprendizaje->niap_id); ?>><?= $nivelaprendizaje->niap_codigo.' - '.$nivelaprendizaje->niap_descripcion; ?></option>
+					                   	<?php
+					                    	}
+					                    }
+					                    ?>
+					                    </select>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
 							</fieldset>
 					       	<?php
 					        echo form_close();

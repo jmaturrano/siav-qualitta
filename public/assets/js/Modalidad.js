@@ -89,9 +89,9 @@ $(document).ready(function(){
 					html 				+= '<td class="texto-centrado">'+curs_codigo+'</td>';
 					html 				+= '<td class="">'+curs_descripcion+'</td>';
 					html 				+= '<td class="texto-centrado">';
-					html 				+= '<div class="input-group date timepicker">';
-					html 				+= '<input name="mxca_horas[]" type="text" class="span1" placeholder="00:00" value="'+mxca_horas+'">';
-					html 				+= '<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>';
+					//html 				+= '<div class="input-group date timepicker">';
+					html 				+= '<input name="mxca_horas[]" type="text" class="span1" placeholder="00:00:00" value="'+mxca_horas+'">';
+					//html 				+= '<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>';
 					html 				+= '</div>';
 					html 				+= '</td>';
 					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_precio[]" class="span1" value="'+parseFloat(mxca_precio).toFixed(2)+'"></td>';
@@ -135,6 +135,16 @@ $(document).ready(function(){
 				    	/* GUARDAR */
 						if($('#table_modxcurso').find('tbody').find('.chk_registro').length === 0){
 							bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> No tiene datos en la tabla...");
+							return false;
+						}
+						var items_ = 0;
+						$('#table_modxcurso').find('tbody').find('.chk_registro').each(function(){
+							if($(this).val() === '1'){
+								items_++;
+							}
+						});
+						if(items_ === 0){
+							bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> Debe seleccionar al menos una fila...");
 							return false;
 						}
 						$('input[type=checkbox]').prop('checked', true);

@@ -35,23 +35,7 @@
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
-									<label for="niap_id" class="control-label">Nivel de aprendizaje</label>
-									<div class="controls">
-					                    <select class="selectpicker span8" name="niap_id" id="niap_id" data-container="body">
-					                    <option value="">Seleccione</option>
-					                    <?php
-					                    if(isset($data_niap)){
-					                    	foreach ($data_niap as $item => $nivelaprendizaje) {
-					                   	?>
-											<option value="<?= $nivelaprendizaje->niap_id; ?>" <?= (isset($data_modu) && $data_modu->niap_id === $nivelaprendizaje->niap_id)?'selected': set_select('niap_id', $nivelaprendizaje->niap_id); ?>><?= $nivelaprendizaje->niap_codigo.' - '.$nivelaprendizaje->niap_descripcion; ?></option>
-					                   	<?php
-					                    	}
-					                    }
-					                    ?>
-					                    </select>
-									</div> <!-- /controls -->
-								</div> <!-- /control-group -->
+
 
 								<div class="control-group">
 									<label for="modu_codigo" class="control-label">Código módulo</label>
