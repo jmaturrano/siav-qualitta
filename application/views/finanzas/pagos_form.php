@@ -19,8 +19,8 @@
 						<div id="formcontrols" class="">
 							<?php
 							$attributes = array(
-							  'id'      	=> 'form_matricula',
-							  'name'    	=> 'form_matricula',
+							  'id'      	=> 'form_pagos',
+							  'name'    	=> 'form_pagos',
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
@@ -28,33 +28,10 @@
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
-								<?php
-								if(isset($data_matr)){
-								?>
-                                <div class="control-group">
-                                    <label for="emat_id" class="control-label" style="">Estado Matrícula</label>
-                                    <div class="controls">
-                                        <select class="selectpicker span8" name="emat_id" id="emat_id" data-live-search="true" data-subruta="" data-container="body" disabled>
-                                            <option value="">Seleccione</option>
-                                        <?php
-                                        if(isset($data_emat)){
-                                            foreach ($data_emat as $item => $estado) {
-                                        ?>
-                                            <option value="<?= $estado->emat_id; ?>" <?= (isset($data_matr) && $data_matr->emat_id === $estado->emat_id)?'selected':set_select('emat_id', $estado->emat_id); ?>><?= substr($estado->emat_descripcion, 0, LIMITSELECT); ?></option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                        </select>
-                                    </div> <!-- /controls -->
-                                </div> <!-- /control-group -->
-								<?php
-								}
-								?>
                                 <div class="control-group">
                                     <label for="moda_id" class="control-label" style="">Modalidad</label>
                                     <div class="controls">
-                                        <select class="selectpicker span8" name="moda_id" id="moda_id" data-live-search="true" data-subruta="" data-container="body">
+                                        <select class="selectpicker span8" name="moda_id" id="moda_id" data-live-search="true" data-subruta="" data-container="body" disabled>
                                             <option value="">Seleccione</option>
                                         <?php
                                         if(isset($data_moda)){
@@ -72,7 +49,7 @@
                                 <div class="control-group">
                                     <label for="carr_id" class="control-label" style="">Programa de instrucción</label>
                                     <div class="controls">
-                                        <select class="selectpicker span8" name="carr_id" id="carr_id" data-live-search="true" data-subruta="" data-container="body">
+                                        <select class="selectpicker span8" name="carr_id" id="carr_id" data-live-search="true" data-subruta="" data-container="body" disabled>
                                             <option value="">Seleccione</option>
                                         <?php
                                         if(isset($data_carr)){
@@ -90,7 +67,7 @@
                                 <div class="control-group">
                                     <label for="alum_id" class="control-label" style="">Alumno</label>
                                     <div class="controls">
-                                        <select class="selectpicker span8" name="alum_id" id="alum_id" data-live-search="true" data-subruta="" data-container="body">
+                                        <select class="selectpicker span8" name="alum_id" id="alum_id" data-live-search="true" data-subruta="" data-container="body" disabled>
                                             <option value="">Seleccione</option>
                                         <?php
                                         if(isset($data_alum)){
@@ -108,7 +85,7 @@
                                 <div class="control-group">
                                     <label for="lipe_id" class="control-label" style="">Lista Precio</label>
                                     <div class="controls">
-                                        <select class="selectpicker span8 selectpicker-carrera" name="lipe_id" id="lipe_id" data-live-search="true" data-subruta="" data-container="body">
+                                        <select class="selectpicker span8 selectpicker-carrera" name="lipe_id" id="lipe_id" data-live-search="true" data-subruta="" data-container="body" disabled>
                                             <option value="">Seleccione</option>
 	                                        <?php
 	                                        if(isset($data_lipe)){
@@ -134,115 +111,6 @@
                                         </select>
                                     </div> <!-- /controls -->
                                 </div> <!-- /control-group -->
-
-								<div class="control-group">
-									<label for="matr_codigo" class="control-label"></label>
-									<div class="controls">
-										<button class="btn btn-warning" type="button" id="btn_verificardisponibilidad" data-url="<?= base_url('servicios/matricula/verificadisponibilidad_ajax/{MODA_ID}/{CARR_ID}/{ALUM_ID}/{LIPE_ID}'); ?>" <?= isset($data_matr)?'style="display: none;"':''; ?>>
-											<span class="<?= ICON_SEARCH; ?>"></span> Verificar disponibilidad
-										</button>
-										<?php
-										if(isset($data_matr)){
-										?>
-										&nbsp;
-										<a class="btn btn-warning" id="btn_reqxalumno" href="<?= base_url('servicios/requisitosxalumno/lista/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
-											<span class="<?= ICON_SEARCH; ?>"></span> Documentos requisitos
-										</a>
-
-										&nbsp;
-										<a class="btn btn-primary" id="btn_financiamiento" href="<?= base_url('servicios/financiamiento/lista/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
-											<span class="<?= ICON_SEARCH; ?>"></span> Financiamiento
-										</a>
-										<?php
-										}//end if
-										?>
-									</div> <!-- /controls -->
-								</div> <!-- /control-group -->
-
-								<div class="control-group">
-									<label for="matr_horareal" class="control-label">Horas</label>
-									<div class="controls">
-										<input type="text" value="<?= (isset($data_matr))?$data_matr->matr_horareal:set_value('matr_horareal'); ?>" id="matr_horareal" name="matr_horareal" class="span8" disabled>
-									</div> <!-- /controls -->
-								</div> <!-- /control-group -->
-
-								<div class="control-group">
-									<label for="" class="control-label"></label>
-									<div class="controls table-responsive">
-										<table class="table table-striped table-bordered span8" style="margin: 0;" id="table_costos">
-							                <thead>
-							                  <tr>
-							                    <th class="cabecera-tabla"> Concepto </th>
-							                    <th class="cabecera-tabla"> Costo real </th>
-							                    <th class="cabecera-tabla"> Costo final </th>
-							                    <th class="cabecera-tabla td-actions"> Aplicable </th>
-							                  </tr>
-							                </thead>
-							                <tbody>
-							                	<?php
-							                	if(isset($data_cxma)){
-							                		$total_costoreal = 0;
-							                		$total_costofinal = 0;
-							                		foreach ($data_cxma as $item => $cxma) {
-							                			if($cxma->ctip_id === '1'){
-							                			$total_costoreal += (float)$cxma->cxma_costoreal;
-							                			$total_costofinal += (float)$cxma->cxma_costofinal;
-							                	?>
-							                	<tr class="cmat_id_<?= $cxma->cmat_id; ?>">
-							                		<td class="cmat_id">
-							                			<?= $cxma->cmat_descripcion; ?>
-							                			<input type="hidden" name="cmat_id[]" value="<?= $cxma->cmat_id; ?>">
-							                			<input type="hidden" name="cxma_id[]" value="<?= $cxma->cxma_id; ?>">
-							                		</td>
-							                		<td class="texto-derecha cmat_costo">
-							                			<?= number_format($cxma->cxma_costoreal, 2); ?>
-							                			<input type="hidden" name="cmat_costo[]" value="<?= number_format($cxma->cxma_costoreal, 2); ?>">
-							                		</td>
-							                		<td class="texto-centrado cxma_costofinal">
-							                			<input type="text" class="span1 texto-derecha col_costofinal" name="cxma_costofinal[]" value="<?= number_format($cxma->cxma_costofinal, 2); ?>">
-							                		</td>
-							                		<td class="texto-centrado cmat_obligatorio">
-							                		<?php
-							                		$checked = 0;
-							                		if($cxma->cmat_obligatorio === 'S'){
-							                			$checked = 1;
-							                		}
-							                		?>
-							                			<input type="checkbox" class="col_obligatorio" name="cmat_obligatorio[]" checked="" value="1" data-three-state="false" data-toggle="checkbox-x" <?= ($checked === 1 ? 'disabled':'')?> >
-							                		</td>
-							                	</tr>
-							                	<?php
-							                			}//end if
-							                		}//end foreach
-							                	}else{
-							                	?>
-							                	<tr>
-							                		<td colspan="4" class="texto-centrado"> No se han encontrado registros... </td>
-							                	</tr>
-							                	<?php
-							                	}//end else
-							                	?>
-							                </tbody>
-							                <tfoot>
-							                	<?php
-							                	if(isset($data_cxma)){
-							                	?>
-							                	<tr>
-										            <td>Totales</td>
-										            <td class="texto-derecha cmat_costo"><?= number_format($total_costoreal, 2); ?></td>
-										            <td class="texto-centrado cxma_costofinal">
-										            	<input type="text" class="span1 texto-derecha" value="<?= number_format($total_costofinal, 2); ?>" disabled>
-										            </td>
-										            <td></td>
-							                	</tr>
-							                	<?php
-							                	}//end if
-							                	?>
-							                </tfoot>
-										</table>
-									</div>
-								</div> <!-- /control-group -->
-
 
                                 <div class="control-group">
                                     <label for="gmat_id" class="control-label" style="">Grupo Inicio</label>
@@ -286,6 +154,26 @@
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
+								<hr>
+								
+                                <div class="control-group">
+                                    <label for="emat_id" class="control-label" style="">Estado Matrícula</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8" name="emat_id" id="emat_id" data-live-search="true" data-subruta="" data-container="body" disabled>
+                                            <option value="">Seleccione</option>
+                                        <?php
+                                        if(isset($data_emat)){
+                                            foreach ($data_emat as $item => $estado) {
+                                        ?>
+                                            <option value="<?= $estado->emat_id; ?>" <?= (isset($data_matr) && $data_matr->emat_id === $estado->emat_id)?'selected':set_select('emat_id', $estado->emat_id); ?>><?= substr($estado->emat_descripcion, 0, LIMITSELECT); ?></option>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
 							</fieldset>
 					       	<?php
 					        echo form_close();
@@ -306,4 +194,4 @@
 
 
 
-<script src="<?php echo base_url('public/assets/js/Matricula.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/Pagos.js') ?>"></script>

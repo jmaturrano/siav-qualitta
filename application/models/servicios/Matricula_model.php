@@ -37,7 +37,30 @@ class Matricula_Model extends CI_Model {
         $this->db->where($where);
         $this->db->join('carrera carr', 'carr.carr_id = matr.carr_id', 'inner');
         $this->db->join('alumno alum', 'alum.alum_id = matr.alum_id', 'inner');
-        $this->db->join('estados_alumno esal', 'esal.esal_id = alum.esal_id', 'inner');
+        $this->db->join('estados_matricula emat', 'emat.emat_id = matr.emat_id', 'inner');
+        $this->db->join('grupo_matricula gmat', 'gmat.gmat_id = matr.gmat_id', 'inner');
+        $query = $this->db->get(self::$table_menu.' matr');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
+    public function getMatriculaAllPAGOS($q = '', $limit = 1000, $offset = 0){
+        $this->db->limit($limit, $offset);
+        $where = array('matr.matr_estado'=>DB_ACTIVO);
+        if($q !== ''){
+            $this->db->group_start();
+            $this->db->like('matr.matr_codigo',$q);
+            $this->db->group_end();
+        }
+        $this->db->order_by('matr.matr_codigo', 'asc');
+        $this->db->where($where);
+        $this->db->join('carrera carr', 'carr.carr_id = matr.carr_id', 'inner');
+        $this->db->join('alumno alum', 'alum.alum_id = matr.alum_id', 'inner');
+        $this->db->join('estados_matricula emat', 'emat.emat_id = matr.emat_id', 'inner');
+        $this->db->join('grupo_matricula gmat', 'gmat.gmat_id = matr.gmat_id', 'inner');
+        $this->db->join('financia_matricula fima', 'fima.matr_id = matr.matr_id', 'inner');
         $query = $this->db->get(self::$table_menu.' matr');
         if($query->num_rows() > 0){
             return $query->result();
@@ -68,10 +91,28 @@ class Matricula_Model extends CI_Model {
       * @return void
       */
     public function getMatriculaByID($matr_id){
-        $where = array('matr_id' => $matr_id);
-        $query = $this->db->where($where)->get(self::$table_menu);
+        $where = array('matr.matr_id' => $matr_id);
+
+        $this->db->join('grupo_matricula gmat', 'gmat.gmat_id = matr.gmat_id', 'inner');
+        $this->db->where($where);
+        $query = $this->db->get(self::$table_menu.' matr');
         if($query->num_rows() > 0){
             return $query->row();
+        }
+        return null;
+    }
+
+
+    public function getMatriculaByCARRALUM($carr_id, $alum_id){
+        $where = array(
+            'carr_id'     => $carr_id,
+            'alum_id'     => $alum_id,
+            'matr_estado' => DB_ACTIVO
+          );
+        $this->db->where($where);
+        $query = $this->db->get(self::$table_menu);
+        if($query->num_rows() > 0){
+            return $query->result();
         }
         return null;
     }
@@ -114,8 +155,9 @@ class Matricula_Model extends CI_Model {
             $this->db->trans_rollback();
             return false;
         }
+        $matr_id = $this->db->insert_id();
         $this->db->trans_commit();
-        return true;
+        return $matr_id;
     }
 
     /**
@@ -137,7 +179,7 @@ class Matricula_Model extends CI_Model {
             return false;
         }
         $this->db->trans_commit();
-        return true;
+        return $matr_id;
     }
 
 }

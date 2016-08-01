@@ -29,6 +29,24 @@
 							?>
 							<fieldset>
                                 <div class="control-group">
+                                    <label for="ctip_id" class="control-label" style="">Tipo concepto</label>
+                                    <div class="controls">
+                                        <select class="selectpicker span8" name="ctip_id" id="ctip_id" data-live-search="true" data-subruta="" data-container="body">
+                                            <option value="">Seleccione</option>
+	                                        <?php
+	                                        if(isset($data_ctip)){
+	                                            foreach ($data_ctip as $item => $ctip) {
+	                                        ?>
+	                                            <option value="<?= $ctip->ctip_id; ?>" <?= (isset($data_cmat) && $data_cmat->ctip_id === $ctip->ctip_id)?'selected':''; ?> ><?= $ctip->ctip_descripcion; ?></option>
+	                                        <?php
+	                                            }//end foreach
+	                                        }
+	                                        ?>
+                                        </select>
+                                    </div> <!-- /controls -->
+                                </div> <!-- /control-group -->
+
+                                <div class="control-group">
                                     <label for="lipe_id" class="control-label" style="">Lista Precio</label>
                                     <div class="controls">
                                         <select class="selectpicker span8 selectpicker-carrera" name="lipe_id" id="lipe_id" data-live-search="true" data-subruta="" data-container="body">
@@ -46,6 +64,14 @@
                                         </select>
                                     </div> <!-- /controls -->
                                 </div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="cmat_orden" class="control-label">Orden</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_cmat))?$data_cmat->cmat_orden:set_value('cmat_orden'); ?>" id="cmat_orden" name="cmat_orden" class="span8">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
 								<div class="control-group">
 									<label for="cmat_descripcion" class="control-label">Descripción</label>
 									<div class="controls">

@@ -73,6 +73,7 @@
 				                    <th class="cabecera-tabla"> Nro. </th>
 				                    <th class="cabecera-tabla"> Código </th>
 				                    <th class="cabecera-tabla"> Curso </th>
+				                    <th class="cabecera-tabla"> Nivel Aprendizaje </th>
 				                    <th class="cabecera-tabla"> Fecha registro </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
@@ -86,6 +87,7 @@
 											<td class="texto-centrado"><?= str_pad(($item+1), 5, '0', STR_PAD_LEFT); ?></td>
 											<td class="texto-centrado"><?= $curso->curs_codigo; ?></td>
 											<td class=""><?= $curso->curs_descripcion; ?></td>
+											<td class="texto-centrado"><?= $curso->niap_descripcion; ?></td>
 											<td class="texto-centrado"><?= fecha_latino($curso->curs_fecha_registro); ?></td>
 											<td class="texto-centrado td-actions">
 						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/curso/ver/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($data_modu->modu_id, KEY_ENCRYPT).'/'.str_encrypt($curso->curs_id, KEY_ENCRYPT)); ?>">

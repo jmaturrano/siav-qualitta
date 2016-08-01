@@ -2,20 +2,20 @@
 /**
 * MK System Soft  
 *
-* Modelo de Matricula carreras
+* Modelo de Financiamiento carreras
 *
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Conceptosmatricula_Model extends CI_Model {
-    private static $table_menu  = 'conceptos_matricula';
+class Financiamiento_Model extends CI_Model {
+    private static $table_menu  = 'financia_matricula';
     public function __construct() {
         parent :: __construct();
         $this->load->database();
     }
 
     /**
-      * Fx de Lista de Matricula
+      * Fx de Lista de Financiamiento
       *
       * Trae la lista de todos los registros activos en general o por búsqueda específica
       *
@@ -25,28 +25,18 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * @return void
       */
-    public function getConceptosMatriculaAll($q = '', $limit = 1000, $offset = 0){
+    public function getFinanciamientoAll($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
-        $where = array('cmat.cmat_estado'=>DB_ACTIVO);
+        $where = array('fima_estado'=>DB_ACTIVO);
         if($q !== ''){
             $this->db->group_start();
-            $this->db->like('cmat.cmat_descripcion',$q);
+            $this->db->like('fima_comprobante',$q);
             $this->db->group_end();
         }
-        $this->db->order_by('cmat.cmat_orden', 'asc');
+        $this->db->order_by('fima_fecha_programada', 'asc');
+        $this->db->order_by('fima_fecha_proceso', 'asc');
         $this->db->where($where);
-        $this->db->join('conceptos_tipo ctip', 'ctip.ctip_id = cmat.ctip_id');
-        $query = $this->db->get(self::$table_menu.' cmat');
-        if($query->num_rows() > 0){
-            return $query->result();
-        }
-        return null;
-    }
-
-
-    public function getConceptosMatriculaByLIPE($lipe_id){
-        $where = array('cmat_estado'=>DB_ACTIVO, 'lipe_id'=>$lipe_id);
-        $query = $this->db->order_by('cmat_orden', 'asc')->where($where)->get(self::$table_menu);
+        $query = $this->db->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->result();
         }
@@ -62,42 +52,44 @@ class Conceptosmatricula_Model extends CI_Model {
       * @return void
       */
     public function contar_estructuras_todos() {
-        $this->db->where('cmat_estado', DB_ACTIVO);
+        $this->db->where('fima_estado', DB_ACTIVO);
         return $this->db->count_all_results(self::$table_menu);
     }
 
     /**
-      * Fx de Lista de Matricula por ID
+      * Fx de Lista de Financiamiento por ID
       *
       * Devuelve los datos de un registro específico
       *
-      * @param int $cmat_id id principal del registro
+      * @param int $fima_id id principal del registro
       *
       * @return void
       */
-    public function getConceptosMatriculaByID($cmat_id){
-        $where = array('cmat_id' => $cmat_id);
-        $query = $this->db->where($where)->get(self::$table_menu);
+    public function getFinanciamientoByID($fima_id){
+        $where = array('fima_id' => $fima_id);
+        $this->db->where($where);
+        $query = $this->db->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->row();
         }
         return null;
     }
 
+
     /**
       * Fx de Eliminación de registro
       *
       * Actualiza el registro a estado inactivo
       *
-      * @param int $cmat_id id principal del registro
+      * @param int $fima_id id principal del registro
       *
       * @return void
       */
-    public function deleteConceptosMatriculaByID($cmat_id){
-        $where      = array('cmat_id' => $cmat_id);
-        $data_cmat = array('cmat_estado' => DB_INACTIVO);
+    public function deleteFinanciamientoByID($fima_id){
+        $where      = array('fima_id' => $fima_id);
+        $data_fima = array('fima_estado' => DB_INACTIVO);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_cmat);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_fima);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -111,19 +103,20 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Inserta un registro nuevo
       *
-      * @param array $data_cmat contiene los datos a ingresar
+      * @param array $data_fima contiene los datos a ingresar
       *
       * @return void
       */
-    public function insertConceptosMatricula($data_cmat){
+    public function insertFinanciamiento($data_fima){
         $query      = $this->db->trans_begin();
-        $query      = $this->db->insert(self::$table_menu, $data_cmat);
+        $query      = $this->db->insert(self::$table_menu, $data_fima);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
         }
+        $fima_id = $this->db->insert_id();
         $this->db->trans_commit();
-        return true;
+        return $fima_id;
     }
 
     /**
@@ -131,21 +124,21 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Actualiza un registro activo
       *
-      * @param array $data_cmat contiene los datos a ingresar
-      * @param int $cmat_id id principal del registro
+      * @param array $data_fima contiene los datos a ingresar
+      * @param int $fima_id id principal del registro
       *
       * @return void
       */
-    public function updateConceptosMatricula($data_cmat, $cmat_id){
-        $where      = array('cmat_id' => $cmat_id);
+    public function updateFinanciamiento($data_fima, $fima_id){
+        $where      = array('fima_id' => $fima_id);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_cmat);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_fima);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
         }
         $this->db->trans_commit();
-        return true;
+        return $fima_id;
     }
 
 }

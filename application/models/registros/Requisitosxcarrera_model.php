@@ -46,6 +46,17 @@ class Requisitosxcarrera_Model extends CI_Model {
         return null;
     }
 
+
+    public function getRequisitosxcarreraByCARR($carr_id){
+        $where = array('rxca_estado'=>DB_ACTIVO, 'carr_id' => $carr_id);
+        $this->db->where($where);
+        $query = $this->db->get(self::$table_menu);
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
     /**
       * Fx de Contar registros
       *

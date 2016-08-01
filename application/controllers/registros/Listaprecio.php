@@ -18,6 +18,7 @@ class Listaprecio extends CI_Controller {
         parent :: __construct();
         $this->initData();
         $this->load->model('registros/listaprecio_model');
+        $this->load->model('registros/moneda_model');
     }
 
      /**
@@ -119,6 +120,8 @@ class Listaprecio extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'ver';
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioByID($lipe_id);
+        $data['data_mone']      = $this->moneda_model->getMonedaAll();
+        
         $data['btn_editar']     = 'registros/listaprecio/editar/'.$lipe_id_enc;
         $data['btn_regresar']   = 'registros/listaprecio';
         $this->layout->view('registros/listaprecio_form', $data);
@@ -148,6 +151,8 @@ class Listaprecio extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'editar';
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioByID($lipe_id);
+        $data['data_mone']      = $this->moneda_model->getMonedaAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/listaprecio';
         $this->layout->view('registros/listaprecio_form', $data);
@@ -170,6 +175,8 @@ class Listaprecio extends CI_Controller {
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = 'nuevo';
+        $data['data_mone']      = $this->moneda_model->getMonedaAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/listaprecio';
         $this->layout->view('registros/listaprecio_form', $data);
@@ -222,6 +229,7 @@ class Listaprecio extends CI_Controller {
         if($lipe_id === ''){
             $validacion_unique = '|is_unique[lista_precios.lipe_descripcion]';
         }//end if
+        $this->form_validation->set_rules('mone_id', 'Moneda','required|trim');
         $this->form_validation->set_rules('lipe_descripcion', 'Descripción','required|trim'.$validacion_unique);
         $this->form_validation->set_rules('lipe_indvigente', 'Lista principal','required|trim');
 
@@ -229,6 +237,8 @@ class Listaprecio extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = ($lipe_id === '')?'nuevo':'editar';
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioByID($lipe_id);
+        $data['data_mone']      = $this->moneda_model->getMonedaAll();
+        
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/listaprecio';
         $this->load->library('layout');
@@ -245,6 +255,7 @@ class Listaprecio extends CI_Controller {
                 $this->listaprecio_model->updateListaprecioAll(array('lipe_indvigente' => 'N'));
             }
             $data_lipe = array(
+                'mone_id'                 => $datapost['mone_id'],
                 'lipe_descripcion'        => $datapost['lipe_descripcion'],
                 'lipe_indvigente'         => ($datapost['lipe_indvigente'] == '0') ? 'N' : 'S'
                             );

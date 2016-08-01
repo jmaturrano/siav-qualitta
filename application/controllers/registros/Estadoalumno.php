@@ -288,11 +288,6 @@ class Alumno extends CI_Controller {
                 }//end if
             }//end if
 
-            if($alum_id === ''){
-                /* Estado 1: registrado (POR DEFECTO) */
-                $data_alum['esal_id'] = 1;
-            }
-
             $data_response = ($alum_id === '') ? $this->alumno_model->insertAlumno($data_alum) : $this->alumno_model->updateAlumno($data_alum, $alum_id);
             if($data_response){
 

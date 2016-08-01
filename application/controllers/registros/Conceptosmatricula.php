@@ -20,6 +20,7 @@ class Conceptosmatricula extends CI_Controller {
         $this->initData();
         $this->load->model('registros/conceptosmatricula_model');
         $this->load->model('registros/listaprecio_model');
+        $this->load->model('registros/conceptostipo_model');
     }
 
      /**
@@ -119,6 +120,8 @@ class Conceptosmatricula extends CI_Controller {
         $data['tipo_vista']     = 'ver';
         $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_ctip']      = $this->conceptostipo_model->getConceptosTipoAll();
+        
         $data['btn_editar']     = 'registros/conceptosmatricula/editar/'.$cmat_id_enc;
         $data['btn_regresar']   = 'registros/conceptosmatricula';
         $this->layout->view('registros/conceptosmatricula_form', $data);
@@ -147,6 +150,8 @@ class Conceptosmatricula extends CI_Controller {
         $data['tipo_vista']     = 'editar';
         $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_ctip']      = $this->conceptostipo_model->getConceptosTipoAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/conceptosmatricula';
         $this->layout->view('registros/conceptosmatricula_form', $data);
@@ -172,6 +177,8 @@ class Conceptosmatricula extends CI_Controller {
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/conceptosmatricula';
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_ctip']      = $this->conceptostipo_model->getConceptosTipoAll();
+
         $this->layout->view('registros/conceptosmatricula_form', $data);
         $this->load->view('notificacion');
     }
@@ -216,7 +223,9 @@ class Conceptosmatricula extends CI_Controller {
         $data['PERMISOS']       = self::$PERMISOS;
 
         $cmat_id = ($cmat_id_enc === '') ? '' : str_decrypt($cmat_id_enc, KEY_ENCRYPT);
+        $this->form_validation->set_rules('ctip_id', 'Concepto tipo', 'required');
         $this->form_validation->set_rules('lipe_id', 'Lista de precios', 'required');
+        $this->form_validation->set_rules('cmat_orden', 'Descripción', 'required|integer');
         $this->form_validation->set_rules('cmat_descripcion', 'Descripción', 'required|trim');
         $this->form_validation->set_rules('cmat_costo', 'Costo', 'required|trim|numeric');
         $this->form_validation->set_rules('cmat_obligatorio', 'Obligatorio', 'required|trim');
@@ -225,6 +234,8 @@ class Conceptosmatricula extends CI_Controller {
         $data['tipo_vista']     = ($cmat_id === '')?'nuevo':'editar';
         $data['data_cmat']      = $this->conceptosmatricula_model->getConceptosMatriculaByID($cmat_id);
         $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_ctip']      = $this->conceptostipo_model->getConceptosTipoAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/conceptosmatricula';
         $this->load->library('layout');
@@ -237,7 +248,9 @@ class Conceptosmatricula extends CI_Controller {
         {
             $datapost = $this->security->xss_clean($this->input->post());
             $data_cmat = array(
+                'ctip_id'           => $datapost['ctip_id'],
                 'lipe_id'           => $datapost['lipe_id'],
+                'cmat_orden'        => $datapost['cmat_orden'],
                 'cmat_descripcion'  => $datapost['cmat_descripcion'],
                 'cmat_costo'        => $datapost['cmat_costo'],
                 'cmat_obligatorio'  => ($datapost['cmat_obligatorio'] === '0' ? 'N' : 'S')

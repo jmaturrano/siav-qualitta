@@ -62,7 +62,6 @@
 				                    <th class="cabecera-tabla"> Nro. </th>
 				                    <th class="cabecera-tabla"> Código </th>
 				                    <th class="cabecera-tabla"> Módulo </th>
-				                    <th class="cabecera-tabla"> Cod. Nivel Aprend. </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
 				                </thead>
@@ -75,7 +74,6 @@
 											<td class="texto-centrado"><?= str_pad(($item+1), 5, '0', STR_PAD_LEFT); ?></td>
 											<td class="texto-centrado"><?= $modulo->modu_codigo; ?></td>
 											<td class=""><?= $modulo->modu_descripcion; ?></td>
-											<td class="texto-centrado"><?= $modulo->niap_codigo; ?></td>
 											<td class="texto-centrado td-actions">
 						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/modulosxcarrera/ver/'.str_encrypt($data_carr->carr_id, KEY_ENCRYPT).'/'.str_encrypt($modulo->modu_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>

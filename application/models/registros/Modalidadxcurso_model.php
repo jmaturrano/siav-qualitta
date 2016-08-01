@@ -66,6 +66,26 @@ class Modalidadxcurso_Model extends CI_Model {
         return null;
     }
 
+    public function getModalidadxcursoByMODAIDLIPEIDCARRID($data_mxca){
+        $where = array(
+            'mxca.moda_id'      => $data_mxca['moda_id'],
+            'carr.carr_id'      => $data_mxca['carr_id'],
+            'mxca.lipe_id'      => $data_mxca['lipe_id'],
+            'mxca.mxca_estado'  => DB_ACTIVO
+            );
+        $this->db->where($where);
+        $this->db->join('curso curs', 'curs.curs_id = mxca.curs_id', 'inner');
+        $this->db->join('modulos_carrera modu', 'modu.modu_id = curs.modu_id', 'inner');
+        $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id', 'inner');
+        $query = $this->db->get(self::$table_menu.' mxca');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
+
+
     /**
       * Fx de Eliminación de registro
       *

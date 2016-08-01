@@ -22,6 +22,16 @@ class Matricula extends CI_Controller {
         $this->load->model('registros/alumno_model');
         $this->load->model('registros/compromisoscarrera_model');
         $this->load->model('registros/carrera_model');
+        $this->load->model('registros/modalidad_model');
+        $this->load->model('registros/grupomatricula_model');
+        $this->load->model('registros/listaprecio_model');
+        $this->load->model('registros/modalidadxcurso_model');
+        $this->load->model('registros/conceptosmatricula_model');
+        $this->load->model('registros/conceptosxmatricula_model');
+        $this->load->model('registros/estadomatricula_model');
+        $this->load->model('registros/requisitosxcarrera_model');
+        $this->load->model('servicios/requisitosxalumno_model');
+        date_default_timezone_set('America/Lima');
     }
 
      /**
@@ -61,6 +71,7 @@ class Matricula extends CI_Controller {
         $propio['filas_totales'] = $this->matricula_model->contar_estructuras_todos();
         $filasPorPagina = paginacion_configurar($propio, $this);
         $data['data_matr']      = $this->matricula_model->getMatriculaAll('', $filasPorPagina, floor($offset / $filasPorPagina)*$filasPorPagina);
+
         $data['btn_nuevo']      = 'servicios/matricula/nuevo';
         $this->layout->view('servicios/matricula_index', $data);
         $this->load->view('notificacion');
@@ -122,6 +133,12 @@ class Matricula extends CI_Controller {
         $data['data_matr']      = $this->matricula_model->getMatriculaByID($matr_id);
         $data['data_carr']      = $this->carrera_model->getCarreraAll();
         $data['data_alum']      = $this->alumno_model->getAlumnoAll();
+        $data['data_moda']      = $this->modalidad_model->getModalidadAll();
+        $data['data_gmat']      = $this->grupomatricula_model->getGrupomatriculaByCARRMODA(isset($data['data_matr'])?$data['data_matr']->carr_id:0, isset($data['data_matr'])?$data['data_matr']->moda_id:0);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_cxma']      = $this->conceptosxmatricula_model->getConceptosxMatriculaByMATR($matr_id);
+        $data['data_emat']      = $this->estadomatricula_model->getEstadoMatriculaAll();
+        
         $data['btn_editar']     = 'servicios/matricula/editar/'.$matr_id_enc;
         $data['btn_regresar']   = 'servicios/matricula';
         $this->layout->view('servicios/matricula_form', $data);
@@ -151,6 +168,12 @@ class Matricula extends CI_Controller {
         $data['data_matr']      = $this->matricula_model->getMatriculaByID($matr_id);
         $data['data_carr']      = $this->carrera_model->getCarreraAll();
         $data['data_alum']      = $this->alumno_model->getAlumnoAll();
+        $data['data_moda']      = $this->modalidad_model->getModalidadAll();
+        $data['data_gmat']      = $this->grupomatricula_model->getGrupomatriculaByCARRMODA(isset($data['data_matr'])?$data['data_matr']->carr_id:0, isset($data['data_matr'])?$data['data_matr']->moda_id:0);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_cxma']      = $this->conceptosxmatricula_model->getConceptosxMatriculaByMATR($matr_id);
+        $data['data_emat']      = $this->estadomatricula_model->getEstadoMatriculaAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'servicios/matricula';
         $this->layout->view('servicios/matricula_form', $data);
@@ -177,6 +200,10 @@ class Matricula extends CI_Controller {
         $data['btn_cancelar']   = 'servicios/matricula';
         $data['data_carr']      = $this->carrera_model->getCarreraAll();
         $data['data_alum']      = $this->alumno_model->getAlumnoAll();
+        $data['data_moda']      = $this->modalidad_model->getModalidadAll();
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_emat']      = $this->estadomatricula_model->getEstadoMatriculaAll();
+
         $this->layout->view('servicios/matricula_form', $data);
         $this->load->view('notificacion');
     }
@@ -222,12 +249,14 @@ class Matricula extends CI_Controller {
 
         $matr_id = ($matr_id_enc === '') ? '' : str_decrypt($matr_id_enc, KEY_ENCRYPT);
 
+        $this->form_validation->set_rules('moda_id', 'Modalidad', 'required|trim');
         $this->form_validation->set_rules('carr_id', 'Carrera', 'required|trim');
         $this->form_validation->set_rules('alum_id', 'Alumno', 'required|trim');
+        $this->form_validation->set_rules('lipe_id', 'Lista de precios', 'required|trim');
+        $this->form_validation->set_rules('matr_horareal', 'Horas programa', 'required|trim');
+        $this->form_validation->set_rules('gmat_id', 'Grupo inicio', 'required|trim');
         $this->form_validation->set_rules('matr_codigo', 'Código matrícula', 'required|trim');
         $this->form_validation->set_rules('matr_fecha_proceso', 'Fecha proceso', 'required|trim');
-        $this->form_validation->set_rules('matr_costoreal', 'Costo Real', 'required|numeric');
-        $this->form_validation->set_rules('matr_costofinal', 'Costo Final', 'required|numeric');
         $this->form_validation->set_rules('matr_observacion', 'Observaciones', 'trim');
 
         $data['header_title']   = self::$header_title;
@@ -236,6 +265,12 @@ class Matricula extends CI_Controller {
         $data['data_matr']      = $this->matricula_model->getMatriculaByID($matr_id);
         $data['data_carr']      = $this->carrera_model->getCarreraAll();
         $data['data_alum']      = $this->alumno_model->getAlumnoAll();
+        $data['data_moda']      = $this->modalidad_model->getModalidadAll();
+        $data['data_gmat']      = $this->grupomatricula_model->getGrupomatriculaByCARRMODA(isset($data['data_matr'])?$data['data_matr']->carr_id:0, isset($data['data_matr'])?$data['data_matr']->moda_id:0);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_cxma']      = $this->conceptosxmatricula_model->getConceptosxMatriculaByMATR($matr_id);
+        $data['data_emat']      = $this->estadomatricula_model->getEstadoMatriculaAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'servicios/matricula';
         $this->load->library('layout');
@@ -247,20 +282,110 @@ class Matricula extends CI_Controller {
         else
         {
             $datapost = $this->security->xss_clean($this->input->post());
+            $arr_cxma_id          = $datapost['cxma_id'];
+            $arr_cmat_id          = $datapost['cmat_id'];
+            $arr_cmat_costo       = $datapost['cmat_costo'];
+            $arr_cxma_costofinal  = $datapost['cxma_costofinal'];
+            $arr_cmat_obligatorio = $datapost['cmat_obligatorio'];
+            $matr_costoreal       = 0;
+            $matr_costofinal      = 0;
+            $data_cxma_insert     = array();
+            $data_cxma_update     = array();
+            foreach ($arr_cmat_id as $item => $cmat_id) {
+              if($arr_cmat_obligatorio[$item] === '1'){
+
+                $matr_costoreal     += (float)$arr_cmat_costo[$item];
+                $matr_costofinal    += (float)$arr_cxma_costofinal[$item];
+
+                if($arr_cxma_id[$item] === '0'){
+                  $data_cxma_insert[] = array(
+                      'cxma_costoreal'      => (float)$arr_cmat_costo[$item],
+                      'cxma_costofinal'     => (float)$arr_cxma_costofinal[$item],
+                      'cmat_id'             => $cmat_id
+                  );
+                }else{
+                  $data_cxma_update[] = array(
+                      'cxma_id'             => $arr_cxma_id[$item],
+                      'cxma_costoreal'      => (float)$arr_cmat_costo[$item],
+                      'cxma_costofinal'     => (float)$arr_cxma_costofinal[$item],
+                      'cmat_id'             => $cmat_id,
+                      'matr_id'             => $matr_id
+                  );
+                }
+
+              }//end if
+            }//end foreach
+
             $data_matr = array(
-                'carr_id'             => $datapost['carr_id'],
-                'alum_id'             => $datapost['alum_id'],
                 'matr_codigo'         => $datapost['matr_codigo'],
                 'matr_fecha_proceso'  => date('Y-m-d', strtotime(str_replace('/', '-', $datapost['matr_fecha_proceso']))),
-                'matr_costoreal'      => $datapost['matr_costoreal'],
-                'matr_costofinal'     => $datapost['matr_costofinal'],
-                'matr_observacion'    => $datapost['matr_observacion']
+                'matr_horareal'       => $datapost['matr_horareal'],
+                'matr_costoreal'      => $matr_costoreal,
+                'matr_costofinal'     => $matr_costofinal,
+                'matr_observacion'    => $datapost['matr_observacion'],
+                'carr_id'             => $datapost['carr_id'],
+                'alum_id'             => $datapost['alum_id'],
+                'gmat_id'             => $datapost['gmat_id'],
+                'lipe_id'             => $datapost['lipe_id']
             );
+            if($matr_id === ''){
+                /* Estado 1: por aprobar (POR DEFECTO) */
+                $data_matr['emat_id'] = 1;
+            }
+
             $data_response = ($matr_id === '') ? $this->matricula_model->insertMatricula($data_matr) : $this->matricula_model->updateMatricula($data_matr, $matr_id);
             if($data_response){
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
                 $this->session->set_flashdata('mensaje', (($matr_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));
-                redirect('servicios/matricula');
+
+                if($matr_id === ''){
+                  /*1.- INSERTAR */
+                    /* 1.1- REGISTRAR ESTADO MATRICULA */
+                    $matr_id = $data_response;
+                    $data_exma = array(
+                            'exma_fecha_movimiento' => date('Y-m-d'),
+                            'matr_id'               => $matr_id
+                        );
+                    registrar_estado_matricula($this, $data_exma, '01');
+                    /* 1.1- REGISTRAR ESTADO MATRICULA - END */
+
+                    /* 1.2.- REGISTRAR ESTADO ALUMNO */
+                    $data_exal = array(
+                            'exal_fecha_movimiento' => date('Y-m-d'),
+                            'alum_id'               => $datapost['alum_id']
+                        );
+                    registrar_estado_alumno($this, $data_exal, '02');
+                    /* 1.2.- REGISTRAR ESTADO ALUMNO - END */
+
+                    /* 1.3.- CONCEPTOS X MATRICULA */
+                    foreach ($data_cxma_insert as $key => $value) {
+                      $data_cxma_insert[$key]['matr_id'] = $matr_id;
+                    }//end foreach
+                    $this->conceptosxmatricula_model->insertConceptosxMatriculaByGROUP($data_cxma_insert);
+                    /* 1.3.- CONCEPTOS X MATRICULA - END */
+
+                    /* 1.4.- REQUISITOS X ALUMNO */
+                    $data_rxca = $this->requisitosxcarrera_model->getRequisitosxcarreraByCARR($data_matr['carr_id']);
+                    if(isset($data_rxca)){
+                      $data_rxal = array();
+                      foreach ($data_rxca as $rxca) {
+                        $data_rxal[] = array(
+                            'matr_id' => $matr_id,
+                            'rxca_id' => $rxca->rxca_id
+                          );
+                      }//endforeach
+                      $this->requisitosxalumno_model->insertRequisitosxalumnoByGROUP($data_rxal);
+                    }
+                    /* 1.4.- REQUISITOS X ALUMNO - END */                    
+
+                }else{
+                  /* 2.- ACTUALIZAR */
+                    /* 2.1.- CONCEPTOS X MATRICULA */
+                    $this->conceptosxmatricula_model->updateConceptosxMatriculaByGROUP($data_cxma_update);
+                    /* 2.1.- CONCEPTOS X MATRICULA -END */
+                }
+
+                redirect('servicios/matricula/ver/'.str_encrypt($matr_id, KEY_ENCRYPT));
             }else{
                 $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
                 $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);
@@ -268,6 +393,39 @@ class Matricula extends CI_Controller {
             }
         }
         $this->load->view('notificacion');
+    }
+
+
+    public function verificadisponibilidad_ajax($moda_id = '', $carr_id = '', $alum_id = '', $lipe_id = ''){
+
+      $matr_existe = 0;
+      $data_matr = $this->matricula_model->getMatriculaByCARRALUM($carr_id, $alum_id);
+      if(isset($data_matr)){
+        if(count($data_matr) > 0){
+          $matr_existe = 1;
+        }//end if
+      }//end if
+      $data_gmat = $this->grupomatricula_model->getGrupomatriculaByCARRMODA($carr_id, $moda_id);
+      $data_mxca = $this->modalidadxcurso_model->getModalidadxcursoByMODAIDLIPEIDCARRID(array('moda_id' => $moda_id, 'lipe_id' => $lipe_id, 'carr_id' => $carr_id));
+      $data_cmat = $this->conceptosmatricula_model->getConceptosMatriculaByLIPE($lipe_id);
+
+      $carr_precio  = 0;
+      $carr_horas   = date('H:i:s', strtotime('00:00:00'));
+      if(isset($data_mxca)){
+        foreach ($data_mxca as $item => $mxca) {
+          $carr_horas     = procesar_horas('suma', $carr_horas, $mxca->mxca_horas);
+          $carr_precio    += $mxca->mxca_precio;
+        }//end foreach
+      }//end if
+
+      $data_result = array(
+          'matr_existe'   => $matr_existe,
+          'carr_precio'   => $carr_precio,
+          'carr_horas'    => $carr_horas,
+          'data_gmat'     => $data_gmat,
+          'data_cmat'     => $data_cmat
+        );
+      echo json_encode($data_result);
     }
 
 

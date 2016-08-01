@@ -350,34 +350,6 @@ if(!function_exists('upload_file_foto')){
     }
 }
 
-if(!function_exists('registrar_estado_alumno')){
-    function registrar_estado_alumno($th = null, $data_exal, $esal_codigo){
-
-        /*
-        *
-        * Por defecto debería ser:
-        * 01 REGISTRADO
-        * 02 PENDIENTE MATRICULA
-        * 03 MATRICULADO
-        * 04 ESTUDIANTE
-        * 05 GRADUADO
-        *
-        */
-
-        $th->load->model('registros/estadoalumno_model');
-        $th->load->model('registros/estadosxalumno_model');
-
-        $req_exal = false;
-        $data_esal = $th->estadoalumno_model->getEstadoalumnoByCOD($esal_codigo);
-        if(isset($data_esal)){
-            $esal_id = $data_esal->esal_id;
-            $data_exal['esal_id'] = $esal_id;
-            $req_exal = $th->estadosxalumno_model->insertEstadosxalumno($data_exal);
-        }//end if
-        return $req_exal;
-    }
-}
-
 if(!function_exists('enviar_email')){
     function enviar_email($th = null, $email_to, $email_subject, $email_message){
         $th->load->library('email');
@@ -423,7 +395,7 @@ if(!function_exists('reemplazar_palabras_reservadas')){
     }
 }
 
-if(!function_exists('booleanchar')){
+if(!function_exists('interpretar_booleanchar')){
     function interpretar_booleanchar($booleanchar){
         $truefalse_var = '';
         switch ($booleanchar) {
@@ -441,3 +413,111 @@ if(!function_exists('booleanchar')){
     }
 }
 
+if(!function_exists('registrar_estado_alumno')){
+    function registrar_estado_alumno($th = null, $data_exal, $esal_codigo){
+
+        /*
+        *
+        * Por defecto debería ser:
+        * 01 REGISTRADO
+        * 02 PENDIENTE MATRICULA
+        * 03 MATRICULADO
+        * 04 ESTUDIANTE
+        * 05 GRADUADO
+        *
+        */
+
+        $th->load->model('registros/estadoalumno_model');
+        $th->load->model('registros/estadosxalumno_model');
+
+        $req_exal = false;
+        $data_esal = $th->estadoalumno_model->getEstadoalumnoByCOD($esal_codigo);
+        if(isset($data_esal)){
+            $esal_id = $data_esal->esal_id;
+            $data_exal['esal_id'] = $esal_id;
+            $req_exal = $th->estadosxalumno_model->insertEstadosxalumno($data_exal);
+
+            /* CAMBIAR ESTADO ALUMNO */
+            $data_alum = array(
+                    'esal_id' => $esal_id
+                );
+            cambiar_estado_alumno($th, $data_alum, $data_exal['alum_id']);
+            /* CAMBIAR ESTADO ALUMNO - END */
+
+        }//end if
+        return $req_exal;
+    }
+}
+
+if(!function_exists('cambiar_estado_alumno')){
+    function cambiar_estado_alumno($th, $data_alum, $alum_id){
+        $th->load->model('registros/alumno_model');
+        return $th->alumno_model->updateAlumno($data_alum, $alum_id);
+    }
+}
+
+if(!function_exists('registrar_estado_matricula')){
+    function registrar_estado_matricula($th = null, $data_exma, $emat_codigo){
+
+        /*
+        *
+        * Estados de matricula:
+        * 01 Por aprobar
+        * 02 En proceso de pago
+        * 03 Matrícula cancelada
+        * 04 Matrícula pagada
+        *
+        */
+
+        $th->load->model('registros/estadomatricula_model');
+        $th->load->model('registros/estadosxmatricula_model');
+
+        $req_exma = false;
+        $data_emat = $th->estadomatricula_model->getEstadomatriculaByCOD($emat_codigo);
+        if(isset($data_emat)){
+            $emat_id = $data_emat->emat_id;
+            $data_exma['emat_id'] = $emat_id;
+            $req_exma = $th->estadosxmatricula_model->insertEstadosxmatricula($data_exma);
+
+            /* CAMBIAR ESTADO MATRICULA */
+            $data_matr = array(
+                    'emat_id' => $emat_id
+                );
+            cambiar_estado_matricula($th, $data_matr, $data_exma['matr_id']);
+            /* CAMBIAR ESTADO MATRICULA - END */
+
+        }//end if
+        return $req_exma;
+    }
+}
+
+if(!function_exists('cambiar_estado_matricula')){
+    function cambiar_estado_matricula($th, $data_matr, $matr_id){
+        $th->load->model('servicios/matricula_model');
+        return $th->matricula_model->updateMatricula($data_matr, $matr_id);
+    }
+}
+
+if(!function_exists('procesar_horas')){
+    function procesar_horas($operacion, $hora_inicial, $hora_operacion){
+        $hh = 0;
+        $mm = 0;
+        $ss = 0;
+        if($operacion === 'suma'){
+            if($hora_inicial != 0 && $hora_inicial != ''){
+                $horas_i = explode(':', $hora_inicial);
+                $hh = $horas_i[0];
+                $mm = $horas_i[1];
+            }
+            if($hora_operacion != ''){
+                $horas_o = explode(':', $hora_operacion);
+                $hh += $horas_o[0];
+                $mm += $horas_o[1];
+            }
+        }
+        //echo $hh.':'.$mm.':'.$ss."<br>";
+        //echo date('H:i:s', strtotime($hh.':'.$mm.':'.$ss));
+        //exit();
+        return date('H:i:s', strtotime($hh.':'.$mm.':'.$ss));
+    }
+}

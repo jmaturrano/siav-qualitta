@@ -28,6 +28,25 @@
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
+
+								<div class="control-group">
+									<label for="mone_id" class="control-label">Moneda</label>
+									<div class="controls">
+					                    <select class="selectpicker span8" name="mone_id" id="mone_id" data-container="body">
+					                    <option value="">Seleccione</option>
+					                    <?php
+					                    if(isset($data_mone)){
+					                    	foreach ($data_mone as $item => $moneda) {
+					                   	?>
+											<option value="<?= $moneda->mone_id; ?>" <?= (isset($data_lipe) && $data_lipe->mone_id === $moneda->mone_id)?'selected': set_select('mone_id', $moneda->mone_id); ?>><?= $moneda->mone_descripcion; ?></option>
+					                   	<?php
+					                    	}
+					                    }
+					                    ?>
+					                    </select>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
 								<div class="control-group">
 									<label for="lipe_descripcion" class="control-label">Descripción</label>
 									<div class="controls">

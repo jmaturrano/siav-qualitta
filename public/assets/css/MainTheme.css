@@ -1130,6 +1130,9 @@ a.label-badge-info .badge{
   margin-left: 5px;
   width: 150px;
 }
+.span-1{
+  width: 100px;
+}
 .filter-select span.glyphicon-filter{
   color: #db3325;
 }

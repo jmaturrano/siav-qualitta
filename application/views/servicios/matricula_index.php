@@ -54,7 +54,7 @@
 											<td class=""><?= $matricula->alum_apellido.' '.$matricula->alum_nombre; ?></td>
 											<td class="texto-centrado"><?= $matricula->carr_codigo; ?></td>
 											<td class="texto-centrado"><?= fecha_latino($matricula->matr_fecha_proceso); ?></td>
-											<td class="texto-centrado"><?= $matricula->esal_descripcion; ?></td>
+											<td class="texto-centrado"><?= $matricula->emat_descripcion; ?></td>
 											<td class="texto-centrado td-actions">
 						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('servicios/matricula/ver/'.str_encrypt($matricula->matr_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>

@@ -31,7 +31,6 @@ class Login extends CI_Controller {
 
     public function resetPassword($docidentidad='') {
         ($docidentidad === '')?redirect(''):'';
-
         $userlogin = $this->login_model->verificaDocIdent($docidentidad);
         //print_r($userlogin);
         if($userlogin){ 
@@ -44,10 +43,11 @@ class Login extends CI_Controller {
             $this->email->set_mailtype("html");
             $this->email->from('no-reply@mksystemsoft.com', 'MK System Soft');
             //$this->email->to( $conf_email );
-            $this->email->to( "jmaturrano@mksystemsoft.com" ); 
+            //$this->email->to( "jmaturrano@mksystemsoft.com" );
+            $this->email->to("julio16lb@gmail.com");
             $this->email->subject('Restablecer Clave');
             $this->email->message("El usuario <a href='".base_url('perfil/usuario/editar/'.str_encrypt($userlogin->usua_id , KEY_ENCRYPT)) ."'>".$userlogin->usua_nombre."</a> ha solicitado un cambio de clave.");
-            //$this->email->send();
+            $this->email->send();
             //send_mail
         }else{
             $dataverify['usua_estado'] = "";

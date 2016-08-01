@@ -7,8 +7,8 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Conceptosmatricula_Model extends CI_Model {
-    private static $table_menu  = 'conceptos_matricula';
+class Conceptostipo_Model extends CI_Model {
+    private static $table_menu  = 'conceptos_tipo';
     public function __construct() {
         parent :: __construct();
         $this->load->database();
@@ -25,18 +25,15 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * @return void
       */
-    public function getConceptosMatriculaAll($q = '', $limit = 1000, $offset = 0){
+    public function getConceptosTipoAll($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
-        $where = array('cmat.cmat_estado'=>DB_ACTIVO);
+        $where = array('ctip_estado'=>DB_ACTIVO);
         if($q !== ''){
             $this->db->group_start();
-            $this->db->like('cmat.cmat_descripcion',$q);
+            $this->db->like('ctip_descripcion',$q);
             $this->db->group_end();
         }
-        $this->db->order_by('cmat.cmat_orden', 'asc');
-        $this->db->where($where);
-        $this->db->join('conceptos_tipo ctip', 'ctip.ctip_id = cmat.ctip_id');
-        $query = $this->db->get(self::$table_menu.' cmat');
+        $query = $this->db->where($where)->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->result();
         }
@@ -44,9 +41,9 @@ class Conceptosmatricula_Model extends CI_Model {
     }
 
 
-    public function getConceptosMatriculaByLIPE($lipe_id){
-        $where = array('cmat_estado'=>DB_ACTIVO, 'lipe_id'=>$lipe_id);
-        $query = $this->db->order_by('cmat_orden', 'asc')->where($where)->get(self::$table_menu);
+    public function getConceptosTipoByLIPE($ctip_id){
+        $where = array('ctip_estado'=>DB_ACTIVO, 'ctip_id'=>$ctip_id);
+        $query = $this->db->where($where)->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->result();
         }
@@ -62,7 +59,7 @@ class Conceptosmatricula_Model extends CI_Model {
       * @return void
       */
     public function contar_estructuras_todos() {
-        $this->db->where('cmat_estado', DB_ACTIVO);
+        $this->db->where('ctip_estado', DB_ACTIVO);
         return $this->db->count_all_results(self::$table_menu);
     }
 
@@ -71,12 +68,12 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Devuelve los datos de un registro específico
       *
-      * @param int $cmat_id id principal del registro
+      * @param int $ctip_id id principal del registro
       *
       * @return void
       */
-    public function getConceptosMatriculaByID($cmat_id){
-        $where = array('cmat_id' => $cmat_id);
+    public function getConceptosTipoByID($ctip_id){
+        $where = array('ctip_id' => $ctip_id);
         $query = $this->db->where($where)->get(self::$table_menu);
         if($query->num_rows() > 0){
             return $query->row();
@@ -89,15 +86,15 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Actualiza el registro a estado inactivo
       *
-      * @param int $cmat_id id principal del registro
+      * @param int $ctip_id id principal del registro
       *
       * @return void
       */
-    public function deleteConceptosMatriculaByID($cmat_id){
-        $where      = array('cmat_id' => $cmat_id);
-        $data_cmat = array('cmat_estado' => DB_INACTIVO);
+    public function deleteConceptosTipoByID($ctip_id){
+        $where      = array('ctip_id' => $ctip_id);
+        $data_ctip = array('ctip_estado' => DB_INACTIVO);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_cmat);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_ctip);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -111,13 +108,13 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Inserta un registro nuevo
       *
-      * @param array $data_cmat contiene los datos a ingresar
+      * @param array $data_ctip contiene los datos a ingresar
       *
       * @return void
       */
-    public function insertConceptosMatricula($data_cmat){
+    public function insertConceptosTipo($data_ctip){
         $query      = $this->db->trans_begin();
-        $query      = $this->db->insert(self::$table_menu, $data_cmat);
+        $query      = $this->db->insert(self::$table_menu, $data_ctip);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
@@ -131,15 +128,15 @@ class Conceptosmatricula_Model extends CI_Model {
       *
       * Actualiza un registro activo
       *
-      * @param array $data_cmat contiene los datos a ingresar
-      * @param int $cmat_id id principal del registro
+      * @param array $data_ctip contiene los datos a ingresar
+      * @param int $ctip_id id principal del registro
       *
       * @return void
       */
-    public function updateConceptosMatricula($data_cmat, $cmat_id){
-        $where      = array('cmat_id' => $cmat_id);
+    public function updateConceptosTipo($data_ctip, $ctip_id){
+        $where      = array('ctip_id' => $ctip_id);
         $query      = $this->db->trans_begin();
-        $query      = $this->db->where($where)->update(self::$table_menu, $data_cmat);
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_ctip);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;

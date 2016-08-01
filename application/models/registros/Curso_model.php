@@ -36,6 +36,7 @@ class Curso_Model extends CI_Model {
                 );
         $this->db->where($where);
         $this->db->join('modulos_carrera modu', 'modu.modu_id = curs.modu_id', 'inner');
+        $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = curs.niap_id', 'inner');
         $query = $this->db->get(self::$table_menu.' curs');
         if($query->num_rows() > 0){
             return $query->result();
