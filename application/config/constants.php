@@ -92,7 +92,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 defined('KEY_ENCRYPT')      	OR define('KEY_ENCRYPT', 'agroruralmonitor');
 defined('TITULO')      			OR define('TITULO', 'SIAV - Qualitta');
 defined('PRODUCTO')      		OR define('PRODUCTO', 'SIAV - Qualitta');
-defined('MAILPRODUCTO')      	OR define('MAILPRODUCTO', 'no-reply@qualitta.com.pe');
+defined('MAILPRODUCTO')      	OR define('MAILPRODUCTO', 'no-reply@mksystemsoft.com');
 defined('LOGOEMPRESA')			OR define('LOGOEMPRESA', 'public/assets/img/logo/logo_145x166.png');
 defined('ICON_EMPRESA')			OR define('ICON_EMPRESA', 'public/assets/img/logo/logo_icon.png');
 defined('IMG_PATH')				OR define('IMG_PATH', 'public/assets/img/fotos/');

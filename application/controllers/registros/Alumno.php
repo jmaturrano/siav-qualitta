@@ -163,7 +163,6 @@ class Alumno extends CI_Controller {
         $data_alum              = $this->alumno_model->getAlumnoByID($alum_id);
 
         /* REPORTE NRO. 01 QUE CORRESPONDE AL REGISTRO DE ALUMNOS */
-
         $data_rexu = $this->reportexusuario_model->getReportexusuarioAllByREMACOD('01');
         if(isset($data_rexu)){
             foreach ($data_rexu as $item => $rexu) {
@@ -178,7 +177,7 @@ class Alumno extends CI_Controller {
                     $data_palabras_reservadas = array(
                             '[ALUMNO]' => $data_alum->alum_apellido.' '.$data_alum->alum_nombre,
                             '[DIRECCION]' => $data_alum->alum_direccion.', '.$data_alum->dist_descripcion.' '.$data_alum->prov_descripcion.' '.$data_alum->depa_descripcion,
-                            '[URLALUMNO]' => base_url('registros/alumno')
+                            '[URLALUMNO]' => base_url('registros/alumno/ver/'.str_encrypt($alum_id, KEY_ENCRYPT))
                         );
                     $email_to       = $usua_email;
                     $email_subject  = $rema_titulo;
@@ -187,8 +186,8 @@ class Alumno extends CI_Controller {
                 }//end if
             }//end foreach
         }//end if
-
         /* REPORTE NRO. 01 QUE CORRESPONDE AL REGISTRO DE ALUMNOS - FIN */
+
         $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
         $this->session->set_flashdata('mensaje', RMESSAGE_PROCESSED);
         redirect('registros/alumno/ver/'.$alum_id_enc);
