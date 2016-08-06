@@ -1174,3 +1174,12 @@ table .span100{
 .item-edit:hover{
   color: green;
 }
+a.label-badge-info{
+  padding: 0 5px;
+}
+a.label-badge-info:hover{
+  text-decoration: none;
+}
+a.label-badge-info .badge{
+  background-color: #cdcdcd;
+}

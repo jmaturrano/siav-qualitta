@@ -73,9 +73,8 @@
 								<div class="control-group">
 									<label for="conf_fecha_registro" class="control-label">Fecha de registro</label>
 									<div class="controls">
-								    <div class="input-append date datepicker" data-date="<?= (isset($data_conf))?date('d/m/Y', strtotime($data_conf->conf_fecha_registro)):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
+								    <div class="datepickerx" data-date="<?= (isset($data_conf))?date('d/m/Y', strtotime($data_conf->conf_fecha_registro)):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
 								      <input class="span2" size="16" type="text" value="<?= (isset($data_conf))?date('d/m/Y', strtotime($data_conf->conf_fecha_registro)):date('d/m/Y'); ?>" id="conf_fecha_registro" name="conf_fecha_registro" required>
-								      <span class="add-on"><i class="icon-th"></i></span>
 								    </div>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->

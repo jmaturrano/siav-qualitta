@@ -163,9 +163,11 @@ $(document).ready(function(){
 
 
 	/* DATEPICKER GENERAL */
-	$('.datepicker').datepicker({
+	$('.datepickerx input').datepicker({
         format: 'dd/mm/yyyy',
-        autoclose: true
+        language: "es",
+        todayBtn: true,
+        keyboardNavigation: false
     });
 	/* FIN - DATEPICKER GENERAL */
 

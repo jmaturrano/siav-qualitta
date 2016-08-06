@@ -55,13 +55,13 @@
 								</div> <!-- /control-group -->
 
 								<div class="control-group">
-									<label for="ofic_nombre" class="control-label">Nombre oficina</label>
+									<label for="ofic_nombre" class="control-label">Nombre sede</label>
 									<div class="controls">
 										<input type="text" value="<?= (isset($data_ofic))?$data_ofic->ofic_nombre:set_value('ofic_nombre'); ?>" id="ofic_nombre" name="ofic_nombre" class="span8" maxlength="80">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 								<div class="control-group">
-									<label for="ofic_abreviatura" class="control-label">Abreviatura</label>
+									<label for="ofic_abreviatura" class="control-label">Código OACI</label>
 									<div class="controls">
 										<input type="text" value="<?= (isset($data_ofic))?$data_ofic->ofic_abreviatura:set_value('ofic_abreviatura'); ?>" id="ofic_abreviatura" name="ofic_abreviatura" class="span8" maxlength="10">
 									</div> <!-- /controls -->

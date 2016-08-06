@@ -32,31 +32,44 @@
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
-								<div class="control-group">
+								<div class="control-group" style="display: none;">
 									<label for="alum_codigo" class="control-label">Código</label>
 									<div class="controls">
 										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_codigo:set_value('alum_codigo'); ?>" id="alum_codigo" name="alum_codigo" class="span8" maxlength="5">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
+								<div class="control-group" style="max-width: 650px;">
 									<label for="alum_nombre" class="control-label">Nombre</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_nombre:set_value('alum_nombre'); ?>" id="alum_nombre" name="alum_nombre" class="span8" maxlength="80">
+										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_nombre:set_value('alum_nombre'); ?>" id="alum_nombre" name="alum_nombre" class="span4" maxlength="80">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
+								<div class="span2" style="position: absolute; top: 5%; right: 25%;">
+									<?php 
+									if(isset($data_alum)){
+									$ruta_imagen = ($data_alum->alum_ruta_imagen != '' && $data_alum->alum_ruta_imagen != NULL) ? base_url(IMG_PATH.'alumnos/'.$data_alum->alum_ruta_imagen) : '';
+										if($ruta_imagen != ''){
+									?>
+									<img src="<?= $ruta_imagen; ?>" alt="<?= $data_alum->alum_nombre.' '.$data_alum->alum_apellido; ?>" class="img-thumbnail span2 float_rigth">
+									<?php
+										}//end if
+									}//end if
+									?>
+								</div>
+
+								<div class="control-group" style="max-width: 650px;">
 									<label for="alum_apellido" class="control-label">Apellido</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_apellido:set_value('alum_apellido'); ?>" id="alum_apellido" name="alum_apellido" class="span8" maxlength="80">
+										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_apellido:set_value('alum_apellido'); ?>" id="alum_apellido" name="alum_apellido" class="span4" maxlength="80">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
+								<div class="control-group" style="max-width: 650px;">
 									<label for="dide_id" class="control-label">Tipo Documento</label>
 									<div class="controls">
-					                    <select class="selectpicker span8" name="dide_id" id="dide_id" data-container="body">
+					                    <select class="selectpicker span4" name="dide_id" id="dide_id" data-container="body">
 					                    <option value="">Seleccione</option>
 					                    <?php
 					                    if(isset($data_doid)){
@@ -71,10 +84,10 @@
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
-								<div class="control-group">
+								<div class="control-group" style="max-width: 650px;">
 									<label for="alum_numero_documento" class="control-label">Doc. Identidad <span id="dideid_maxlength">(8 dig.)</span></label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_numero_documento:set_value('alum_numero_documento'); ?>" id="alum_numero_documento" name="alum_numero_documento" class="span8" maxlength="8">
+										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_numero_documento:set_value('alum_numero_documento'); ?>" id="alum_numero_documento" name="alum_numero_documento" class="span4" maxlength="8">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
@@ -82,16 +95,6 @@
 									<label for="alum_ruta_imagen" class="control-label">Foto</label>
 									<div class="controls">
 										<input type="file" id="alum_ruta_imagen" name="alum_ruta_imagen" class="span4">
-										<?php 
-										if(isset($data_alum)){
-										$ruta_imagen = ($data_alum->alum_ruta_imagen != '' && $data_alum->alum_ruta_imagen != NULL) ? base_url(IMG_PATH.'alumnos/'.$data_alum->alum_ruta_imagen) : '';
-											if($ruta_imagen != ''){
-										?>
-										<img src="<?= $ruta_imagen; ?>" alt="<?= $data_alum->alum_nombre.' '.$data_alum->alum_apellido; ?>" class="img-thumbnail span2 float_rigth">
-										<?php
-											}//end if
-										}//end if
-										?>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
@@ -105,9 +108,8 @@
 								<div class="control-group">
 									<label for="alum_fecha_nacimiento" class="control-label">Fecha de nacimiento</label>
 									<div class="controls">
-									    <div class="input-append date datepicker" data-date="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
+									    <div class="datepickerx" data-date="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
 									      <input class="span2" size="16" type="text" value="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):date('d/m/Y'); ?>" id="alum_fecha_nacimiento" name="alum_fecha_nacimiento">
-									      <span class="add-on"><i class="icon-th"></i></span>
 									    </div>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
@@ -122,7 +124,21 @@
 								<div class="control-group">
 									<label for="alum_direccion" class="control-label">Dirección</label>
 									<div class="controls">
-										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_direccion:set_value('alum_direccion'); ?>" id="alum_direccion" name="alum_direccion" class="span8" maxlength="200">
+
+					                    <select class="selectpicker span1" name="tdir_id" id="tdir_id" data-container="body">
+					                    <option value="0">Sel.</option>
+					                    <?php
+					                    if(isset($data_tdir)){
+					                    	foreach ($data_tdir as $item => $tipodireccion) {
+					                   	?>
+											<option value="<?= $tipodireccion->tdir_id; ?>" <?= (isset($data_alum) && $data_alum->tdir_id === $tipodireccion->tdir_id)?'selected': set_select('tdir_id', $tipodireccion->tdir_id); ?>><?= $tipodireccion->tdir_abreviatura; ?></option>
+					                   	<?php
+					                    	}
+					                    }
+					                    ?>
+					                    </select>
+
+										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_direccion:set_value('alum_direccion'); ?>" id="alum_direccion" name="alum_direccion" class="span7" maxlength="200" style="vertical-align: top;">
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
@@ -235,6 +251,14 @@
 							                  	?>
 							                  </select>
 								            </div>
+
+											<div class="form-group">
+												<label class="form-control-label span0" for="txal_principal">Marcar Principal</label>
+												<div style="padding-bottom: 6px;">
+													<input type="checkbox" name="txal_principal" data-toggle="checkbox-x" data-three-state="false" class="mxro_consulta row_permisos" value="0" id="txal_principal">
+												</div>
+											</div>
+
 								            <div class="form-group">
 												<label for="txal_numero" class="form-control-label span0">Número Telef.</label>
 												<input type="text" value="" id="txal_numero" name="txal_numero" class="span2" maxlength="45">
@@ -308,9 +332,11 @@
 													$ruta_update 	= 'registros/telefonoxalumno/agregartelefono/'.str_encrypt($telefonoxalumno->alum_id, KEY_ENCRYPT).'/'.str_encrypt($telefonoxalumno->txal_id, KEY_ENCRYPT);
 													$ruta_eliminar 	= 'registros/telefonoxalumno/eliminar/'.str_encrypt($telefonoxalumno->alum_id, KEY_ENCRYPT).'/'.str_encrypt($telefonoxalumno->txal_id, KEY_ENCRYPT);
 											?>
-												<a href="javascript:;" class="list-group-item item-asignado" data-url="<?= base_url($ruta_eliminar); ?>" data-urledit="<?= base_url($ruta_update); ?>" 
+												<a href="javascript:;" class="list-group-item item-asignado" 
+													data-url="<?= base_url($ruta_eliminar); ?>" data-urledit="<?= base_url($ruta_update); ?>" 
 													data-opteid="<?= $telefonoxalumno->opte_id; ?>" 
 													data-txalnumero="<?= $telefonoxalumno->txal_numero; ?>" 
+													data-txalprincipal="<?= $telefonoxalumno->txal_principal; ?>" 
 													>
 													<?= $telefonoxalumno->opte_descripcion; ?> 
 													 - 
@@ -368,11 +394,11 @@
 											echo form_open($ruta, $attributes);
 											?>
 								            <div class="form-group">
-												<label for="apoa_nombre" class="form-control-label span0">Nombres</label>
+												<label for="apoa_nombre" class="form-control-label span0">Nombres(*)</label>
 												<input type="text" value="" id="apoa_nombre" name="apoa_nombre" class="span3" maxlength="80">
 								            </div>
 								            <div class="form-group">
-												<label for="apoa_apellido" class="form-control-label span0">Apellidos</label>
+												<label for="apoa_apellido" class="form-control-label span0">Apellidos(*)</label>
 												<input type="text" value="" id="apoa_apellido" name="apoa_apellido" class="span3" maxlength="80">
 								            </div>
 								            <div class="form-group">
@@ -386,6 +412,10 @@
 								            <div class="form-group">
 												<label for="apoa_telemovil" class="form-control-label span0">Telef. Móvil</label>
 												<input type="text" value="" id="apoa_telemovil" name="apoa_telemovil" class="span3" maxlength="20">
+								            </div>
+								            <div class="form-group">
+												<label for="apoa_email" class="form-control-label span0">Correo</label>
+												<input type="text" value="" id="apoa_email" name="apoa_email" class="span3" maxlength="100">
 								            </div>
 									       	<?php
 									        echo form_close();
@@ -413,6 +443,7 @@
 				                    <th class="cabecera-tabla"> Nro. </th>
 				                    <th class="cabecera-tabla"> Nombres </th>
 				                    <th class="cabecera-tabla"> Dirección </th>
+				                    <th class="cabecera-tabla"> Correo </th>
 				                    <th class="cabecera-tabla"> Teléfonos </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
@@ -427,7 +458,8 @@
 											<td class="texto-centrado"><?= str_pad(($item+1), 5, '0', STR_PAD_LEFT); ?></td>
 											<td class="texto-centrado"><?= $apoderado->apoa_nombre.' '.$apoderado->apoa_apellido; ?></td>
 											<td class=""><?= $apoderado->apoa_direccion; ?></td>
-											<td class="texto-centrado"><?= 'Fijo: '.$apoderado->apoa_telefijo.' / Móvil: '.$apoderado->apoa_telemovil; ?></td>
+											<td class=""><?= $apoderado->apoa_email; ?></td>
+											<td class="texto-centrado"><?= (($apoderado->apoa_telefijo=='')?'':'Fijo: '.$apoderado->apoa_telefijo.' /').(($apoderado->apoa_telemovil=='')?'':' Móvil: '.$apoderado->apoa_telemovil); ?></td>
 											<td class="texto-centrado td-actions">
 
 						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar apoderado-edit" href="javascript:;" 
@@ -437,6 +469,7 @@
 						                    		data-apoadireccion="<?= $apoderado->apoa_direccion; ?>" 
 						                    		data-apoatelefijo="<?= $apoderado->apoa_telefijo; ?>" 
 						                    		data-apoatelemovil="<?= $apoderado->apoa_telemovil; ?>" 
+						                    		data-apoaemail="<?= $apoderado->apoa_email; ?>" 
 						                    		>
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
@@ -450,7 +483,7 @@
 				                	}else{
 				                	?>
 				                		<tr>
-				                			<td class="texto-centrado" colspan="5">No tiene registros guardados</td>
+				                			<td class="texto-centrado" colspan="6">No tiene registros guardados</td>
 				                		</tr>
 				                	<?php
 				                	}//end else

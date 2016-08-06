@@ -28,18 +28,7 @@
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
-								<div class="control-group">
-									<label for="curs_codigo" class="control-label">Código curso</label>
-									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="10">
-									</div> <!-- /controls -->
-								</div> <!-- /control-group -->
-								<div class="control-group">
-									<label for="curs_descripcion" class="control-label">Curso</label>
-									<div class="controls">
-										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
-									</div> <!-- /controls -->
-								</div> <!-- /control-group -->
+
 								<div class="control-group">
 									<label for="niap_id" class="control-label">Nivel de aprendizaje</label>
 									<div class="controls">
@@ -57,6 +46,22 @@
 					                    </select>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
+								
+								<div class="control-group">
+									<label for="curs_codigo" class="control-label">Código curso</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_codigo:set_value('curs_codigo'); ?>" id="curs_codigo" name="curs_codigo" class="span8" maxlength="10">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
+
+								<div class="control-group">
+									<label for="curs_descripcion" class="control-label">Curso</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_curs))?$data_curs->curs_descripcion:set_value('curs_descripcion'); ?>" id="curs_descripcion" name="curs_descripcion" class="span8" maxlength="100">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
 							</fieldset>
 					       	<?php
 					        echo form_close();

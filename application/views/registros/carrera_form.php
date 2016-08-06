@@ -51,7 +51,7 @@
 							if(isset($data_carr)){
 							?>
 							<div class="form-subheader">
-								<h3>Módulos por carrera</h3>
+								<h3>Módulos</h3>
 								<a class="btn btn-default btn-right btn-small btn_nuevo" href="<?= base_url('registros/modulosxcarrera/nuevo/'.(str_encrypt($data_carr->carr_id, KEY_ENCRYPT))); ?>">
 									<span class="btn-icon-only <?= ICON_NEW; ?>"></span> Agregar Módulo
 								</a>

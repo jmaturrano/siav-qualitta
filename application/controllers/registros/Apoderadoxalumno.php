@@ -46,9 +46,10 @@ class Apoderadoxalumno extends CI_Controller {
 
         $this->form_validation->set_rules('apoa_nombre', 'Nombres', 'required|trim');
         $this->form_validation->set_rules('apoa_apellido', 'Apellidos', 'required|trim');
-        $this->form_validation->set_rules('apoa_direccion', 'Dirección', 'required|trim');
+        $this->form_validation->set_rules('apoa_direccion', 'Dirección', 'trim');
         $this->form_validation->set_rules('apoa_telefijo', 'Teléfono Fijo', 'trim');
         $this->form_validation->set_rules('apoa_telemovil', 'Teléfono Móvil', 'trim');
+        $this->form_validation->set_rules('apoa_email', 'Correo', 'trim');
 
         if ($this->form_validation->run() === FALSE) {
             $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
@@ -63,6 +64,7 @@ class Apoderadoxalumno extends CI_Controller {
                 'apoa_direccion'            => $datapost['apoa_direccion'],
                 'apoa_telefijo'             => $datapost['apoa_telefijo'],
                 'apoa_telemovil'            => $datapost['apoa_telemovil'],
+                'apoa_email'                => $datapost['apoa_email'],
                 'alum_id'                   => $alum_id
             );
 

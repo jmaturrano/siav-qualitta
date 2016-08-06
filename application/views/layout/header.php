@@ -27,6 +27,7 @@
 
         <!-- ================== PLUGINS ================== -->
         <script src="<?= base_url('public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') ?>"></script>
+        <script src="<?= base_url('public/assets/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js') ?>" charset="UTF-8"></script>
         <link href="<?= base_url('public/assets/plugins/bootstrap-datepicker/css/datepicker.css') ?>" rel="stylesheet" />
         <link href="<?= base_url('public/assets/plugins/bootstrap-datepicker/css/datepicker3.css') ?>" rel="stylesheet" />
         

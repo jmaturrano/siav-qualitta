@@ -55,13 +55,29 @@ class Telefonoxalumno extends CI_Controller {
         {
             $datapost = $this->security->xss_clean($this->input->post());
             $data_txal = array(
+                'txal_principal'            => ($datapost['txal_principal'] === '0') ? 'N' : 'S',
                 'txal_numero'               => $datapost['txal_numero'],
                 'opte_id'                   => $datapost['opte_id'],
                 'alum_id'                   => $alum_id
             );
 
+            if($datapost['txal_principal'] === '1'){
+                $data_txalx = array(
+                        'txal_principal' => 'N'
+                    );
+                $this->telefonoxalumno_model->updateTelefonoxalumnoByALUMID($data_txalx, $alum_id);
+            }
+
             $data_response = ($txal_id === '') ? $this->telefonoxalumno_model->insertTelefonoxalumno($data_txal) : $this->telefonoxalumno_model->updateTelefonoxalumno($data_txal, $txal_id);
             if($data_response){
+
+                $data_txaly = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM($alum_id);
+                if(count($data_txaly) === 1){
+                    $data_txalw = array(
+                            'txal_principal' => 'S'
+                        );
+                    $this->telefonoxalumno_model->updateTelefonoxalumnoByALUMID($data_txalw, $alum_id);
+                }
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
                 $this->session->set_flashdata('mensaje', (($txal_id === '') ? RMESSAGE_ASSIGNED : RMESSAGE_ASSIGNEDUP));
             }else{

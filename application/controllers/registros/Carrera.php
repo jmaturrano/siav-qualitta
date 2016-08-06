@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Carrera extends CI_Controller {
-    private static $header_title  = 'Carreras';
+    private static $header_title  = 'Programas de instrucción';
     private static $header_icon  = ICON_GROUP;
     private static $OFICINAS = array();
     private static $ROLES = array();

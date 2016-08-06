@@ -8,7 +8,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Modalidad extends CI_Controller {
-    private static $header_title  = 'Modalidad Carrera';
+    private static $header_title  = 'Modalidad Programa';
     private static $header_icon  = ICON_SETTINGS;
     private static $OFICINAS = array();
     private static $ROLES = array();

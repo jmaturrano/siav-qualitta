@@ -22,6 +22,7 @@ class Alumno extends CI_Controller {
         $this->load->model('registros/telefonoxalumno_model');
         $this->load->model('registros/apoderadoxalumno_model');
         $this->load->model('seguridad/reportexusuario_model');
+        $this->load->model('seguridad/tipodireccion_model');
     }
 
     public function initData(){
@@ -95,6 +96,7 @@ class Alumno extends CI_Controller {
         $data['data_opte']      = $this->operadortelefono_model->getOperadortelefonoAll();
         $data['data_txal']      = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM($alum_id);
         $data['data_apoa']      = $this->apoderadoxalumno_model->getApoderadoxalumnoByALUM($alum_id);
+        $data['data_tdir']      = $this->tipodireccion_model->getTipodireccionAll();
 
         $data['btn_editar']     = 'registros/alumno/editar/'.$alum_id_enc;
         $data['btn_regresar']   = 'registros/alumno';
@@ -122,6 +124,7 @@ class Alumno extends CI_Controller {
         $data['data_opte']      = $this->operadortelefono_model->getOperadortelefonoAll();
         $data['data_txal']      = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM($alum_id);
         $data['data_apoa']      = $this->apoderadoxalumno_model->getApoderadoxalumnoByALUM($alum_id);
+        $data['data_tdir']      = $this->tipodireccion_model->getTipodireccionAll();
 
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/alumno';
@@ -150,6 +153,7 @@ class Alumno extends CI_Controller {
         $data['data_opte']      = $this->operadortelefono_model->getOperadortelefonoAll();
         $data['data_txal']      = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM($alum_id);
         $data['data_apoa']      = $this->apoderadoxalumno_model->getApoderadoxalumnoByALUM($alum_id);
+        $data['data_tdir']      = $this->tipodireccion_model->getTipodireccionAll();
 
         $data['btn_editar']     = 'registros/alumno/editar/'.$alum_id_enc;
         $data['btn_regresar']   = 'registros/alumno';
@@ -204,6 +208,7 @@ class Alumno extends CI_Controller {
         $data['tipo_vista']     = 'nuevo';
         $data['data_doid']      = $this->docidentidad_model->getDocidentidadAll();
         $data['data_depa']      = $this->departamento_model->getDepartamentoAll();
+        $data['data_tdir']      = $this->tipodireccion_model->getTipodireccionAll();
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/alumno';
         $this->layout->view('registros/alumno_form', $data);
@@ -230,17 +235,17 @@ class Alumno extends CI_Controller {
         $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
         $data['PERMISOS']       = self::$PERMISOS;
         $alum_id = ($alum_id_enc === '') ? '' : str_decrypt($alum_id_enc, KEY_ENCRYPT);
-        $this->form_validation->set_rules('alum_codigo', 'Código', 'required|trim');
+        //$this->form_validation->set_rules('alum_codigo', 'Código', 'required|trim');
         $this->form_validation->set_rules('alum_nombre', 'Nombre', 'required|trim');
         $this->form_validation->set_rules('alum_apellido', 'Apellidos', 'required|trim');
         $this->form_validation->set_rules('dide_id', 'Tipo Documento', 'required');
-        $this->form_validation->set_rules('alum_numero_documento', 'Doc. Identidad', 'required');
-        $this->form_validation->set_rules('alum_fecha_nacimiento', 'Fecha nacimiento', 'required|trim');
+        $this->form_validation->set_rules('alum_numero_documento', 'Doc. Identidad', 'trim');
+        $this->form_validation->set_rules('alum_fecha_nacimiento', 'Fecha nacimiento', 'trim');
         $this->form_validation->set_rules('alum_lugar_nacimiento', 'Lugar nacimiento', 'trim');
         $this->form_validation->set_rules('alum_direccion', 'Dirección', 'trim');
         $this->form_validation->set_rules('alum_email', 'Email', 'required|trim');
-        $this->form_validation->set_rules('alum_observaciones', 'Comentario', 'trim');
-        $this->form_validation->set_rules('dist_id', 'Distrito', 'required|trim');
+        $this->form_validation->set_rules('alum_observaciones', 'Comentario', 'required|trim');
+        $this->form_validation->set_rules('dist_id', 'Distrito', 'trim');
 
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
@@ -250,6 +255,12 @@ class Alumno extends CI_Controller {
         $data['data_depa']      = $this->departamento_model->getDepartamentoAll();
         $data['data_prov']      = $this->provincia_model->getProvinciaAll(($alum_id === '')?0:$data['data_alum']->depa_id);
         $data['data_dist']      = $this->distrito_model->getDistritoAll(($alum_id === '')?0:$data['data_alum']->prov_id);
+        $data['data_exal']      = $this->estadosxalumno_model->getEstadosxalumnoAllByALUM(($alum_id === '')?0:$alum_id);
+        $data['data_opte']      = $this->operadortelefono_model->getOperadortelefonoAll();
+        $data['data_txal']      = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM(($alum_id === '')?0:$alum_id);
+        $data['data_apoa']      = $this->apoderadoxalumno_model->getApoderadoxalumnoByALUM(($alum_id === '')?0:$alum_id);
+        $data['data_tdir']      = $this->tipodireccion_model->getTipodireccionAll();
+
         $data['btn_guardar']    = true;
         $data['btn_cancelar']   = 'registros/alumno';
 
@@ -262,9 +273,8 @@ class Alumno extends CI_Controller {
         else
         {
             $datapost = $this->security->xss_clean($this->input->post());
-
             $data_alum = array(
-                'alum_codigo'               => $datapost['alum_codigo'],
+                'alum_codigo'               => $datapost['alum_numero_documento'],
                 'alum_nombre'               => $datapost['alum_nombre'],
                 'alum_apellido'             => $datapost['alum_apellido'],
                 'dide_id'                   => $datapost['dide_id'],
@@ -274,7 +284,8 @@ class Alumno extends CI_Controller {
                 'alum_direccion'            => $datapost['alum_direccion'],
                 'alum_email'                => $datapost['alum_email'],
                 'alum_observaciones'        => isset($datapost['alum_observaciones'])?$datapost['alum_observaciones']:'',
-                'dist_id'                   => $datapost['dist_id']
+                'dist_id'                   => ((!isset($datapost['dist_id']) || $datapost['dist_id'] === '')?993:$datapost['dist_id']),
+                'tdir_id'                   => isset($datapost['tdir_id']) ? $datapost['tdir_id'] : 0
             );
 
             /*imagen de usuario*/
@@ -290,6 +301,9 @@ class Alumno extends CI_Controller {
             if($alum_id === ''){
                 /* Estado 1: registrado (POR DEFECTO) */
                 $data_alum['esal_id'] = 1;
+
+                /* Registrado por: */
+                $data_alum['usua_id'] = $this->session->userdata('usua_id');
             }
 
             $data_response = ($alum_id === '') ? $this->alumno_model->insertAlumno($data_alum) : $this->alumno_model->updateAlumno($data_alum, $alum_id);

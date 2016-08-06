@@ -63,6 +63,21 @@ class Telefonoxalumno_Model extends CI_Model {
         return $txal_id;
     }
 
+    public function updateTelefonoxalumnoByALUMID($data_txal, $alum_id){
+        $where      = array(
+                        'alum_id'       => $alum_id,
+                        'txal_estado'   => DB_ACTIVO
+                        );
+        $this->db->trans_begin();        
+        $query      = $this->db->where($where)->update(self::$table_menu, $data_txal);
+        if ($this->db->trans_status() === FALSE){
+            $this->db->trans_rollback();
+            return false;
+        }
+        $this->db->trans_commit();
+        return true;
+    }
+
 
 
 
