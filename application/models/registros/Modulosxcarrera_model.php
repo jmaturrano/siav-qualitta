@@ -34,6 +34,7 @@ class Modulosxcarrera_Model extends CI_Model {
                     'modu.carr_id' => $carr_id,
                     'modu.modu_estado' => DB_ACTIVO
                     );
+        $this->db->order_by('modu_codigo', 'asc');
         $this->db->where($where);
         $this->db->join('carrera carr', 'carr.carr_id = modu.carr_id');
         //$this->db->join('nivel_aprendizaje niap', 'niap.niap_id = modu.niap_id');

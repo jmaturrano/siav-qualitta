@@ -15,7 +15,7 @@ $(document).ready(function(){
 		}
 	}
 
-	$(document).on('click', '#btn_guardar', function(e){
+	$(document).on('click', '.btn_guardar', function(e){
 		if($('#form_departamento').length > 0){
 			$('#form_departamento').submit();
 		}

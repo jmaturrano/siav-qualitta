@@ -131,6 +131,7 @@ $(document).ready(function(){
 		var apoa_telefijo 	= $(this).attr('data-apoatelefijo');
 		var apoa_telemovil 	= $(this).attr('data-apoatelemovil');
 		var apoa_email 		= $(this).attr('data-apoaemail');
+		var apoa_principal 	= $(this).attr('data-apoaprincipal');
 
 		$('#form_apoderadousuario').attr('action', data_urledit);
 		$('#apoa_nombre').val(apoa_nombre);
@@ -139,10 +140,15 @@ $(document).ready(function(){
 		$('#apoa_telefijo').val(apoa_telefijo);
 		$('#apoa_telemovil').val(apoa_telemovil);
 		$('#apoa_email').val(apoa_email);
+
+		$('#apoa_principal').val((apoa_principal === 'S') ? '1' : '0');
+		$('#apoa_principal').checkboxX('refresh');
+
 		$('#agregar_apoderado').modal('show');
 	});
 
 	$(document).on('click', '#btn_agregar_apoderado', function(e){
+		$('input[type=checkbox]').prop('checked', true);
 		$('#form_apoderadousuario').submit();
 		e.preventDefault();
 	});

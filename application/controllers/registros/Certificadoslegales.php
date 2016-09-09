@@ -212,7 +212,9 @@ class Certificadoslegales extends CI_Controller {
             $validacion_unique = '|is_unique[certificados_legales.cele_descripcion]';
         }//end if
         $this->form_validation->set_rules('cele_descripcion', 'Descripción','required|trim'.$validacion_unique);
-        $this->form_validation->set_rules('cele_anios_vigencia', 'Año de Vigencia','required|trim');
+        $this->form_validation->set_rules('cele_anios_vigencia', 'Vigencia','required|trim');
+        $this->form_validation->set_rules('cele_unidad_vigencia', 'Unidad de tiempo','required|trim');
+        
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;
         $data['tipo_vista']     = ($cele_id === '')?'nuevo':'editar';
@@ -230,7 +232,8 @@ class Certificadoslegales extends CI_Controller {
             $datapost = $this->security->xss_clean($this->input->post());
             $data_cele = array(
                 'cele_descripcion'           => $datapost['cele_descripcion'],
-                'cele_anios_vigencia'         => $datapost['cele_anios_vigencia']
+                'cele_anios_vigencia'         => $datapost['cele_anios_vigencia'],
+                'cele_unidad_vigencia'         => $datapost['cele_unidad_vigencia']
                             );
             $data_response = ($cele_id === '') ? $this->certificadoslegales_model->insertCertificadoslegales($data_cele) : $this->certificadoslegales_model->updateCertificadoslegales($data_cele, $cele_id);
             if($data_response){

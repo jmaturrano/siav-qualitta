@@ -206,7 +206,7 @@ class Provincia extends CI_Controller {
 
         $data['data_depa']      = $this->departamento_model->getDepartamentoByID($depa_id);
         //$this->form_validation->set_rules('depa_id', 'Departamento', 'required');
-        $this->form_validation->set_rules('prov_codref', 'Código', 'required|trim');
+        $this->form_validation->set_rules('prov_codigo', 'Código', 'required|trim');
         $this->form_validation->set_rules('prov_descripcion', 'Provincia', 'required|trim');
 
         $data['header_title']   = self::$header_title;
@@ -225,7 +225,7 @@ class Provincia extends CI_Controller {
             $datapost = $this->security->xss_clean($this->input->post());
             $data_prov = array(
                 'depa_id'                        => $depa_id,
-                'prov_codref'                    => $datapost['prov_codref'],
+                'prov_codigo'                    => $datapost['prov_codigo'],
                 'prov_descripcion'               => $datapost['prov_descripcion']
             );
             $data_response = ($prov_id === '') ? $this->provincia_model->insertProvincia($data_prov) : $this->provincia_model->updateProvincia($data_prov, $prov_id);

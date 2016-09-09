@@ -65,8 +65,16 @@ class Apoderadoxalumno extends CI_Controller {
                 'apoa_telefijo'             => $datapost['apoa_telefijo'],
                 'apoa_telemovil'            => $datapost['apoa_telemovil'],
                 'apoa_email'                => $datapost['apoa_email'],
+                'apoa_principal'            => ($datapost['apoa_principal'] === '0') ? 'N' : 'S',
                 'alum_id'                   => $alum_id
             );
+
+            if($datapost['apoa_principal'] === '1'){
+                $data_apoax = array(
+                        'apoa_principal' => 'N'
+                    );
+                $this->apoderadoxalumno_model->updateApoderadoxalumnoByALUMID($data_apoax, $alum_id);
+            }
 
             $data_response = ($apoa_id === '') ? $this->apoderadoxalumno_model->insertApoderadoxalumno($data_apoa) : $this->apoderadoxalumno_model->updateApoderadoxalumno($data_apoa, $apoa_id);
             if($data_response){

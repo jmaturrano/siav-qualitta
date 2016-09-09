@@ -109,7 +109,7 @@
 									<label for="alum_fecha_nacimiento" class="control-label">Fecha de nacimiento</label>
 									<div class="controls">
 									    <div class="datepickerx" data-date="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
-									      <input class="span2" size="16" type="text" value="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):date('d/m/Y'); ?>" id="alum_fecha_nacimiento" name="alum_fecha_nacimiento">
+									      <input class="span2" size="16" type="text" value="<?= (isset($data_alum))?fecha_latino($data_alum->alum_fecha_nacimiento):set_value('alum_fecha_nacimiento'); ?>" id="alum_fecha_nacimiento" name="alum_fecha_nacimiento">
 									    </div>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
@@ -195,6 +195,14 @@
                                         </select>
                                     </div> <!-- /controls -->
                                 </div> <!-- /control-group -->
+
+
+								<div class="control-group">
+									<label for="alum_seguro" class="control-label">Seguro</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_alum))?$data_alum->alum_seguro:set_value('alum_seguro'); ?>" id="alum_seguro" name="alum_seguro" class="span8" maxlength="100">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
 
 								<div class="control-group">
 									<label for="alum_observaciones" class="control-label">Observaciones</label>
@@ -417,6 +425,12 @@
 												<label for="apoa_email" class="form-control-label span0">Correo</label>
 												<input type="text" value="" id="apoa_email" name="apoa_email" class="span3" maxlength="100">
 								            </div>
+											<div class="form-group">
+												<label class="form-control-label span0" for="apoa_principal">Llamar en caso de emergencia?</label>
+												<div style="padding-bottom: 6px;">
+													<input type="checkbox" name="apoa_principal" data-toggle="checkbox-x" data-three-state="false" class="" value="0" id="apoa_principal">
+												</div>
+											</div>
 									       	<?php
 									        echo form_close();
 									        ?>
@@ -445,6 +459,7 @@
 				                    <th class="cabecera-tabla"> Dirección </th>
 				                    <th class="cabecera-tabla"> Correo </th>
 				                    <th class="cabecera-tabla"> Teléfonos </th>
+				                    <th class="cabecera-tabla"> Llamar en EMERG. </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
 				                </thead>
@@ -460,6 +475,7 @@
 											<td class=""><?= $apoderado->apoa_direccion; ?></td>
 											<td class=""><?= $apoderado->apoa_email; ?></td>
 											<td class="texto-centrado"><?= (($apoderado->apoa_telefijo=='')?'':'Fijo: '.$apoderado->apoa_telefijo.' /').(($apoderado->apoa_telemovil=='')?'':' Móvil: '.$apoderado->apoa_telemovil); ?></td>
+											<td class="texto-centrado"><?= interpretar_booleanchar($apoderado->apoa_principal); ?></td>
 											<td class="texto-centrado td-actions">
 
 						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar apoderado-edit" href="javascript:;" 
@@ -470,6 +486,7 @@
 						                    		data-apoatelefijo="<?= $apoderado->apoa_telefijo; ?>" 
 						                    		data-apoatelemovil="<?= $apoderado->apoa_telemovil; ?>" 
 						                    		data-apoaemail="<?= $apoderado->apoa_email; ?>" 
+						                    		data-apoaprincipal="<?= $apoderado->apoa_principal; ?>" 
 						                    		>
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
@@ -483,7 +500,7 @@
 				                	}else{
 				                	?>
 				                		<tr>
-				                			<td class="texto-centrado" colspan="6">No tiene registros guardados</td>
+				                			<td class="texto-centrado" colspan="7">No tiene registros guardados</td>
 				                		</tr>
 				                	<?php
 				                	}//end else

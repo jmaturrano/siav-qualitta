@@ -521,3 +521,11 @@ if(!function_exists('procesar_horas')){
         return date('H:i:s', strtotime($hh.':'.$mm.':'.$ss));
     }
 }
+
+
+if(!function_exists('array_unidades_tiempo')){
+    function array_unidades_tiempo(){
+        $tiempo = array('DIA', 'MES', 'ANO');
+        return $tiempo;
+    }
+}

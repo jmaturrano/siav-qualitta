@@ -244,7 +244,8 @@ class Alumno extends CI_Controller {
         $this->form_validation->set_rules('alum_lugar_nacimiento', 'Lugar nacimiento', 'trim');
         $this->form_validation->set_rules('alum_direccion', 'Dirección', 'trim');
         $this->form_validation->set_rules('alum_email', 'Email', 'required|trim');
-        $this->form_validation->set_rules('alum_observaciones', 'Comentario', 'required|trim');
+        $this->form_validation->set_rules('alum_seguro', 'Seguro', 'trim');
+        $this->form_validation->set_rules('alum_observaciones', 'Comentario', 'trim');
         $this->form_validation->set_rules('dist_id', 'Distrito', 'trim');
 
         $data['header_title']   = self::$header_title;
@@ -253,8 +254,21 @@ class Alumno extends CI_Controller {
         $data['data_alum']      = $this->alumno_model->getAlumnoByID(($alum_id === '')?0:$alum_id);
         $data['data_doid']      = $this->docidentidad_model->getDocidentidadAll();
         $data['data_depa']      = $this->departamento_model->getDepartamentoAll();
-        $data['data_prov']      = $this->provincia_model->getProvinciaAll(($alum_id === '')?0:$data['data_alum']->depa_id);
-        $data['data_dist']      = $this->distrito_model->getDistritoAll(($alum_id === '')?0:$data['data_alum']->prov_id);
+
+        $post_depa_id = 0;
+        if($this->input->post('depa_id')){
+            if($this->input->post('depa_id') != ''){
+                $post_depa_id = $this->input->post('depa_id');
+            }
+        }
+        $post_prov_id = 0;
+        if($this->input->post('prov_id')){
+            if($this->input->post('prov_id') != ''){
+                $post_prov_id = $this->input->post('prov_id');
+            }
+        }
+        $data['data_prov']      = $this->provincia_model->getProvinciaAll($post_depa_id);
+        $data['data_dist']      = $this->distrito_model->getDistritoAll($post_prov_id);
         $data['data_exal']      = $this->estadosxalumno_model->getEstadosxalumnoAllByALUM(($alum_id === '')?0:$alum_id);
         $data['data_opte']      = $this->operadortelefono_model->getOperadortelefonoAll();
         $data['data_txal']      = $this->telefonoxalumno_model->getTelefonoxalumnoByALUM(($alum_id === '')?0:$alum_id);
@@ -283,6 +297,7 @@ class Alumno extends CI_Controller {
                 'alum_lugar_nacimiento'     => $datapost['alum_lugar_nacimiento'],
                 'alum_direccion'            => $datapost['alum_direccion'],
                 'alum_email'                => $datapost['alum_email'],
+                'alum_seguro'               => isset($datapost['alum_seguro'])?$datapost['alum_seguro']:'',
                 'alum_observaciones'        => isset($datapost['alum_observaciones'])?$datapost['alum_observaciones']:'',
                 'dist_id'                   => ((!isset($datapost['dist_id']) || $datapost['dist_id'] === '')?993:$datapost['dist_id']),
                 'tdir_id'                   => isset($datapost['tdir_id']) ? $datapost['tdir_id'] : 0

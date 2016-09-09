@@ -213,7 +213,7 @@ class Distrito extends CI_Controller {
         $data['data_depa']      = $this->departamento_model->getDepartamentoByID($depa_id);
 
         //$this->form_validation->set_rules('prov_id', 'Provincia', 'required');
-        $this->form_validation->set_rules('dist_codref', 'Código', 'required|trim');
+        $this->form_validation->set_rules('dist_codigo', 'Código', 'required|trim');
         $this->form_validation->set_rules('dist_descripcion', 'Distrito', 'required|trim');
         $datapost = $this->security->xss_clean($this->input->post());
         //echo "datapost"; print_r($datapost);die();
@@ -240,7 +240,7 @@ class Distrito extends CI_Controller {
             
             $data_dist = array( 
                 'prov_id'           => $prov_id,
-                'dist_codref'       => $datapost['dist_codref'],
+                'dist_codigo'       => $datapost['dist_codigo'],
                 'dist_descripcion'  => $datapost['dist_descripcion']
             );
             $data_response = ($dist_id === '') ? $this->distrito_model->insert($data_dist) : $this->distrito_model->update($data_dist, $dist_id);
