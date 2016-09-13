@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------
-Main theme System - IOrganizacional
+Main theme System - MK System
 ------------------------------------------------------------------*/
 img{
 	max-height: 100%;
@@ -1182,4 +1182,7 @@ a.label-badge-info:hover{
 }
 a.label-badge-info .badge{
   background-color: #cdcdcd;
+}
+#observacion_ajax{
+  color: #FF0000;
 }

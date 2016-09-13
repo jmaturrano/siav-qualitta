@@ -13,8 +13,14 @@ class Alumno_Model extends CI_Model {
 
 
     public function getAlumnoAll($q = '', $limit = 1000, $offset = 0){
+
+        $ofic_id = $this->session->userdata('ofic_id');
+
         $this->db->limit($limit, $offset);
-        $where = array('alum.alum_estado'=>DB_ACTIVO);
+        $where = array(
+                    'alum.alum_estado'=>DB_ACTIVO,
+                    'alum.ofic_id' => $ofic_id
+                );
         $this->db->order_by('alum.alum_nombre', 'asc');
         $this->db->where($where);
         if($q !== ''){
@@ -45,8 +51,13 @@ class Alumno_Model extends CI_Model {
     }
 
     public function contar_estructuras_todos() {
-        $this->db->where('alum_estado', DB_ACTIVO);
-        return $this->db->count_all_results(self::$table_menu);
+        $ofic_id = $this->session->userdata('ofic_id');
+        $where = array(
+                    'alum.alum_estado'   => DB_ACTIVO,
+                    'alum.ofic_id'  => $ofic_id
+            );
+        $this->db->where($where);
+        return $this->db->count_all_results(self::$table_menu.' alum');
     }
 
     public function getAlumnoByID($alum_id){

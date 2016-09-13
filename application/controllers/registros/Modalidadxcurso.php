@@ -20,6 +20,7 @@ class Modalidadxcurso extends CI_Controller {
         $this->initData();
         $this->load->model('registros/modalidadxcurso_model');
         $this->load->model('registros/curso_model');
+        $this->load->model('registros/modulosxcarrera_model');
     }
 
      /**
@@ -143,7 +144,7 @@ class Modalidadxcurso extends CI_Controller {
               $data_verifica = $this->modalidadxcurso_model->getModalidadxcursoByCURSIDMODAIDLIPEID($moda_id, $datapost['curs_id'], $datapost['lipe_id']);
               if(!isset($data_verifica)){
                 $data_mxca[] = array(
-                    'mxca_horas'    => strtotime('00:00:00'),
+                    'mxca_horas'    => '00:00:00',
                     'mxca_precio'   => 0,
                     'moda_id'       => $moda_id,
                     'curs_id'       => $datapost['curs_id'],
@@ -177,10 +178,14 @@ class Modalidadxcurso extends CI_Controller {
       ($moda_id_enc === '') ? redirect('registros/modalidad') : '';
       $moda_id = str_decrypt($moda_id_enc, KEY_ENCRYPT);
 
+      
+      $this->form_validation->set_rules('modu_idx', 'Módulo', 'required|trim');
+      $this->form_validation->set_rules('modu_costox', 'Costo Módulo', 'required|trim|numeric');
+      
       $this->form_validation->set_rules('chk_registro[]', 'Curso', 'required');
       $this->form_validation->set_rules('mxca_id[]', 'Curso', 'required');
       $this->form_validation->set_rules('mxca_horas[]', 'Horas', 'trim');
-      $this->form_validation->set_rules('mxca_precio[]', 'Precio', 'trim');
+      //$this->form_validation->set_rules('mxca_precio[]', 'Precio', 'trim');
       $this->form_validation->set_rules('mxca_observacion[]', 'Observaciones', 'trim');
 
       $this->load->library('layout');
@@ -191,8 +196,8 @@ class Modalidadxcurso extends CI_Controller {
       else
       {
           $datapost = $this->security->xss_clean($this->input->post());
-          $data_mxca = array();
 
+          $data_mxca = array();
           foreach ($datapost['chk_registro'] as $item => $chk_registro) {
             if($chk_registro === '1'){
               $str_time = str_replace('AM', '', $datapost['mxca_horas'][$item]);
@@ -202,7 +207,7 @@ class Modalidadxcurso extends CI_Controller {
               $data_mxca[] = array(
                   'mxca_id'           => $datapost['mxca_id'][$item],
                   'mxca_horas'        => trim($str_time),
-                  'mxca_precio'       => $datapost['mxca_precio'][$item],
+                  'mxca_precio'       => 0,
                   'moda_id'           => $moda_id,
                   'curs_id'           => $datapost['curs_id'][$item],
                   'lipe_id'           => $datapost['lipe_id'][$item],
@@ -212,6 +217,14 @@ class Modalidadxcurso extends CI_Controller {
           }//end foreach
           $data_response = $this->modalidadxcurso_model->updateModalidadxcursoGROUP($data_mxca);
           if($data_response){
+
+              /* ACTUALIZAR PRECIO DE MODULO */
+              $data_modu = array(
+                  'modu_costo'          => $datapost['modu_costox']
+              );
+              $this->modulosxcarrera_model->updateModulosxcarrera($data_modu, $datapost['modu_idx']);
+              /* ACTUALIZAR PRECIO DE MODULO - END */
+
               $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
               $this->session->set_flashdata('mensaje', RMESSAGE_UPDATE);
           }else{

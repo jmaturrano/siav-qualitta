@@ -130,7 +130,7 @@ class Requisitosxalumno extends CI_Controller {
         $rxal_id = str_decrypt($rxal_id_enc, KEY_ENCRYPT);
 
         $this->form_validation->set_rules('rxal_cumplido', 'Cumplido', 'required|trim');
-        $this->form_validation->set_rules('rxal_observacion', 'Observacion', 'required|trim');
+        $this->form_validation->set_rules('rxal_observacion', 'Observacion', 'trim');
 
         $data['header_title']   = self::$header_title;
         $data['header_icon']    = self::$header_icon;

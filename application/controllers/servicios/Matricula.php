@@ -31,6 +31,8 @@ class Matricula extends CI_Controller {
         $this->load->model('registros/estadomatricula_model');
         $this->load->model('registros/requisitosxcarrera_model');
         $this->load->model('servicios/requisitosxalumno_model');
+        $this->load->model('servicios/financiamiento_model');
+        $this->load->model('registros/modulosxcarrera_model');
         date_default_timezone_set('America/Lima');
     }
 
@@ -376,7 +378,16 @@ class Matricula extends CI_Controller {
                       }//endforeach
                       $this->requisitosxalumno_model->insertRequisitosxalumnoByGROUP($data_rxal);
                     }
-                    /* 1.4.- REQUISITOS X ALUMNO - END */                    
+                    /* 1.4.- REQUISITOS X ALUMNO - END */
+
+                    /* 1.5.- FINANCIAMIENTO MATRICULA - 1CUOTA */
+                    $data_fima = array(
+                        'fima_monto'            => $matr_costofinal,
+                        'fima_fecha_programada' => date('Y-m-d', strtotime(str_replace('/', '-', $datapost['matr_fecha_proceso']))),
+                        'matr_id'               => $matr_id
+                    );
+                    $this->financiamiento_model->insertFinanciamiento($data_fima);
+                    /* 1.5.- FINANCIAMIENTO MATRICULA - 1CUOTA - END */
 
                 }else{
                   /* 2.- ACTUALIZAR */
@@ -414,7 +425,14 @@ class Matricula extends CI_Controller {
       if(isset($data_mxca)){
         foreach ($data_mxca as $item => $mxca) {
           $carr_horas     = procesar_horas('suma', $carr_horas, $mxca->mxca_horas);
-          $carr_precio    += $mxca->mxca_precio;
+          //$carr_precio    += $mxca->mxca_precio;
+        }//end foreach
+      }//end if
+
+      $data_modu = $this->modulosxcarrera_model->getModulosxcarreraByCARRID($carr_id);
+      if(isset($data_modu)){
+        foreach ($data_modu as $item => $modu) {
+          $carr_precio += $modu->modu_costo;
         }//end foreach
       }//end if
 

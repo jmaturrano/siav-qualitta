@@ -54,6 +54,8 @@ $(document).ready(function(){
 		var modu_id 		= $('#modu_id').val();
 		var lipe_id 		= $('#lipe_id').val();
 
+		$('#modu_costo').removeAttr('disabled');
+
 		if(carr_id === ''){
 			bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> Selecione una carrera...");
 			return false;
@@ -94,11 +96,17 @@ $(document).ready(function(){
 					//html 				+= '<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>';
 					html 				+= '</div>';
 					html 				+= '</td>';
-					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_precio[]" class="span1" value="'+parseFloat(mxca_precio).toFixed(2)+'"></td>';
+					html 				+= '<td class="texto-centrado" style="display: none;"><input type="text" name="mxca_precio[]" class="span1" value="'+parseFloat(mxca_precio).toFixed(2)+'"></td>';
 					html 				+= '<td class="texto-centrado"><input type="text" name="mxca_observacion[]" class="span3" value="'+mxca_observacion+'"></td>';
 					html 				+= '</tr>';
 					
 				}//end for
+        	}else{
+        		html 				+= '<tr>';
+        		html 				+= '<td class="texto-centrado" colspan="5">';
+        		html 				+= '<span>No se encontraron registros... ¿Es la lista de precios correcta?. Pruebe agregar cursos!</span>';
+        		html 				+= '</td>';
+        		html 				+= '</tr>';
         	}
 			$('#table_modxcurso').find('tbody').empty().html(html);
 			$('.timepicker').datetimepicker({format: 'LT'});
@@ -111,6 +119,15 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#btn_guardarcurso', function(e){
+
+		var modu_costo 	= $('#modu_costo').val().trim();
+		var modu_id 	= $('#modu_id').val();
+		if(modu_costo === ''){
+			bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> Por favor ingrese un costo para el módulo...");
+			return false;
+		}//end if
+		$('#modu_costox').val(modu_costo);
+		$('#modu_idx').val(modu_id);
 
         bootbox.dialog({
             title: '<h3 class="dialog-agregar"><span class=\"glyphicon glyphicon-exclamation-sign\"></span> Guardar cambios</h3>',
@@ -198,6 +215,15 @@ $(document).ready(function(){
 		e.preventDefault();
 	});
 
+	$(document).on('change', '.check_table_all', function(e){
+		$('.chk_registro').prop('checked', true);
+		if($(this).val() === '1'){
+			$('.chk_registro').val('1');
+		}else{
+			$('.chk_registro').val('0');
+		}
+		$('.chk_registro').checkboxX('refresh');
+	});
 
 	//$('.selectpicker-ubig').selectpicker('refresh');
 });

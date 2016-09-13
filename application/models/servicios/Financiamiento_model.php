@@ -43,6 +43,21 @@ class Financiamiento_Model extends CI_Model {
         return null;
     }
 
+    public function getFinanciamientoAllByMATRID($matr_id){
+        $where = array(
+            'fima_estado'=>DB_ACTIVO,
+            'matr_id' => $matr_id
+            );
+        $this->db->order_by('fima_fecha_programada', 'asc');
+        $this->db->order_by('fima_fecha_proceso', 'asc');
+        $this->db->where($where);
+        $query = $this->db->get(self::$table_menu);
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+        return null;
+    }
+
     /**
       * Fx de Contar registros
       *

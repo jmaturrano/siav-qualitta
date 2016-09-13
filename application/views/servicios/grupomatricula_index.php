@@ -20,7 +20,7 @@
 							  'id'      	=> 'form_listar',
 							  'name'    	=> 'form_listar'
 							  );
-							$ruta = 'registros/conceptosmatricula/buscar';
+							$ruta = 'servicios/grupomatricula/buscar';
 							echo form_open($ruta, $attributes);
 							?>
 				            <input type="text" placeholder="Buscar" class="search-query" name="q" id="txt_buscar" value="<?= (isset($q))?$q:''; ?>">
@@ -33,11 +33,10 @@
 				                <thead>
 				                  <tr>
 				                    <th class="cabecera-tabla"> Nro. </th>
-				                    <th class="cabecera-tabla"> Lista precio </th>
-				                    <th class="cabecera-tabla"> Tipo concepto </th>
-				                    <th class="cabecera-tabla"> Descripción </th>
-				                    <th class="cabecera-tabla"> Costo </th>
-				                    <th class="cabecera-tabla"> Obligatorio </th>
+				                    <th class="cabecera-tabla"> Carrera </th>
+				                    <th class="cabecera-tabla"> Modalidad </th>
+				                    <th class="cabecera-tabla"> Fecha inicio </th>
+				                    <th class="cabecera-tabla"> Observación </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
 				                </thead>
@@ -45,24 +44,23 @@
 				                	<?php
 				                	if(!isset($offset))
 				                		$offset=0;
-				                	if(isset($data_cmat)){
-				                		foreach ($data_cmat as $item => $conceptomat) {
+				                	if(isset($data_gmat)){
+				                		foreach ($data_gmat as $item => $grupomatricula) {
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1)+$offset, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class="texto-centrado"><?= $conceptomat->lipe_descripcion; ?></td>
-											<td class="texto-centrado"><?= $conceptomat->ctip_descripcion; ?></td>
-											<td class=""><?= $conceptomat->cmat_descripcion; ?></td>
-											<td class="texto-derecha"><?= number_format($conceptomat->cmat_costo, 2); ?></td>
-											<td class="texto-centrado"><?= interpretar_booleanchar($conceptomat->cmat_obligatorio); ?></td>
+											<td class="texto-centrado"><?= $grupomatricula->carr_codigo; ?></td>
+											<td class="texto-centrado"><?= $grupomatricula->moda_descripcion; ?></td>
+											<td class="texto-centrado"><?= fecha_latino($grupomatricula->gmat_fecha_inicio); ?></td>
+											<td class="texto-centrado"><?= $grupomatricula->gmat_observacion; ?></td>
 											<td class="texto-centrado td-actions">
-						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('registros/conceptosmatricula/ver/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('servicios/grupomatricula/ver/'.str_encrypt($grupomatricula->gmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
 						                    	</a>
-						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('registros/conceptosmatricula/editar/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('servicios/grupomatricula/editar/'.str_encrypt($grupomatricula->gmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
-						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('registros/conceptosmatricula/eliminar/'.str_encrypt($conceptomat->cmat_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('servicios/grupomatricula/eliminar/'.str_encrypt($grupomatricula->gmat_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
 						                    	</a>
 											</td>
@@ -93,4 +91,4 @@
 	</div> <!-- /main-inner -->
 </div> <!-- /main -->
 
-<script src="<?php echo base_url('public/assets/js/Conceptomatricula.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/grupomatricula.js') ?>"></script>

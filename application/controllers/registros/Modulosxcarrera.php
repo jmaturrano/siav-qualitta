@@ -159,7 +159,10 @@ class Modulosxcarrera extends CI_Controller {
                 'modu_descripcion'          => $datapost['modu_descripcion'],
                 'carr_id'                   => $carr_id
             );
-            $data_response = ($modu_id === '') ? $this->modulosxcarrera_model->insertModulosxcarrera($data_modu) : $this->modulosxcarrera_model->updateModulosxcarrera($data_modu, $carr_id);
+            if($modu_id === ''){
+                $data_modu['modu_costo'] = 0;
+            }
+            $data_response = ($modu_id === '') ? $this->modulosxcarrera_model->insertModulosxcarrera($data_modu) : $this->modulosxcarrera_model->updateModulosxcarrera($data_modu, $modu_id);
             if($data_response){
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
                 $this->session->set_flashdata('mensaje', (($modu_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));

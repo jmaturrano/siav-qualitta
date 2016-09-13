@@ -48,7 +48,14 @@ class Matricula_Model extends CI_Model {
 
     public function getMatriculaAllPAGOS($q = '', $limit = 1000, $offset = 0){
         $this->db->limit($limit, $offset);
-        $where = array('matr.matr_estado'=>DB_ACTIVO);
+        $where = array(
+          'matr.matr_estado'=>DB_ACTIVO,
+          'fima.fima_estado'=>DB_ACTIVO,
+          'gmat.gmat_estado'=>DB_ACTIVO,
+          'emat.emat_estado'=>DB_ACTIVO,
+          'alum.alum_estado'=>DB_ACTIVO,
+          'carr.carr_estado'=>DB_ACTIVO
+          );
         if($q !== ''){
             $this->db->group_start();
             $this->db->like('matr.matr_codigo',$q);

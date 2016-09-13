@@ -73,7 +73,7 @@
 				                	}else{
 				                	?>
 				                		<tr>
-				                			<td class="texto-centrado" colspan="7">
+				                			<td class="texto-centrado" colspan="8">
 				                				<span>No se encontraron registros...</span>
 				                			</td>
 				                		</tr>

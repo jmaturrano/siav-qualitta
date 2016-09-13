@@ -141,6 +141,7 @@
 										<button class="btn btn-warning" type="button" id="btn_verificardisponibilidad" data-url="<?= base_url('servicios/matricula/verificadisponibilidad_ajax/{MODA_ID}/{CARR_ID}/{ALUM_ID}/{LIPE_ID}'); ?>" <?= isset($data_matr)?'style="display: none;"':''; ?>>
 											<span class="<?= ICON_SEARCH; ?>"></span> Verificar disponibilidad
 										</button>
+										<span id="observacion_ajax"></span>
 										<?php
 										if(isset($data_matr)){
 										?>
@@ -272,9 +273,8 @@
 								<div class="control-group">
 									<label for="matr_fecha_proceso" class="control-label">Fecha matrícula</label>
 									<div class="controls">
-									    <div class="input-append date datepicker" data-date="<?= (isset($data_matr))?fecha_latino($data_matr->matr_fecha_proceso):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
+									    <div class="datepickerx" data-date="<?= (isset($data_matr))?fecha_latino($data_matr->matr_fecha_proceso):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
 									      <input class="span2" size="16" type="text" value="<?= (isset($data_matr))?fecha_latino($data_matr->matr_fecha_proceso):date('d/m/Y'); ?>" id="matr_fecha_proceso" name="matr_fecha_proceso" disabled>
-									      <span class="add-on"><i class="icon-th"></i></span>
 									    </div>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->

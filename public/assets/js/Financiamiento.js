@@ -12,6 +12,9 @@ $(document).ready(function(){
 	}
 
 	$(document).on('click', '.btn_guardar', function(e){
+		if($('#fima_pagado').length > 0){
+			$('#fima_pagado').checkboxX('refresh');
+		}//end if
         $('#form_financiamiento').submit();
 		e.preventDefault();
 	});

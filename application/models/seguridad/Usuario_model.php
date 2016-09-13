@@ -15,6 +15,7 @@ class Usuario_Model extends CI_Model {
 
 
     public function getUsuarioAll($q = '', $limit = 1000, $offset = 0){
+
         $this->db->limit($limit, $offset);
         $where = array('usua_estado'=>DB_ACTIVO);
         $this->db->order_by('usua_nombre', 'asc');

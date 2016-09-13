@@ -82,10 +82,17 @@
                                         <select class="selectpicker span8 selectpicker-carrera" name="modu_id" id="modu_id" data-live-search="true" 
                                         data-subruta="<?= base_url('registros/curso/getCursosxmodulo_ajax/{SELECTED}'); ?>"  
                                         data-container="body">
-                                            <option value="">Seleccione</option>
+                                            <option value="" data-moducosto="">Seleccione</option>
                                         </select>
                                     </div> <!-- /controls -->
                                 </div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="modu_costo" class="control-label">Costo Módulo</label>
+									<div class="controls">
+										<input type="text" id="modu_costo" name="modu_costo" class="span8 form-control" value="" disabled>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
 
                                 <div class="control-group">
                                     <label for="curs_id" class="control-label" style="">Curso</label>
@@ -150,14 +157,17 @@
 							echo form_open($ruta, $attributes);
 							?>
 
+							<input type="hidden" id="modu_costox" name="modu_costox" >
+							<input type="hidden" id="modu_idx" name="modu_idx" >
+							
 							<table class="table table-striped table-bordered" id="table_modxcurso">
 				                <thead>
 				                  <tr>
-				                  	<th class="cabecera-tabla"> </th>
+				                  	<th class="cabecera-tabla"> <input type="checkbox" data-toggle="checkbox-x" data-three-state="false" value="0" class="check_table_all"> </th>
 				                    <th class="cabecera-tabla"> Código </th>
 				                    <th class="cabecera-tabla"> Curso </th>
 				                    <th class="cabecera-tabla"> Horas </th>
-				                    <th class="cabecera-tabla"> Precio </th>
+				                    <th class="cabecera-tabla" style="display: none;"> Precio </th>
 				                    <th class="cabecera-tabla"> Observaciones </th>
 				                  </tr>
 				                </thead>
@@ -175,7 +185,7 @@
 								                <span class='input-group-addon'><span class='glyphicon glyphicon-time'></span></span>
 								              </div>
 											</td>
-											<td class="texto-centrado">
+											<td class="texto-centrado" style="display: none;">
 												<div class="controls">
 													<input type="text" name="mxca_precio[]" class="span1" >
 												</div> <!-- /controls -->
@@ -196,7 +206,7 @@
 				                	}else{
 				                	?>
 				                	<tr>
-				                		<td colspan="6" class="texto-centrado">
+				                		<td colspan="5" class="texto-centrado">
 				                			<span>No se encontraron registros...</span>
 				                		</td>
 				                	</tr>

@@ -36,6 +36,7 @@ class Conceptosmatricula_Model extends CI_Model {
         $this->db->order_by('cmat.cmat_orden', 'asc');
         $this->db->where($where);
         $this->db->join('conceptos_tipo ctip', 'ctip.ctip_id = cmat.ctip_id');
+        $this->db->join('lista_precios lipe', 'lipe.lipe_id = cmat.lipe_id');
         $query = $this->db->get(self::$table_menu.' cmat');
         if($query->num_rows() > 0){
             return $query->result();

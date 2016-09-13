@@ -175,35 +175,45 @@ $(document).ready(function(){
             bootbox.alert("<span class=\"glyphicon glyphicon-ok\"></span> Matrícula disponible. Complete los datos y presione Guardar");
 
             $('#gmat_id').empty().append('<option value="">Seleccione</option>');
-            for(var i = 0; i < data_gmat.length; i++){
-            	var gmat_id 			= data_gmat[i].gmat_id;
-            	var gmat_fecha_inicio 	= data_gmat[i].gmat_fecha_inicio;
-            	$('#gmat_id').append('<option value="'+gmat_id+'">'+gmat_fecha_inicio+'</option>');
-            }//end for
+            $('#observacion_ajax').html('');
+            if(data_gmat){
+	            for(var i = 0; i < data_gmat.length; i++){
+	            	var gmat_id 			= data_gmat[i].gmat_id;
+	            	var gmat_fecha_inicio 	= data_gmat[i].gmat_fecha_inicio;
+	            	$('#gmat_id').append('<option value="'+gmat_id+'">'+gmat_fecha_inicio+'</option>');
+	            }//end for
+            }else{
+            	$('#observacion_ajax').html(' * No se ha encontrado un grupo disponible. Verifique la opción: Grupos de Inicio.');
+            }
 
             $('#table_costos').find('tbody').empty();
+            $('#table_costos').find('tfoot').empty();
             var html_table = '';
             var costo_total = 0;
-            for(var j = 0; j < data_cmat.length; j++){
-            	var cmat_id 			= data_cmat[j].cmat_id;
-            	var cmat_descripcion 	= data_cmat[j].cmat_descripcion;
-            	var cmat_costo 			= parseFloat(data_cmat[j].cmat_costo).toFixed(2);
-            	var cmat_obligatorio 	= data_cmat[j].cmat_obligatorio;
-            	var checked 			= '';
-            	if(cmat_obligatorio === 'S'){
-            		checked = 'disabled';
-            	}
-            	html_table = '';
-            	html_table += '<tr class="cmat_id_'+cmat_id+'">';
-            	html_table += '<td class="cmat_id">'+cmat_descripcion+'<input type="hidden" name="cmat_id[]" value="'+cmat_id+'"><input type="hidden" name="cxma_id[]" value="0"></td>';
-            	html_table += '<td class="texto-derecha cmat_costo">'+cmat_costo+'<input type="hidden" name="cmat_costo[]" value="'+cmat_costo+'"></td>';
-            	html_table += '<td class="texto-centrado cxma_costofinal"><input type="text" class="span1 texto-derecha col_costofinal" name="cxma_costofinal[]" value="'+cmat_costo+'"></td>';
-            	html_table += '<td class="texto-centrado cmat_obligatorio"><input type="checkbox" class="col_obligatorio" name="cmat_obligatorio[]" checked="" value="1" data-three-state="false" data-toggle="checkbox-x" '+checked+' ></td>';
-            	html_table += '</tr>';
-            	$('#table_costos').find('tbody').append(html_table);
-            	costo_total += parseFloat(data_cmat[j].cmat_costo);
-            	
-            }//end for
+            if(data_cmat){
+	            for(var j = 0; j < data_cmat.length; j++){
+	            	var cmat_id 			= data_cmat[j].cmat_id;
+	            	var cmat_descripcion 	= data_cmat[j].cmat_descripcion;
+	            	var cmat_costo 			= parseFloat(data_cmat[j].cmat_costo).toFixed(2);
+	            	var cmat_obligatorio 	= data_cmat[j].cmat_obligatorio;
+	            	var checked 			= '';
+	            	if(cmat_obligatorio === 'S'){
+	            		checked = 'disabled';
+	            	}
+	            	html_table = '';
+	            	html_table += '<tr class="cmat_id_'+cmat_id+'">';
+	            	html_table += '<td class="cmat_id">'+cmat_descripcion+'<input type="hidden" name="cmat_id[]" value="'+cmat_id+'"><input type="hidden" name="cxma_id[]" value="0"></td>';
+	            	html_table += '<td class="texto-derecha cmat_costo">'+cmat_costo+'<input type="hidden" name="cmat_costo[]" value="'+cmat_costo+'"></td>';
+	            	html_table += '<td class="texto-centrado cxma_costofinal"><input type="text" class="span1 texto-derecha col_costofinal" name="cxma_costofinal[]" value="'+cmat_costo+'"></td>';
+	            	html_table += '<td class="texto-centrado cmat_obligatorio"><input type="checkbox" class="col_obligatorio" name="cmat_obligatorio[]" checked="" value="1" data-three-state="false" data-toggle="checkbox-x" '+checked+' ></td>';
+	            	html_table += '</tr>';
+	            	$('#table_costos').find('tbody').append(html_table);
+	            	costo_total += parseFloat(data_cmat[j].cmat_costo);
+	            	
+	            }//end for
+            }else{
+            	$('#observacion_ajax').html(' * No se han encontrado los conceptos por matrícula. Verifique si la lista de precio tiene conceptos en la opción: Conceptos Matrícula.');
+            }
 
             $('.cmat_id_1').find('.cmat_costo').html(carr_precio.toFixed(2)+'<input type="hidden" name="cmat_costo[]" value="'+carr_precio.toFixed(2)+'">');
             $('.cmat_id_1').find('.cxma_costofinal').html('<input type="text" class="span1 texto-derecha col_costofinal" name="cxma_costofinal[]" value="'+carr_precio.toFixed(2)+'">');
@@ -235,5 +245,26 @@ $(document).ready(function(){
             bootbox.alert("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> Ha ocurrido un error verificando los datos. Por favor reinicie el sistema o comuníquese a soporte de persistir el problema");
         });
 	});
+
+	$(document).on('change', '#moda_id', function(e){
+		limpiar_form();
+	});
+	$(document).on('change', '#carr_id', function(e){
+		limpiar_form();
+	});
+	$(document).on('change', '#alum_id', function(e){
+		limpiar_form();
+	});
+	$(document).on('change', '#lipe_id', function(e){
+		limpiar_form();
+	});
+
+	function limpiar_form(){
+		$('#observacion_ajax').html('');
+		$('#matr_horareal').val('');
+		$('#table_costos').find('tfoot').empty();
+		$('#table_costos').find('tbody').empty().append('<tr><td class="texto-centrado" colspan="4">No se han encontrado registros...</td></tr>');
+		$('#gmat_id').val('');
+	}	
 
 });

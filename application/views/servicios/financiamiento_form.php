@@ -24,7 +24,8 @@
 							  'class'		=> 'form-horizontal',
 							  'tipo_vista' 	=> $tipo_vista
 							  );
-							$ruta = 'servicios/financiamiento/guardar/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT).'/'.((isset($data_fima))?str_encrypt($data_fima->fima_id, KEY_ENCRYPT):'');
+							$funcion_guardar = (isset($finanzas)) ? 'guardarpago' : 'guardar';
+							$ruta = 'servicios/financiamiento/'.$funcion_guardar.'/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT).'/'.((isset($data_fima))?str_encrypt($data_fima->fima_id, KEY_ENCRYPT):'');
 							echo form_open($ruta, $attributes);
 							?>
 							<fieldset>
@@ -76,13 +77,42 @@
 								<div class="control-group">
 									<label for="fima_fecha_programada" class="control-label">Fecha programada</label>
 									<div class="controls">
-									    <div class="input-append date datepicker" data-date="<?= (isset($data_fima))?fecha_latino($data_fima->fima_fecha_programada):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
+									    <div class="datepickerx" data-date="<?= (isset($data_fima))?fecha_latino($data_fima->fima_fecha_programada):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
 									      <input class="span2" size="16" type="text" value="<?= (isset($data_fima))?fecha_latino($data_fima->fima_fecha_programada):date('d/m/Y'); ?>" id="fima_fecha_programada" name="fima_fecha_programada">
-									      <span class="add-on"><i class="icon-th"></i></span>
+									    </div>
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+								
+								<?php 
+									if(isset($finanzas)){
+								?>
+
+								<div class="control-group">
+									<label for="fima_pagado" class="control-label">Pagado?</label>
+									<div class="controls">
+										<input type="checkbox" name="fima_pagado" data-toggle="checkbox-x" data-three-state="false" class="" value="0" id="fima_pagado">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="fima_comprobante" class="control-label">Comprobante</label>
+									<div class="controls">
+										<input type="text" value="<?= (isset($data_fima))?$data_fima->fima_comprobante:set_value('fima_comprobante'); ?>" id="fima_comprobante" name="fima_comprobante" class="span8">
+									</div> <!-- /controls -->
+								</div> <!-- /control-group -->
+
+								<div class="control-group">
+									<label for="fima_fecha_proceso" class="control-label">Fecha proceso</label>
+									<div class="controls">
+									    <div class="datepickerx" data-date="<?= (isset($data_fima))?fecha_latino($data_fima->fima_fecha_proceso):date('d/m/Y'); ?>" data-date-format="dd/mm/yyyy">
+									      <input class="span2" size="16" type="text" value="<?= (isset($data_fima))?fecha_latino($data_fima->fima_fecha_proceso):''; ?>" id="fima_fecha_proceso" name="fima_fecha_proceso">
 									    </div>
 									</div> <!-- /controls -->
 								</div> <!-- /control-group -->
 
+								<?php
+									}//end if
+								?>
 							</fieldset>
 					       	<?php
 					        echo form_close();

@@ -300,7 +300,8 @@ class Alumno extends CI_Controller {
                 'alum_seguro'               => isset($datapost['alum_seguro'])?$datapost['alum_seguro']:'',
                 'alum_observaciones'        => isset($datapost['alum_observaciones'])?$datapost['alum_observaciones']:'',
                 'dist_id'                   => ((!isset($datapost['dist_id']) || $datapost['dist_id'] === '')?993:$datapost['dist_id']),
-                'tdir_id'                   => isset($datapost['tdir_id']) ? $datapost['tdir_id'] : 0
+                'tdir_id'                   => isset($datapost['tdir_id']) ? $datapost['tdir_id'] : 0,
+                'ofic_id'                   => $this->session->userdata('ofic_id')
             );
 
             /*imagen de usuario*/

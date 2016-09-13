@@ -34,6 +34,7 @@ class Curso_Model extends CI_Model {
                 'curs.modu_id' => $modu_id,
                 'curs.curs_estado' => DB_ACTIVO
                 );
+        $this->db->order_by('curs_codigo', 'asc');
         $this->db->where($where);
         $this->db->join('modulos_carrera modu', 'modu.modu_id = curs.modu_id', 'inner');
         $this->db->join('nivel_aprendizaje niap', 'niap.niap_id = curs.niap_id', 'inner');

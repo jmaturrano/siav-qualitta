@@ -248,8 +248,20 @@ $(document).ready(function(){
 	$(document).on('change', '#carr_id.selectpicker-carrera', function(e){
 		var item_subruta 				= $(this).attr('data-subruta');
 		var carr_id 					= $(this).val();
+		var html						= '';
 
-    	$('#modu_id').html('<option value="">Seleccione</option>');
+		if($('#modu_costo').length > 0){
+			$('#modu_costo').attr('disabled', 'disabled');
+			$('#modu_costo').val('');
+    		html += '<tr>';
+    		html += '<td class="texto-centrado" colspan="5">';
+    		html += '<span>No se encontraron registros...</span>';
+    		html += '</td>';
+    		html += '</tr>';
+    		$('#table_modxcurso').find('tbody').empty().html(html);
+		}//end if
+
+    	$('#modu_id').html('<option value="" data-moducosto="">Seleccione</option>');
     	$('#curs_id').html('<option value="">Todos</option>');
 		if(carr_id != ''){
 	        $.getJSON(item_subruta.replace('{SELECTED}', carr_id),function(data){
@@ -258,7 +270,8 @@ $(document).ready(function(){
 						var modu_id 			= data[i].modu_id;
 						var modu_codigo 		= data[i].modu_codigo;
 						var modu_descripcion 	= data[i].modu_descripcion;
-						$('#modu_id').append('<option value="'+modu_id+'">'+modu_codigo+' - '+modu_descripcion+'</option>');
+						var modu_costo 			= data[i].modu_costo;
+						$('#modu_id').append('<option value="'+modu_id+'" data-moducosto="'+modu_costo+'">'+modu_codigo+' - '+modu_descripcion+'</option>');
 					}//end for
 	        	}
 				$('.selectpicker-carrera').selectpicker('refresh');
@@ -273,7 +286,19 @@ $(document).ready(function(){
 	$(document).on('change', '#modu_id.selectpicker-carrera', function(e){
 		var item_subruta 				= $(this).attr('data-subruta');
 		var modu_id 					= $(this).val();
+		var modu_costo					= $('option:selected', this).attr('data-moducosto');
+		var html						= '';
 
+		if($('#modu_costo').length > 0){
+			$('#modu_costo').attr('disabled', 'disabled');
+			$('#modu_costo').val(modu_costo);
+    		html += '<tr>';
+    		html += '<td class="texto-centrado" colspan="5">';
+    		html += '<span>Presione buscar cursos para ver la lista. Si no encuentra ninguno considere agregar curso o revisar la opción: Programa de instrucción.</span>';
+    		html += '</td>';
+    		html += '</tr>';
+    		$('#table_modxcurso').find('tbody').empty().html(html);
+		}//end if
     	$('#curs_id').html('<option value="">Todos</option>');
 		if(modu_id != ''){
 	        $.getJSON(item_subruta.replace('{SELECTED}', modu_id),function(data){
