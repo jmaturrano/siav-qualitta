@@ -20,7 +20,7 @@
 							  'id'      	=> 'form_listar',
 							  'name'    	=> 'form_listar'
 							  );
-							$ruta = 'servicios/matricula/buscar';
+							$ruta = 'servicios/certificadosxalumno/buscar';
 							echo form_open($ruta, $attributes);
 							?>
 				            <input type="text" placeholder="Buscar" class="search-query" name="q" id="txt_buscar" value="<?= (isset($q))?$q:''; ?>">
@@ -33,11 +33,9 @@
 				                <thead>
 				                  <tr>
 				                    <th class="cabecera-tabla"> Nro. </th>
-				                    <th class="cabecera-tabla"> Matrícula </th>
-				                    <th class="cabecera-tabla"> Alumno </th>
-				                    <th class="cabecera-tabla"> Carrera </th>
-				                    <th class="cabecera-tabla"> Fecha </th>
-				                    <th class="cabecera-tabla"> Estado </th>
+				                    <th class="cabecera-tabla"> Documento </th>
+				                    <th class="cabecera-tabla"> Vigencia </th>
+				                    <th class="cabecera-tabla"> Vencimiento </th>
 				                    <th class="cabecera-tabla td-actions"> </th>
 				                  </tr>
 				                </thead>
@@ -45,24 +43,22 @@
 				                	<?php
 				                	if(!isset($offset))
 				                		$offset=0;
-				                	if(isset($data_matr)){
-				                		foreach ($data_matr as $item => $matricula) {
+				                	if(isset($data_cxal)){
+				                		foreach ($data_cxal as $item => $certificado) {
 				               		?>
 										<tr>
 											<td class="texto-centrado"><?= str_pad(($item+1)+$offset, 5, '0', STR_PAD_LEFT); ?></td>
-											<td class="texto-centrado"><?= $matricula->matr_codigo; ?></td>
-											<td class=""><?= $matricula->alum_apellido.' '.$matricula->alum_nombre; ?></td>
-											<td class="texto-centrado"><?= $matricula->carr_codigo; ?></td>
-											<td class="texto-centrado"><?= fecha_latino($matricula->matr_fecha_proceso); ?></td>
-											<td class="texto-centrado"><?= $matricula->emat_descripcion; ?></td>
+											<td class="texto-centrado"><?= $certificado->cele_descripcion; ?></td>
+											<td class="texto-centrado"><?= $certificado->cele_anios_vigencia.' ('.ucfirst(strtolower(str_replace('N', 'ñ', $certificado->cele_unidad_vigencia))).')'; ?></td>
+											<td class="texto-centrado"><?= ($certificado->cxal_fecha_vencimiento === '0000-00-00' || $certificado->cxal_fecha_vencimiento === null)?'':fecha_latino($certificado->cxal_fecha_vencimiento); ?></td>
 											<td class="texto-centrado td-actions">
-						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('servicios/matricula/ver/'.str_encrypt($matricula->matr_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Ver" class="btn btn-small btn-info btn_consulta" href="<?= base_url('servicios/certificadosxalumno/ver/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT).'/'.str_encrypt($certificado->cxal_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_VIEW; ?>"> </i>
 						                    	</a>
-						                    	<a title="Editar" class="btn btn-small btn-invert btn_editar" href="<?= base_url('servicios/matricula/editar/'.str_encrypt($matricula->matr_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Editar" class="btn btn-small btn-invert btn-editar btn_editar" href="<?= base_url('servicios/certificadosxalumno/editar/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT).'/'.str_encrypt($certificado->cxal_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_EDIT; ?>"> </i>
 						                    	</a>
-						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('servicios/matricula/eliminar/'.str_encrypt($matricula->matr_id, KEY_ENCRYPT)); ?>">
+						                    	<a title="Eliminar" class="btn btn-small btn-danger tr_delete" href="javascript:;" data-url="<?= base_url('servicios/certificadosxalumno/eliminar/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT).'/'.str_encrypt($certificado->cxal_id, KEY_ENCRYPT)); ?>">
 						                    		<i class="btn-icon-only <?= ICON_DELETE; ?>"> </i>
 						                    	</a>
 											</td>
@@ -72,7 +68,7 @@
 				                	}else{
 				                	?>
 				                		<tr>
-				                			<td class="texto-centrado" colspan="7">
+				                			<td class="texto-centrado" colspan="5">
 				                				<span>No se encontraron registros...</span>
 				                			</td>
 				                		</tr>
@@ -93,4 +89,4 @@
 	</div> <!-- /main-inner -->
 </div> <!-- /main -->
 
-<script src="<?php echo base_url('public/assets/js/Matricula.js') ?>"></script>
+<script src="<?php echo base_url('public/assets/js/certificadosxalumno.js') ?>"></script>

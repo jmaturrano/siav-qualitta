@@ -26,8 +26,14 @@ class Matricula_Model extends CI_Model {
       * @return void
       */
     public function getMatriculaAll($q = '', $limit = 1000, $offset = 0){
+
+        $ofic_id = $this->session->userdata('ofic_id');
+
         $this->db->limit($limit, $offset);
-        $where = array('matr.matr_estado'=>DB_ACTIVO);
+        $where = array(
+            'matr.matr_estado'=>DB_ACTIVO, 
+            'matr.ofic_id' => $ofic_id
+          );
         if($q !== ''){
             $this->db->group_start();
             $this->db->like('matr.matr_codigo',$q);

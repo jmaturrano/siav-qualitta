@@ -52,8 +52,9 @@ class Requisitosxalumno_Model extends CI_Model {
       *
       * @return void
       */
-    public function contar_estructuras_todos() {
-        $this->db->where('rxal_estado', DB_ACTIVO);
+    public function contar_estructuras_todos($matr_id) {
+        $where = array('rxal_estado'=>DB_ACTIVO, 'matr_id' => $matr_id);
+        $this->db->where($where);
         return $this->db->count_all_results(self::$table_menu);
     }
 

@@ -65,7 +65,7 @@ class Requisitosxalumno extends CI_Controller {
         $data['header_icon']    = self::$header_icon;
         $this->load->library('pagination');
         $propio['ruta_base'] = 'servicios/requisitosxalumno/lista/'.$matr_id_enc;
-        $propio['filas_totales'] = $this->requisitosxalumno_model->contar_estructuras_todos();
+        $propio['filas_totales'] = $this->requisitosxalumno_model->contar_estructuras_todos($matr_id);
         $filasPorPagina = paginacion_configurar($propio, $this);
         $data['data_rxal']      = $this->requisitosxalumno_model->getRequisitosxalumnoAll($matr_id, '', $filasPorPagina, floor($offset / $filasPorPagina)*$filasPorPagina);
         $data['data_matr']      = $this->matricula_model->getMatriculaByID($matr_id);

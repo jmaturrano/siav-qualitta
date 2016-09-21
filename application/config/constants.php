@@ -144,6 +144,8 @@ defined('ICON_USER')			OR define('ICON_USER', 'glyphicon glyphicon-user');
 defined('ICON_MONEY')			OR define('ICON_MONEY', 'glyphicon glyphicon-usd');
 defined('ICON_DOWN')			OR define('ICON_DOWN', 'glyphicon glyphicon-arrow-down');
 defined('ICON_UP')				OR define('ICON_UP', 'glyphicon glyphicon-arrow-up');
+defined('ICON_PRINT')			OR define('ICON_PRINT', 'glyphicon glyphicon-print');
+defined('ICON_LISTALT')			OR define('ICON_LISTALT', 'glyphicon glyphicon-list-alt');
 
 /*CONSTANTES DE ESTADO*/
 defined('DB_ACTIVO')			OR define('DB_ACTIVO', 'AC');
@@ -231,8 +233,6 @@ define('ESTADO_CIERRE_CERRADO', 'CE');
 
 define('ETIQUETA_CIERRE_ABIERTO', 'Abierto');
 define('ETIQUETA_CIERRE_CERRADO', 'Cerrado');
-
-
 
 
 

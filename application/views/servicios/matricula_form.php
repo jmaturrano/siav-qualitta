@@ -147,12 +147,22 @@
 										?>
 										&nbsp;
 										<a class="btn btn-warning" id="btn_reqxalumno" href="<?= base_url('servicios/requisitosxalumno/lista/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
-											<span class="<?= ICON_SEARCH; ?>"></span> Documentos requisitos
+											<span class="<?= ICON_LISTALT; ?>"></span> Documentos requisito
+										</a>
+
+										&nbsp;
+										<a class="btn btn-success" id="btn_certifxalumno" href="<?= base_url('servicios/certificadosxalumno/lista/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
+											<span class="<?= ICON_FORM; ?>"></span> Certificados/Constancias
 										</a>
 
 										&nbsp;
 										<a class="btn btn-primary" id="btn_financiamiento" href="<?= base_url('servicios/financiamiento/lista/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
-											<span class="<?= ICON_SEARCH; ?>"></span> Financiamiento
+											<span class="<?= ICON_MONEY; ?>"></span> Financiamiento
+										</a>
+
+										&nbsp;
+										<a class="btn btn-default" target="_blank" id="btn_imprimirmatricula" href="<?= base_url('servicios/matricula/imprimir/'.str_encrypt($data_matr->matr_id, KEY_ENCRYPT)); ?>">
+											<span class="<?= ICON_PRINT; ?>"></span> Imprimir Matrícula
 										</a>
 										<?php
 										}//end if

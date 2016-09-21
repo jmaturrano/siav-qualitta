@@ -24,7 +24,7 @@ $(document).ready(function(){
             $('#matr_observacion').removeAttr('disabled');
 
             $('#form_matricula').find('input[type=checkbox]').checkboxX('refresh');
-			$(".datepicker").datepicker('refresh');
+			$(".datepickerx").datepicker('refresh');
 			$('.selectpicker').selectpicker('refresh');
 
 		}
