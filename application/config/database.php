@@ -1,4 +1,5 @@
 <?php
+include '/home2/jmaturrano/public_html/customers/wp-config/server.php';
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
@@ -74,10 +75,10 @@ $active_group = 'default';
 $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'jmaturrano',
-	'password' => 'v2L1t$$t0Cbt',
-	'database' => 'jmaturra_siav',
+	'hostname' => $server['main']['host'],
+	'username' => $server['main']['user'],
+	'password' => $server['main']['pass'],
+	'database' => $server['database']['qualitta'],
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
