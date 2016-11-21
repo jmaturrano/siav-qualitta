@@ -24,11 +24,15 @@ $(document).ready(function(){
 	        btns: ['viewHTML',
 	          '|', 'formatting',
 	          '|', 'btnGrp-design',
+	          '|', 'btnGrp-semantic',
 	          '|', 'link',
 	          '|', 'insertImage',
 	          '|', 'btnGrp-justify',
 	          '|', 'btnGrp-lists',
-	          '|', 'horizontalRule'],
+	          '|', 'horizontalRule', 
+	          '|', 'strong', 
+	          '|', 'em', 
+	          '|', 'removeformat'],
 	        btnsAdd: ['|', 'foreColor', 'backColor'],
 	        fullscreenable: false,
 	        closable: false,
@@ -36,7 +40,8 @@ $(document).ready(function(){
 	        resetCss: true,
 	        autogrow: true,
 	        mobile: true,
-	        tablet: true
+	        tablet: true,
+	        removeformatPasted: true
 	    });
 	}
 

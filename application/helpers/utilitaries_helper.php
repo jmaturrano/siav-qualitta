@@ -351,11 +351,14 @@ if(!function_exists('upload_file_foto')){
 }
 
 if(!function_exists('enviar_email')){
-    function enviar_email($th = null, $email_to, $email_subject, $email_message){
+    function enviar_email($th = null, $email_to, $email_subject, $email_message, $email_cc = ''){
         $th->load->library('email');
         $th->email->set_mailtype("html");
         $th->email->from(MAILPRODUCTO, PRODUCTO);
         $th->email->to(trim($email_to));
+        if($email_cc != ''){
+            $th->email->cc(trim($email_cc));
+        }
         $th->email->subject($email_subject);
         $th->email->message($email_message);
         if($th->email->send()){
