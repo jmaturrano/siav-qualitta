@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tipoaeronave extends CI_Controller {
-    private static $header_title  = 'Tipo Aeronave';
+    private static $header_title  = 'Marca Aeronave';
     private static $header_icon  = ICON_SETTINGS;
     private static $OFICINAS = array();
     private static $ROLES = array();

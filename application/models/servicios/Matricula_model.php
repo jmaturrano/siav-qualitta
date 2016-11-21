@@ -104,8 +104,15 @@ class Matricula_Model extends CI_Model {
       * @return void
       */
     public function getMatriculaByID($matr_id){
-        $where = array('matr.matr_id' => $matr_id);
-
+        $where = array(
+              'matr.matr_id' => $matr_id,
+              'alum.alum_estado' => DB_ACTIVO,
+              'carr.carr_estado' => DB_ACTIVO
+              );
+        $this->db->join('lista_precios lipe', 'lipe.lipe_id = matr.lipe_id', 'inner');
+        $this->db->join('moneda mone', 'mone.mone_id = lipe.mone_id', 'inner');
+        $this->db->join('carrera carr', 'carr.carr_id = matr.carr_id', 'inner');
+        $this->db->join('alumno alum', 'alum.alum_id = matr.alum_id', 'inner');
         $this->db->join('grupo_matricula gmat', 'gmat.gmat_id = matr.gmat_id', 'inner');
         $this->db->where($where);
         $query = $this->db->get(self::$table_menu.' matr');

@@ -49,7 +49,14 @@ $(document).ready(function(){
     /*VERIFICAR PASSWORD*/
     $(document).on('click', '#usua_submit', function(e){
         if(inputDNI.val().trim() === ''){
+            bootbox.alert("<span class=\"glyphicon glyphicon-remove\"></span> Ingresar DNI del usuario");
             inputDNI.focus();
+            return false;
+        }
+        if(inputUSER.val().trim() === ''){
+            var event = jQuery.Event("keypress");
+            event.which = 13; // # Some key code value
+            inputDNI.trigger(event);
             return false;
         }
         if(inputPASS.val().trim() === ''){

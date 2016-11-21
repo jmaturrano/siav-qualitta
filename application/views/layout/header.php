@@ -73,6 +73,9 @@
         <script src="<?= base_url('public/assets/plugins/date-time-picker/js/moment.js'); ?>"></script>
         <script src="<?= base_url('public/assets/plugins/date-time-picker/js/bootstrap-datetimepicker.js'); ?>"></script>
         <link rel="stylesheet" href="<?= base_url('public/assets/plugins/date-time-picker/css/bootstrap-datetimepicker.css'); ?>">
+        <!-- Trumbowyg editor text -->
+        <script src="<?= base_url('public/assets/plugins/Trumbowyg-2.0.0-beta.7/dist/trumbowyg.min.js') ?>"></script>
+        <link href="<?= base_url('public/assets/plugins/Trumbowyg-2.0.0-beta.7/dist/ui/trumbowyg.min.css') ?>" rel="stylesheet" type="text/css">
         <!-- ================== END PLUGINS ================== -->
 
 

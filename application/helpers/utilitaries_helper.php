@@ -356,8 +356,8 @@ if(!function_exists('enviar_email')){
         $th->email->set_mailtype("html");
         $th->email->from(MAILPRODUCTO, PRODUCTO);
         $th->email->to(trim($email_to));
-        $th->email->subject(utf8_decode($email_subject));
-        $th->email->message(utf8_decode($email_message));
+        $th->email->subject($email_subject);
+        $th->email->message($email_message);
         if($th->email->send()){
             return true;
         }//end if
@@ -366,25 +366,29 @@ if(!function_exists('enviar_email')){
 }
 
 if(!function_exists('reemplazar_palabras_reservadas')){
-    function reemplazar_palabras_reservadas($rema_descripcion, $data_palabras_reservadas){
-
+    function reemplazar_palabras_reservadas($th, $rema_descripcion, $data_palabras_reservadas){
+        $th->load->model('seguridad/configuracion_model');
+        $data_conf = $th->configuracion_model->getConfigurationData();
         /*
         *
         * Palabras reservadas:
-        * [ALUMNO]
-        * [DIRECCION]
-        * [URLALUMNO]
-        * [PRODUCTO]
-        * [MATRICULA]
-        * [CURSO]
-        * [COSTO]
-        * [URLMATRICULA]
-        * [CUMPLEANOS]
+        * [ALUMNO]:Nombre de alumno
+        * [COSTO]: Costo total del curso
+        * [CUMPLEANOS]: Personal de cumpleaños
+        * [CURSO]: Nombre de programa de instrucción
+        * [DIRECCION]: Dirección de alumnp
+        * [EMPRESA]: Nombre de la empresa
+        * [MATRICULA]: Código de matrícula
+        * [PRODUCTO]: Nombre del sistema
+        * [TABLACUMPLEANOS]: Lista de alumnos que cumplen años del día
+        * [URLALUMNO]: --
+        * [URLMATRICULA]: --
         *
         */
 
         if(count($data_palabras_reservadas) > 0){
             $data_palabras_reservadas['[PRODUCTO]'] = PRODUCTO;
+            $data_palabras_reservadas['[EMPRESA]'] = $data_conf->conf_nombre;
             foreach ($data_palabras_reservadas as $reservada => $equivalente) {
                 if(strrpos($rema_descripcion, $reservada) !== FALSE){
                     $rema_descripcion = str_replace($reservada, $equivalente, $rema_descripcion);

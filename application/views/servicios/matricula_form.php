@@ -22,7 +22,10 @@
 							  'id'      	=> 'form_matricula',
 							  'name'    	=> 'form_matricula',
 							  'class'		=> 'form-horizontal',
-							  'tipo_vista' 	=> $tipo_vista
+							  'tipo_vista' 	=> $tipo_vista,
+							  'reporte_mail'=> (isset($reporte_mail))?$reporte_mail:false,
+							  'mail_confirm'=> base_url('servicios/matricula/enviarreporte/'.((isset($data_matr))?str_encrypt($data_matr->matr_id, KEY_ENCRYPT):'')),
+							  'mail_cancel'	=> base_url('servicios/matricula/ver/'.((isset($data_matr))?str_encrypt($data_matr->matr_id, KEY_ENCRYPT):''))
 							  );
 							$ruta = 'servicios/matricula/guardar/'.((isset($data_matr))?str_encrypt($data_matr->matr_id, KEY_ENCRYPT):'');
 							echo form_open($ruta, $attributes);

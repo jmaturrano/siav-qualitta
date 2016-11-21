@@ -18,10 +18,12 @@ class Usuario_Model extends CI_Model {
 
         $this->db->limit($limit, $offset);
         $where = array('usua_estado'=>DB_ACTIVO);
+        $this->db->order_by('usua_apellido', 'asc');
         $this->db->order_by('usua_nombre', 'asc');
         $this->db->where($where);
         if($q !== ''){
             $this->db->group_start();
+            $this->db->like('usua_apellido',$q);
             $this->db->like('usua_nombre',$q);
             $this->db->or_like('usua_numero_documento',$q);
             $this->db->group_end();

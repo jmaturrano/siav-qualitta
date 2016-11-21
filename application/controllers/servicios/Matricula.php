@@ -39,6 +39,7 @@ class Matricula extends CI_Controller {
         $this->load->model('servicios/certificadosxalumno_model');
         $this->load->model('registros/certificadoslegales_model');
         $this->load->model('registros/apoderadoxalumno_model');
+        $this->load->model('seguridad/reportexusuario_model');
         date_default_timezone_set('America/Lima');
     }
 
@@ -186,6 +187,69 @@ class Matricula extends CI_Controller {
         $data['btn_cancelar']   = 'servicios/matricula';
         $this->layout->view('servicios/matricula_form', $data);
         $this->load->view('notificacion');
+    }
+
+    public function confirmarreporte($matr_id_enc = ''){
+        $data['OFICINAS']       = self::$OFICINAS;
+        $data['ROLES']          = self::$ROLES;
+        $data['PRIVILEGIOS']    = self::$PRIVILEGIOS;
+        $data['PERMISOS']       = self::$PERMISOS;
+        ($matr_id_enc === '') ? redirect('servicios/matricula') : '';
+        $matr_id = str_decrypt($matr_id_enc, KEY_ENCRYPT);
+        $this->load->library('layout');
+        $data['header_title']   = self::$header_title;
+        $data['header_icon']    = self::$header_icon;
+        $data['tipo_vista']     = 'ver';
+        $data['reporte_mail']   = true;
+        $data['data_matr']      = $this->matricula_model->getMatriculaByID($matr_id);
+        $data['data_carr']      = $this->carrera_model->getCarreraAll();
+        $data['data_alum']      = $this->alumno_model->getAlumnoAll();
+        $data['data_moda']      = $this->modalidad_model->getModalidadAll();
+        $data['data_gmat']      = $this->grupomatricula_model->getGrupomatriculaByCARRMODA(isset($data['data_matr'])?$data['data_matr']->carr_id:0, isset($data['data_matr'])?$data['data_matr']->moda_id:0);
+        $data['data_lipe']      = $this->listaprecio_model->getListaprecioAll();
+        $data['data_cxma']      = $this->conceptosxmatricula_model->getConceptosxMatriculaByMATR($matr_id);
+        $data['data_emat']      = $this->estadomatricula_model->getEstadoMatriculaAll();
+        
+        $data['btn_editar']     = 'servicios/matricula/editar/'.$matr_id_enc;
+        $data['btn_regresar']   = 'servicios/matricula';
+        $this->layout->view('servicios/matricula_form', $data);
+        $this->load->view('notificacion');
+    }
+
+    public function enviarreporte($matr_id_enc = ''){
+        ($matr_id_enc === '') ? redirect('servicios/matricula') : '';
+        $matr_id = str_decrypt($matr_id_enc, KEY_ENCRYPT);
+        $data_matr              = $this->matricula_model->getMatriculaByID($matr_id);
+        /* REPORTE NRO. 02 QUE CORRESPONDE AL REGISTRO DE MATRICULAS */
+        $data_rexu = $this->reportexusuario_model->getReportexusuarioAllByREMACOD('02');
+        if(isset($data_rexu)){
+            foreach ($data_rexu as $item => $rexu) {
+                $rema_id        = $rexu->rema_id;
+                $usua_id        = $rexu->usua_id;
+                $usua_nombre    = $rexu->usua_nombre;
+                $usua_apellido  = $rexu->usua_apellido;
+                $usua_email     = $rexu->usua_email;
+                $rema_titulo    = $rexu->rema_titulo;
+                $rema_descripcion= $rexu->rema_descripcion;
+                if($usua_email != ''){
+                    $data_palabras_reservadas = array(
+                            '[MATRICULA]' => $data_matr->matr_codigo,
+                            '[CURSO]' => '('.$data_matr->carr_codigo.') '.$data_matr->carr_descripcion,
+                            '[COSTO]' => $data_matr->mone_prefijo.' '.number_format($data_matr->matr_costofinal, 2, '.', ',').' '.$data_matr->mone_descripcion,
+                            '[ALUMNO]' => $data_matr->alum_apellido.' '.$data_matr->alum_nombre,
+                            '[DIRECCION]' => $data_matr->alum_direccion
+                        );
+                    $email_to       = $usua_email;
+                    $email_subject  = $rema_titulo;
+                    $email_message  = reemplazar_palabras_reservadas($this, $rema_descripcion, $data_palabras_reservadas);
+                    $mail_request   = enviar_email($this, $email_to, $email_subject, $email_message);
+                }//end if
+            }//end foreach
+        }//end if
+        /* REPORTE NRO. 02 QUE CORRESPONDE AL REGISTRO DE MATRICULAS - FIN */
+        $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
+        $this->session->set_flashdata('mensaje', RMESSAGE_PROCESSED);
+        redirect('servicios/matricula/ver/'.$matr_id_enc);
     }
 
     /**
@@ -347,6 +411,7 @@ class Matricula extends CI_Controller {
                 $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
                 $this->session->set_flashdata('mensaje', (($matr_id === '') ? RMESSAGE_INSERT : RMESSAGE_UPDATE));
 
+                $funcion_request = 'ver';
                 if($matr_id === ''){
                   /*1.- INSERTAR */
                     /* 1.1- REGISTRAR ESTADO MATRICULA */
@@ -396,6 +461,7 @@ class Matricula extends CI_Controller {
                     $this->financiamiento_model->insertFinanciamiento($data_fima);
                     /* 1.5.- FINANCIAMIENTO MATRICULA - 1CUOTA - END */
 
+                    $funcion_request = 'confirmarreporte';
                 }else{
                   /* 2.- ACTUALIZAR */
                     /* 2.1.- CONCEPTOS X MATRICULA */
@@ -403,7 +469,7 @@ class Matricula extends CI_Controller {
                     /* 2.1.- CONCEPTOS X MATRICULA -END */
                 }
 
-                redirect('servicios/matricula/ver/'.str_encrypt($matr_id, KEY_ENCRYPT));
+                redirect('servicios/matricula/'.$funcion_request.'/'.str_encrypt($matr_id, KEY_ENCRYPT));
             }else{
                 $this->session->set_flashdata('mensaje_tipo', EXIT_ERROR);
                 $this->session->set_flashdata('mensaje', RMESSAGE_ERROR);

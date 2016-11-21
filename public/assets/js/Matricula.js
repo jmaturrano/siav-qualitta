@@ -26,8 +26,45 @@ $(document).ready(function(){
             $('#form_matricula').find('input[type=checkbox]').checkboxX('refresh');
 			$(".datepickerx").datepicker('refresh');
 			$('.selectpicker').selectpicker('refresh');
-
 		}
+
+
+		/* REPORTE POR REGISTRO DE MATRICULA */
+		var reporte_mail 	= $('#form_matricula').attr('reporte_mail');
+		var mail_confirm 	= $('#form_matricula').attr('mail_confirm');
+		var mail_cancel 	= $('#form_matricula').attr('mail_cancel');
+		if(reporte_mail){
+			setTimeout(function(){
+		        bootbox.dialog({
+		            title: '<h3 class="dialog-alternativo"><span class=\"glyphicon glyphicon-envelope\"></span> Reportar nueva matrícula</h3>',
+		            message: "El registro se ha completado correctamente. ¿Desea reportar via email?",
+		            onEscape: function(){
+		            	bootbox.hideAll();
+		            	window.top.location = mail_cancel;
+		            },
+		            animate: false,
+		            className: 'bootbox-custom',
+		            buttons: {
+			            cancel: {
+						    label: 'Cancelar',
+						    className: "btn-default",
+						    callback: function(){
+						    	bootbox.hideAll();
+						    	window.top.location = mail_cancel;
+						    }
+			            },
+			            confirm: {
+						    label: 'Ok',
+						    className: "btn-warning",
+						    callback: function(){
+						    	window.top.location = mail_confirm;
+						    }
+			            }
+		            }
+		        });
+			}, 500);
+		}//end else
+		/* REPORTE POR REGISTRO DE MATRICULA - END */
 	}
 
 	$(document).on('click', '.btn_guardar', function(e){

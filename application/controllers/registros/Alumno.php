@@ -185,13 +185,12 @@ class Alumno extends CI_Controller {
                         );
                     $email_to       = $usua_email;
                     $email_subject  = $rema_titulo;
-                    $email_message  = reemplazar_palabras_reservadas($rema_descripcion, $data_palabras_reservadas);
+                    $email_message  = reemplazar_palabras_reservadas($this, $rema_descripcion, $data_palabras_reservadas);
                     $mail_request   = enviar_email($this, $email_to, $email_subject, $email_message);
                 }//end if
             }//end foreach
         }//end if
         /* REPORTE NRO. 01 QUE CORRESPONDE AL REGISTRO DE ALUMNOS - FIN */
-
         $this->session->set_flashdata('mensaje_tipo', EXIT_SUCCESS);
         $this->session->set_flashdata('mensaje', RMESSAGE_PROCESSED);
         redirect('registros/alumno/ver/'.$alum_id_enc);
